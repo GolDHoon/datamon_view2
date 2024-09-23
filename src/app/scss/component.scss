@@ -1,0 +1,78 @@
+@charset 'utf-8';
+/*---------------------------------
+    File   : component.scss
+    Date   : 2024.09.23
+/*---------------------------------*/
+
+
+// class component
+
+.hide {
+  display: none !important;
+}
+
+img {
+  display: inline-block;
+  max-width: 100%;
+}
+
+//---
+
+@mixin fullvh() {
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+}
+
+@mixin full2vh() {
+  height: 200vh;
+  height: calc(var(--vh, 1vh) * 200);
+}
+
+@mixin txtellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  overflow: hidden;
+}
+@mixin txtellipsisMulti($h: 2.4rem, $lh: 1.2rem, $l: 2) {
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $l;
+  /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  overflow: hidden;
+  line-height: $lh;
+  height: $h;
+}
+@mixin clear() {
+  &::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+}
+
+@mixin customScroll(
+  $w: 5px,
+  $h: 5px,
+  $barcolor: #d8dcec,
+  $bgrcolor: transparent
+) {
+  overflow: hidden;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: $w;
+    height: $h;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: $barcolor;
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: $bgrcolor;
+    border-radius: 5px;
+  }
+}
+
+
