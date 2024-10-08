@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./scss/common.scss";
+import "./resources/scss/common.scss";
 
 export const metadata: Metadata = {
   title: "datamon_view2",

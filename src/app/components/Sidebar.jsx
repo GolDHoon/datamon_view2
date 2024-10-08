@@ -6,7 +6,7 @@ import { PiUserListBold } from "react-icons/pi";
 import { TbBeta } from "react-icons/tb";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { BsArrowLeftShort } from "react-icons/bs";
-import "../scss/main/sidebar.scss";
+import "../resources/scss/main/sidebar.scss";
 
 export default function Sidebar(){
     const [isActive1, setIsActive1] = useState(false);
