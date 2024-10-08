@@ -6,7 +6,8 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": true
+			"recommended": true,
+			"jsx-a11y/click-events-have-key-events": "off",
 		}
 	}
 }
