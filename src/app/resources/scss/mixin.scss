@@ -8,6 +8,9 @@
 scroll 
  */
 
+ $main100: #2281FF;
+
+
 @mixin scrollbar($bgColor: $scrollbar) {
   width: 4px;
   height: 4px;
