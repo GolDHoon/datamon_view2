@@ -17,6 +17,8 @@ nav{
 
     h1{
         font-weight: 900;
+        padding-bottom: 28px;
+        border-bottom: 1px solid #ddd;
 
         &::before{
             content:"";
@@ -61,21 +63,27 @@ nav{
 
     .nav_wrap{
         width: 100%;
-        margin-top: 28px;
 .gnb{
     display: flex;
     flex-direction: column;
 
     .mli{
         position: relative;
-    padding: 18px 10px;
-    font-size: 17px;
+    padding: 12px 10px;
+    font-size: 16px;
     font-weight: 600;
     height: auto;
     transition: 0.4s ease;
+    letter-spacing: -0.48px;
  svg{
     position: relative;
-    top: 5px;
+    top: 3px;
+
+    &:nth-child(2){
+        position: absolute;
+        right: 0;
+        top:20px;
+    }
  }
 
  &::before{
@@ -85,10 +93,10 @@ nav{
     width: 0px;
     height: 2px;
     background-color: $main100;
-    top: 50px;
+    top: 38px;
     left: 50px;
 
-    transition: 0.35s ease-in-out;
+    transition: 0.42s ease-out;
  }
 
     &:hover{
@@ -108,6 +116,8 @@ nav{
             font-size: 14px;
             font-weight: 400;
             color: #212121;
+            transition: 0.4s ease;
+            letter-spacing: -0.4px;
 
             &:hover{
                 background-color: #eee;
@@ -133,7 +143,7 @@ nav{
     }
 
     &.min{
-        width: 60px;
+        width: 56px;
         padding: 20px 0 0 0;
 
          .right_toggle{
@@ -159,6 +169,16 @@ nav{
 
                     &>ul{
                         display: none;
+                    }
+
+                    &::before{
+                        display: none;
+                    }
+
+                    svg{
+                        &:nth-child(2){
+display: none;
+                        }
                     }
                 }
             }

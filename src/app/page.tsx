@@ -1,13 +1,16 @@
 "use client"
 import React, { useState } from 'react';
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/layout/Sidebar";
 
 
 export default function home(){
   return(
     <div className='wrap'>
 <Sidebar />
-<div className='content'></div>
+<div className='content'>
+
+
+</div>
     </div>
   )
 }

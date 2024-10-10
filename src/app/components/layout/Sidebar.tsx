@@ -6,8 +6,9 @@ import { PiUserListBold } from "react-icons/pi";
 import { TbBeta } from "react-icons/tb";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { BsArrowLeftShort } from "react-icons/bs";
+import { IoIosArrowDown } from "react-icons/io";
 import Link from 'next/link'
-import "../resources/scss/main/sidebar.scss";
+import "../../resources/scss/main/sidebar.scss";
 
 export default function Sidebar(){
     const [isActive1, setIsActive1] = useState(false);
@@ -19,24 +20,20 @@ export default function Sidebar(){
 <nav className={ isActive1 ? 'min' : ''}>
 <h1>DATAMON</h1>
 <i className="right_toggle" onClick={() => setIsActive1(!isActive1)}><BsArrowLeftShort color="fff" size="26" />arrow</i>
-{/* <select>
-    <option value="driven">www.driven.co.kr</option>
-    <option value="">드리븐2</option>
-    <option value="">드리븐3</option>
-    <option value="">드리븐4</option>
-</select> */}
-
 <div className="nav_wrap">
     <ul className="gnb">
-        <li className="mli" > <FaRegNoteSticky size="24" /> 공지사항</li>
-        <li className={`mli ${isActive2 ? 'on' : ''}`}   onClick={() => setIsActive2(!isActive2)} ><FaMarker  size="24" /> 마스터 계정 관리
+        <li className="mli" > <FaRegNoteSticky size="20" /> 공지사항 
+</li>
+        <li className={`mli ${isActive2 ? 'on' : ''}`}   onClick={() => setIsActive2(!isActive2)} ><FaMarker  size="20" /> 마스터 계정 관리 <IoIosArrowDown />
+
             <ul>
                 <li> <Link href="/layout/login">공지사항 관리</Link></li>
                 <li> <Link href="/">문의 관리</Link></li>
                 <li>홍보페이지 관리</li>
             </ul>
         </li>
-        <li className={`mli ${isActive3 ? 'on' : ''}`}      onClick={() => setIsActive3(!isActive3)} > <PiUserListBold  size="24" />사용자 관리
+        <li className={`mli ${isActive3 ? 'on' : ''}`}      onClick={() => setIsActive3(!isActive3)} > <PiUserListBold  size="20" />사용자 관리 <IoIosArrowDown />
+
             <ul>
                 <li>마스터 계정 승인</li>
                 <li>계정 승인</li>
@@ -45,12 +42,13 @@ export default function Sidebar(){
                 <li>고객DB 매핑 요청 승인</li>
             </ul>
         </li>
-        <li className={`mli ${isActive4 ? 'on' : ''}`}     onClick={() => setIsActive4(!isActive4)} > <TbBeta  size="24" /> Beta기능
+        <li className={`mli ${isActive4 ? 'on' : ''}`}     onClick={() => setIsActive4(!isActive4)} > <TbBeta  size="20" /> Beta기능 <IoIosArrowDown />
+
             <ul>
                 <li>광고플랫폼 DB관리</li>
             </ul>
         </li>
-        <li className="mli"> <RiCustomerService2Fill  size="24" />고객센터</li>
+        <li className="mli"> <RiCustomerService2Fill  size="20" />고객센터</li>
     </ul>
 </div>
 </nav>
