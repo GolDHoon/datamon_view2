@@ -1,5 +1,5 @@
 'use client';
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 
 export default async function restApi(method: string, path: string, params: any) {
     if (method === 'get') {
