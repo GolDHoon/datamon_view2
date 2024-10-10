@@ -6,6 +6,7 @@ import { PiUserListBold } from "react-icons/pi";
 import { TbBeta } from "react-icons/tb";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { BsArrowLeftShort } from "react-icons/bs";
+import Link from 'next/link'
 import "../resources/scss/main/sidebar.scss";
 
 export default function Sidebar(){
@@ -17,7 +18,7 @@ export default function Sidebar(){
     return (
 <nav className={ isActive1 ? 'min' : ''}>
 <h1>DATAMON</h1>
-<i className="right_toggle"  onClick={() => setIsActive1(!isActive1)}><BsArrowLeftShort color="fff" size="26" />arrow</i>
+<i className="right_toggle" onClick={() => setIsActive1(!isActive1)}><BsArrowLeftShort color="fff" size="26" />arrow</i>
 {/* <select>
     <option value="driven">www.driven.co.kr</option>
     <option value="">드리븐2</option>
@@ -30,8 +31,8 @@ export default function Sidebar(){
         <li className="mli" > <FaRegNoteSticky size="24" /> 공지사항</li>
         <li className={`mli ${isActive2 ? 'on' : ''}`}   onClick={() => setIsActive2(!isActive2)} ><FaMarker  size="24" /> 마스터 계정 관리
             <ul>
-                <li>공지사항 관리</li>
-                <li>문의 관리</li>
+                <li> <Link href="/layout/login">공지사항 관리</Link></li>
+                <li> <Link href="/">문의 관리</Link></li>
                 <li>홍보페이지 관리</li>
             </ul>
         </li>

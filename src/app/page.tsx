@@ -5,8 +5,9 @@ import Sidebar from "./components/Sidebar";
 
 export default function home(){
   return(
-    <div>
+    <div className='wrap'>
 <Sidebar />
+<div className='content'></div>
     </div>
   )
 }
