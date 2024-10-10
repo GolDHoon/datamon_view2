@@ -3,7 +3,7 @@ import {NextPage} from 'next';
 import "../../../resources/scss/main/login.scss";
 import Link from "next/link";
 import {useEffect, useState} from "react";
-import axios from "axios";
+import restApi from "@/app/resources/js/axios";
 
 interface LoginProps {
     params?: { companyId: string };
@@ -13,6 +13,23 @@ interface LoginProps {
 const Login: NextPage<LoginProps> = ({ params }) => {
     const { companyId } = params || {};
     const [companyName, setCompanyName] = useState('');
+
+    useEffect(() => {
+        try {
+            restApi('get', '/sign/getCompanyInfo', {companyId:companyId}).then(response => {
+                // @ts-ignore
+                if(response.status === 200){
+                    console.log(response.data)
+                    console.log("정상로직")
+                }else{
+                    console.log(response.data)
+                    console.log("비정상로직 처리, 이 경우 확인할 수 없는 URL입니다.")
+                }
+            })
+        } catch (error){
+            console.log(error)
+        }
+    }, []);
 
     return (
         <div className="login_wrap">
