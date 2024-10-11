@@ -10,6 +10,18 @@ const nextConfig = {
                 source: '/home',
                 destination: '/layout/home',
             },
+            {
+                source: '/ad/custInfo',
+                destination: '/layout/ad/custInfo',
+            },
+            {
+                source: '/client/custInfo',
+                destination: '/layout/client/custInfo',
+            },
+            {
+                source: '/crm/custInfo',
+                destination: '/layout/crm/custInfo',
+            },
         ];
     },
 };
