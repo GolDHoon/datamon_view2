@@ -63,11 +63,8 @@
                    }
                 }
 
-                &+.output{
-                    position: relative;
-                    bottom: 1px;
-                    display: flex;
-                    height: 240px;
+                & + .output{
+                    display: none;
 
 
 
@@ -98,12 +95,17 @@
     border:  1px solid $main100;
     border-radius: 0px 4px 4px 0px;
     background-color: #fff;
+    display: none;
+
+    &.calendar, &.toggle, &.check, &.text{
+        display: block;
+    }
 
     &.calendar{
         .calendar_type{
             display: block;
         }
-.toggle_type, .check_type{
+.toggle_type, .check_type, .text_type{
     display: none;
 }
     }
@@ -111,7 +113,7 @@
         .toggle_type{
             display: block;
         }
-.calendar_type, .check_type{
+.calendar_type, .check_type, .text_type{
     display: none;
 }
     }
@@ -119,9 +121,18 @@
         .check_type{
             display: block;
         }
-.toggle_type, .calendar_type{
+.toggle_type, .calendar_type, .text_type{
     display: none;
 }
+    }
+
+    &.text{
+        .text_type{
+            display: block;
+        }
+        .toggle_type, .calendar_type, .check_type{
+            display: none;
+        }
     }
 
 
@@ -172,6 +183,15 @@ padding: 12px;
 
 }
 
+                }
+            }
+
+            &.on{
+                .output{
+                    display: flex;
+                    position: relative;
+                    bottom: 1px;
+                    height: 240px;
                 }
             }
         }
