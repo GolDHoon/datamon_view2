@@ -6,6 +6,9 @@ import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 import { MdOutlineCalendarToday } from "react-icons/md";
 import CommonDataGrid from "@/app/components/CommonDataGrid";
+import { IoIosSearch } from "react-icons/io";
+
+
 import { useState } from "react";
 
 export default function page (){
@@ -41,10 +44,9 @@ export default function page (){
 <div className="top_section">
 
 <div className="filter">
-{/* <button type="button" className="type1">탭 표시<IoIosArrowDown color="#fff" /></button> */}
 
 <div className={`search_filter ${isFilterOpen ? 'on' : ''}`} >
-<button type="button" className="type2"  onClick={() => setIsFilterOpen(!isFilterOpen)} >검색필터<IoIosArrowDown color="#fff" /></button>
+<button type="button" className="type2"  onClick={() => setIsFilterOpen(!isFilterOpen)} >필터<IoIosArrowDown color="#fff" /></button>
 <div className="output">
     <ul className="list">
         <li className="text" onClick={handleClick}>이름</li>
@@ -93,21 +95,33 @@ export default function page (){
 </div>
     </div>
 </div>
+
+{/* 검색필터 end */}
+{/* 탭 표시 start */}
+<button type="button" className="type1">탭 표시<IoIosArrowDown color="#fff" /></button>
+
+
 </div>
 
-{/* <button type="button" className="excel"><PiMicrosoftExcelLogoFill color="#fff" /></button> */}
+<div className="right">
+{/* <div className="input_box">
+<IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
+</div> */}
+<button type="button" className="excel"><PiMicrosoftExcelLogoFill color="#fff" /></button>
+
+</div>
 </div>
 
-{/* <div className="tag_box">
+<div className="tag_box">
     <button className="tag">ID <IoIosClose /></button>
 <button className="tag">Country <IoIosClose /></button>
+
 </div>
- */}
+
 </div>
 
 <section className="table">
     <CommonDataGrid/>
-{/* 여기에 테이블을 넣어주세요 */}
 </section>
 </div>
 </CommonLayout>
