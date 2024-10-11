@@ -6,5 +6,195 @@
         width: 100%;
         height: 100vh;
         background-color: #E8E8E8;   
+
+
+        .custInfo_wrap{
+            padding: 20px;
+.title_box{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+    h2{
+        font-size: 20px;
+        font-weight: 700;
+    }
+    p{
+        color: #bbb;
+    }
+}
+
+.top_section{
+    .filter{
+
+        .search_filter{
+            button{
+                background-color: #fff;
+                font-size: 14px;
+                padding: 8px 12px;
+                border-radius: 4px;
+                svg{
+                    position: relative;
+                    top:2px;
+                    margin-left: 10px;
+                }
+    
+                &.type1{
+    background-color: $main100;
+    color:#fff;
+                }
+                &.type2{
+                color: $main100;
+                background-color: #fff;
+                border: 1px solid $main100;
+                svg{
+                    fill:$main100;
+                }
+                }
+    
+                &.excel{
+                    background-color: $main100;
+                    color:#fff;
+                    padding: 8px;
+                   svg{
+                    position: relative;
+                    right: 5px;
+                    transform: scale(1.3);
+                   }
+                }
+
+                &+.output{
+                    position: relative;
+                    bottom: 1px;
+                    display: flex;
+                    height: 240px;
+
+
+
+.list{
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 100%;
+    overflow-y: scroll;
+    background-color: #fff;
+    border:  1px solid $main100;
+    border-radius: 4px 0px 0px 4px;
+    padding: 0px 8px;
+    li{
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+       font-size: 14px;
+       padding: 10px 4px;
+        border-bottom: 1px solid #dadada;
+    }
+}
+
+.filter_box{
+    position: relative;
+    right: 1px;
+    width: 200px;
+    border:  1px solid $main100;
+    border-radius: 0px 4px 4px 0px;
+    background-color: #fff;
+
+    &.calendar{
+        .calendar_type{
+            display: block;
+        }
+.toggle_type, .check_type{
+    display: none;
+}
+    }
+    &.toggle{
+        .toggle_type{
+            display: block;
+        }
+.calendar_type, .check_type{
+    display: none;
+}
+    }
+    &.check{
+        .check_type{
+            display: block;
+        }
+.toggle_type, .calendar_type{
+    display: none;
+}
+    }
+
+
+.calendar_type{}
+
+.toggle_type{
+
+    ul{
+        display: flex;
+flex-wrap: wrap;
+gap:10px;
+justify-content: space-between;
+padding: 12px;
+        li{
+        min-width: 50%;
+            display: flex;
+            align-items: center;
+            span{
+                font-size: 14px;
+                margin-right: 8px;
+            }
+        }
+    }
+
+}
+
+.check_type{
+    ul{
+        padding: 12px;
+
+        li{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap:4px;
+
+            input{
+                min-width: 22px;
+                height: 22px;
+            }
+            label{
+                font-size: 14px;
+                @include txtellipsis;
+            }
+        }
+    }
+}
+
+}
+
+                }
+            }
+        }
+      
+    }
+
+    .tag_box{
+        display: flex;
+        gap:4px;
+        .tag{
+            border-radius: 4px;
+            position: relative;
+        font-size: 13px;
+            background-color: $main200;
+            padding: 4px 22px 4px 8px;
+            svg{
+                position: absolute;
+            }
+        }
+    }
+}
+        }
        }
+
+       
 }

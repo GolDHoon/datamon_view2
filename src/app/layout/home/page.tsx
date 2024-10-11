@@ -1,12 +1,10 @@
-import Sidebar from "../../components/layout/Sidebar";
+import CommonLayout from "../../components/layout/CommonLayout";
 
 
 export default function home (){
     return (
-        <div>
-<Sidebar />
-<div className='content'>
-</div>
-        </div>
+<CommonLayout>
+    Home
+</CommonLayout>
     )
 }

@@ -76,3 +76,10 @@ img {
 }
 
 
+@mixin commonBtn{
+  
+}
+
+.react-toggle--checked .react-toggle-track{
+  background-color: $main100 !important;
+}
