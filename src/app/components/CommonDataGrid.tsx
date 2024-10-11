@@ -1,7 +1,12 @@
 'use client'
 import 'react-data-grid/lib/styles.css';
-import DataGrid, { SortDirection, SortColumn } from 'react-data-grid';
+import DataGrid, { SortColumn } from 'react-data-grid';
 import { useState } from 'react';
+
+const SortDirection = {
+    ASC: 'ASC',
+    DESC: 'DESC'
+};
 
 const columns = [
     { key: 'id', name: 'ID', sortable: true },
