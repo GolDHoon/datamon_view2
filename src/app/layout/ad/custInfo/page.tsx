@@ -1,9 +1,11 @@
+'use client'
 import CommonLayout from "../../../components/layout/CommonLayout";
 import CommonToggle from "@/app/components/CommonToggle";
 import CommonDatepicker from "@/app/components/CommonDatepicker";
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 import { MdOutlineCalendarToday } from "react-icons/md";
+import CommonDataGrid from "@/app/components/CommonDataGrid";
 
 export default function page (){
     return (
@@ -77,6 +79,7 @@ export default function page (){
 </div>
 
 <section className="table">
+    <CommonDataGrid/>
 {/* 여기에 테이블을 넣어주세요 */}
 </section>
 </div>

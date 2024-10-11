@@ -11,8 +11,8 @@ const DateRangePicker = () => {
       <div>
         <DatePicker
           selectsRange
-          startDate={startDate}
-          endDate={endDate}
+          // startDate={startDate}
+          // endDate={endDate}
 
           dateFormat="yyyy/MM/dd"
           placeholderText="yyyy-mm-dd"
