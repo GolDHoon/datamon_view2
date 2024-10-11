@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import CommonLayout from "../../../components/layout/CommonLayout";
 import CommonToggle from "@/app/components/CommonToggle";
 import CommonDatepicker from "@/app/components/CommonDatepicker";
