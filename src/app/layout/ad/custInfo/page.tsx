@@ -7,14 +7,27 @@ import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 import { MdOutlineCalendarToday } from "react-icons/md";
 import CommonDataGrid from "@/app/components/CommonDataGrid";
 import { IoIosSearch } from "react-icons/io";
-
+import { IoClose } from "react-icons/io5";
 
 import { useState } from "react";
 
 export default function page (){
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [isTabOpen, setIsTabOpen] = useState(false);
     const [filterClass, setFilterClass] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
+      // 모달 열기 함수
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // 모달 닫기 함수
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+ 
  
     // 클릭 핸들러
     const handleClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
@@ -35,6 +48,22 @@ export default function page (){
     };
     return (
 <CommonLayout>
+
+   {/* 모달 */}
+   {isModalOpen && (
+        <div className="modal_wrap">
+          <div className="modal_header">
+            <IoClose size="30" onClick={closeModal} />
+          </div>
+          <div className="modal_body"></div>
+          <div className="modal_foot">
+            <button type="button">수정</button> <button type="button">삭제</button>
+          </div>
+        </div>
+      )}
+
+{/* ---- */}
+
 <div className="custInfo_wrap">
 <div className="title_box">
 <h2>유저정보 리스트</h2>
@@ -45,7 +74,7 @@ export default function page (){
 
 <div className="filter">
 
-<div className={`search_filter ${isFilterOpen ? 'on' : ''}`} >
+<div className={`search_filter ${isFilterOpen ? 'on_filter' : ''} ${isTabOpen ? 'on_tab' : ''}`} >
 <button type="button" className="type2"  onClick={() => setIsFilterOpen(!isFilterOpen)} >필터<IoIosArrowDown color="#fff" /></button>
 <div className="output">
     <ul className="list">
@@ -91,14 +120,31 @@ export default function page (){
 
 {/* text_type */}
 <div className="text_type">
-<input type="text" placeholder="검색어를 입력하세요" />
+<div className="input_box">
+<IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
+</div>
+
+<ul>
+    {/* 검색했을 때 뜨는 자동 결과값 */}
+    <li>11</li>
+    <li>22</li>
+    <li>33</li>
+</ul>
 </div>
     </div>
 </div>
 
 {/* 검색필터 end */}
 {/* 탭 표시 start */}
-<button type="button" className="type1">탭 표시<IoIosArrowDown color="#fff" /></button>
+<button type="button" className="type1"  onClick={() => setIsTabOpen(!isTabOpen)}>탭 표시<IoIosArrowDown color="#fff" /></button>
+<div className="output_t">
+<ul className="list">
+        <li>이름</li>
+        <li>날짜</li>
+        <li>실비</li>
+        <li>품질</li>
+    </ul>
+</div>
 
 
 </div>
@@ -109,6 +155,9 @@ export default function page (){
 </div> */}
 <button type="button" className="excel"><PiMicrosoftExcelLogoFill color="#fff" /></button>
 
+{/* modal */}
+<button className="modalOpen" onClick={openModal}>모달오픈</button>
+{/* modal end */}
 </div>
 </div>
 
@@ -120,9 +169,9 @@ export default function page (){
 
 </div>
 
-<section className="table">
-    <CommonDataGrid/>
-</section>
+{/* <section className="table">
+     <CommonDataGrid/> 
+</section> */}
 </div>
 </CommonLayout>
     )

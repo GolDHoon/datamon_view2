@@ -14,18 +14,6 @@ const columns = [
 const initialRows = [
     { id: 0, title: 'Example' },
     { id: 1, title: 'Demo' },
-    { id: 0, title: 'Example' },
-    { id: 1, title: 'Demo' },
-    { id: 0, title: 'Example' },
-    { id: 1, title: 'Demo' },
-    { id: 0, title: 'Example' },
-    { id: 1, title: 'Demo' },
-    { id: 0, title: 'Example' },
-    { id: 1, title: 'Demo' },
-    { id: 0, title: 'Example' },
-    { id: 1, title: 'Demo' },
-    { id: 0, title: 'Example' },
-    { id: 1, title: 'Demo' }
 
 ];
 
