@@ -67,17 +67,30 @@ const Column: React.FC<ColumnProps> = ({ column, index, moveColumn, columnWidths
 
 
 
+    // const [TableHeadWidths, setTableHeadWidths] = useState([]); // 너비를 저장할 상태
 
-
-    const rows = document.querySelectorAll('.row'); // .row 요소를 선택
-    const widths = []; // 너비를 저장할 배열
-
-    for (const row of rows) {
-        const cells = row.querySelectorAll('.cell'); // 각 .row 안의 .cell 선택
-        for (const cell of cells) {
-            widths.push(cell.offsetWidth); // 각 .cell의 너비를 배열에 추가
-        }
-    }
+    // useEffect(() => {
+    //     const calculateWidths = () => {
+    //         const rows = document.querySelectorAll('.row'); // .row 요소 선택
+    //         const widths = []; // 너비를 저장할 배열
+            
+    //         for (const row of rows) {
+    //             const cells = row.querySelectorAll('.cell'); // 각 .row 안의 .cell 선택
+    //             for (const cell of cells) {
+    //                 widths.push(cell.offsetWidth); // 각 .cell의 너비를 배열에 추가
+    //             }
+    //         }
+    
+    //         setTableHeadWidths(widths); // 상태 업데이트
+    //     };
+    
+    //     calculateWidths(); // 너비 계산 함수 호출
+    
+    //     window.addEventListener('resize', calculateWidths); // 리사이즈 시 너비 재계산
+    //     return () => {
+    //         window.removeEventListener('resize', calculateWidths); // 컴포넌트 언마운트 시 리스너 제거
+    //     };
+    // }, []); // 빈 배열로 처음 렌더링될 때만 실행
 
     drag(drop(ref)); // ref에 drag와 drop 연결
 
@@ -85,7 +98,7 @@ const Column: React.FC<ColumnProps> = ({ column, index, moveColumn, columnWidths
         <div
             ref={ref}
             style={{
-                width: widths[index], // 현재 컬럼 너비 설정
+              //  width: TableHeadWidths[index] ? `${TableHeadWidths[index]}px` : 'auto', // 현재 컬럼 너비 설정
                 display: 'flex',
                 alignItems: 'center',
                 position: 'relative',
