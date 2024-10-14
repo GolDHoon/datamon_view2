@@ -87,6 +87,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }[]>([]); // 정렬 설정 상태 관리
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 관리
     const [rowsPerPage, setRowsPerPage] = useState(10); // 페이지 당 보여줄 행 수 상태 관리
+    const [currentRows, setRows] = useState(rows); // 현재 행 상태 관리
 
     const tableRef = useRef<HTMLDivElement>(null); // 테이블 참조
 
@@ -142,8 +143,14 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
             newSortConfig = [...sortConfig, { key: columnKey, direction: 'asc' }];
         }
 
+        // @ts-ignore
         setSortConfig(newSortConfig); // 정렬 상태 갱신
     };
+
+    const onRowDoubleClick = (row:any) => {
+        const updatedRows = currentRows.filter(r => r !== row);
+        setRows(updatedRows); // 상태 업데이트
+    }
 
     const sortedRows = useCallback(
         (rows: any[]) => {
@@ -167,9 +174,9 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
         setCurrentPage(1); // 페이지당 행 수 변경 시 페이지를 1로 초기화
     };
 
-    const paginatedRows = sortedRows(rows).slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage); // 페이지네이션된 행
+    const paginatedRows = sortedRows(currentRows).slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage); // 페이지네이션된 행
 
-    const totalPages = Math.ceil(rows.length / rowsPerPage); // 총 페이지 수 계산
+    const totalPages = Math.ceil(currentRows.length / rowsPerPage); // 총 페이지 수 계산
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page); // 페이지 변경
@@ -185,7 +192,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
                         <option value={10}>10</option>
                         <option value={15}>15</option>
                     </select>
-                    <span> of {rows.length} </span> {/* 총 데이터 건수 표시 */}
+                    <span> of {currentRows.length} </span> {/* 총 데이터 건수 표시 */}
                 </div>
                 <div style={{ display: 'flex' }}>
                     {currentColumns.map((column, index) => (
@@ -203,7 +210,11 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
                 </div>
                 <div>
                     {paginatedRows.map((row, index2) => (
-                        <div key={index2} style={{ display: 'flex' }}>
+                        <div
+                            key={index2}
+                            style={{ display: 'flex', cursor: 'pointer' }} // 스타일 추가하여 행의 클릭 가능함을 나타냄
+                            onDoubleClick={() => onRowDoubleClick(row)} // 행을 더블 클릭 시 onRowDoubleClick 핸들러 호출
+                        >
                             {currentColumns.map((column, index) => (
                                 <div key={`${index2}-${index}`} style={{ width: columnWidths[index], borderRight: '1px solid #ddd' }}>
                                     {row[column.key]}

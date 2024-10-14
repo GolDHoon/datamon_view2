@@ -63,88 +63,81 @@ export default function page (){
 {/* ---- */}
 
 <div className="custInfo_wrap">
-<div className="title_box">
-<h2>유저정보 리스트</h2>
-<p>유저 정보 리스트 소개를 표시합니다.</p>
-</div>
-
-<div className="top_section">
-
-<div className="filter">
-
-<div className={`search_filter ${isFilterOpen ? 'on_filter' : ''} ${isTabOpen ? 'on_tab' : ''}`} >
-<button type="button" className="type2"  onClick={() => setIsFilterOpen(!isFilterOpen)} >필터<IoIosArrowDown color="#fff" /></button>
-<div className="output">
-    <ul className="list">
-        <li className="text" onClick={handleClick}>이름</li>
-        <li className="cal" onClick={handleClick}>날짜</li>
-        <li className="check" onClick={handleClick}>실비</li>
-        <li className="toggle" onClick={handleClick}>품질</li>
-        <li>품질변경사유</li>
-        <li>상태</li>
-        <li>상태변경사유</li>
-        <li>사용여부</li>
-    </ul>
-    <div className={`filter_box ${filterClass}`}>
-     {/* calendar type */}
-     <div className="calendar_type">
-<p>
-<MdOutlineCalendarToday /> 날짜
-</p>
-<CommonDatepicker />
-     </div>
-
-
-{/* toggle type */}
-<div className="toggle_type">
-<ul>
-    <li className="toggle_box"><span>옵션1</span><CommonToggle /> </li>
-    <li className="toggle_box"><span>옵션2</span><CommonToggle /> </li>
-    <li className="toggle_box"><span>옵션3</span><CommonToggle /> </li>
-</ul>
-</div>
-
-{/* check type */}
-<div className="check_type">
-<ul>
-    <li>
-        <input type="checkbox" name="" id="1" /> <label htmlFor="1">체크리스트1</label>
-    </li>
-    <li> <input type="checkbox" name="" id="2" /> <label htmlFor="2">체크리스트1체크리스트1체크리스트1체크리스트1체크리스트1</label></li>
-    <li> <input type="checkbox" name="" id="3" /> <label htmlFor="3">체크리스트1</label></li>
-    <li> <input type="checkbox" name="" id="4" /> <label htmlFor="4">체크리스트1</label></li>
-</ul>
-</div>
-
-{/* text_type */}
-<div className="text_type">
-<div className="input_box">
-<IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
-</div>
-
-<ul>
-    {/* 검색했을 때 뜨는 자동 결과값 */}
-    <li>11</li>
-    <li>22</li>
-    <li>33</li>
-</ul>
-</div>
+    <div className="title_box">
+        <h2>유저정보 리스트</h2>
+        <p>유저 정보 리스트 소개를 표시합니다.</p>
     </div>
-</div>
 
-{/* 검색필터 end */}
-{/* 탭 표시 start */}
-<button type="button" className="type1"  onClick={() => setIsTabOpen(!isTabOpen)}>탭 표시<IoIosArrowDown color="#fff" /></button>
-<div className="output_t">
-<ul className="list">
-        <li>이름</li>
-        <li>날짜</li>
-        <li>실비</li>
-        <li>품질</li>
-    </ul>
-</div>
+    <div className="top_section">
+
+        <div className="filter">
+
+            <div className={`search_filter ${isFilterOpen ? 'on_filter' : ''} ${isTabOpen ? 'on_tab' : ''}`} >
+                <button type="button" className="type2"  onClick={() => setIsFilterOpen(!isFilterOpen)} >필터<IoIosArrowDown color="#fff" /></button>
+            <div className="output">
+                <ul className="list">
+                    <li className="text" onClick={handleClick}>이름</li>
+                    <li className="cal" onClick={handleClick}>날짜</li>
+                    <li className="check" onClick={handleClick}>실비</li>
+                    <li className="toggle" onClick={handleClick}>품질</li>
+                    <li>품질변경사유</li>
+                    <li>상태</li>
+                    <li>상태변경사유</li>
+                    <li>사용여부</li>
+                </ul>
+                <div className={`filter_box ${filterClass}`}>
+                 {/* calendar type */}
+                 <div className="calendar_type">
+            <p>
+            <MdOutlineCalendarToday /> 날짜
+            </p>
+            <CommonDatepicker />
+        </div>
 
 
+        {/* toggle type */}
+        <div className="toggle_type">
+            <ul>
+                <li className="toggle_box"><span>옵션1</span><CommonToggle /> </li>
+            </ul>
+        </div>
+
+        {/* check type */}
+        <div className="check_type">
+            <ul>
+                <li>
+                    <input type="checkbox" name="" id="1" /> <label htmlFor="1">체크리스트1</label>
+                </li>
+            </ul>
+        </div>
+
+        {/* text_type */}
+        <div className="text_type">
+            <div className="input_box">
+            <IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
+            </div>
+
+            <ul>
+                {/* 검색했을 때 뜨는 자동 결과값 */}
+                <li>11</li>
+                <li>22</li>
+                <li>33</li>
+            </ul>
+            </div>
+        </div>
+    </div>
+
+    {/* 검색필터 end */}
+    {/* 탭 표시 start */}
+    <button type="button" className="type1"  onClick={() => setIsTabOpen(!isTabOpen)}>탭 표시<IoIosArrowDown color="#fff" /></button>
+    <div className="output_t">
+    <ul className="list">
+            <li>이름</li>
+            <li>날짜</li>
+            <li>실비</li>
+            <li>품질</li>
+        </ul>
+    </div>
 </div>
 
 <div className="right">
@@ -184,15 +177,22 @@ export default function page (){
          name: "생성일",
          key: "createDate"
      }]}
-     rows={[{이름:"손철훈", 번호:"01080704601"}
-     ,{이름:"손철훈", 번호:"01080704601"}
-     ,{이름:"손철훈", 번호:"01080704601"}
-     ,{이름:"손철훈", 번호:"01080704601"}
-     ,{이름:"손철훈", 번호:"01080704601"}
-     ,{이름:"손철훈", 번호:"01080704601"}
-     ,{이름:"손철훈", 번호:"01080704601"}
-     ,{이름:"손철훈", 번호:"01080704601"}
-     ,{이름:"손철훈", 번호:"01080704601"}]}/>
+     rows={[{이름:"손철훈1", 번호:"01080704601"}
+     ,{이름:"손철훈2", 번호:"01080704601"}
+     ,{이름:"손철훈3", 번호:"01080704601"}
+     ,{이름:"손철훈4", 번호:"01080704601"}
+     ,{이름:"손철훈5", 번호:"01080704601"}
+     ,{이름:"손철훈6", 번호:"01080704601"}
+     ,{이름:"손철훈7", 번호:"01080704601"}
+     ,{이름:"손철훈8", 번호:"01080704601"}
+     ,{이름:"손철훈9", 번호:"01080704601"}
+     ,{이름:"손철훈10", 번호:"01080704601"}
+     ,{이름:"손철훈11", 번호:"01080704601"}
+     ,{이름:"손철훈12", 번호:"01080704601"}
+     ,{이름:"손철훈13", 번호:"01080704601"}
+     ,{이름:"손철훈14", 번호:"01080704601"}
+     ,{이름:"손철훈15", 번호:"01080704601"}
+     ,{이름:"손철훈16", 번호:"01080704601"}]}/>
 </section>
 </div>
 </CommonLayout>
