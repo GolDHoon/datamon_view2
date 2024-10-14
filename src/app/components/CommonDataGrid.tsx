@@ -53,13 +53,27 @@ const Column: React.FC<ColumnProps> = ({ column, index, moveColumn, columnWidths
         }),
     });
 
-    drag(drop(ref)); // ref에 drag와 drop 연결
 
+
+  
+
+    const rows = document.querySelectorAll('.row'); // .row 요소를 선택
+    const widths = []; // 너비를 저장할 배열
+    
+    for (const row of rows) {
+        const cells = row.querySelectorAll('.cell'); // 각 .row 안의 .cell 선택
+        for (const cell of cells) {
+            widths.push(cell.offsetWidth); // 각 .cell의 너비를 배열에 추가
+        }
+    }
+
+    drag(drop(ref)); // ref에 drag와 drop 연결
+    
     return (
         <div
             ref={ref}
             style={{
-                width: columnWidths[index], // 현재 컬럼 너비 설정
+                width: widths[index], // 현재 컬럼 너비 설정
                 display: 'flex',
                 alignItems: 'center',
                 position: 'relative',
@@ -78,6 +92,8 @@ const Column: React.FC<ColumnProps> = ({ column, index, moveColumn, columnWidths
         </div>
     );
 };
+
+
 
 // CommonDataGrid 컴포넌트 정의
 const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) => {

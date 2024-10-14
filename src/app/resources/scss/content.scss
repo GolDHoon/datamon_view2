@@ -314,26 +314,24 @@ ul{
         position: relative;
         width: 100%;
         height: 100%;
-        table-layout: fixed !important;
-      
+
 
 
         .table_head{
-            display: flex;
+   display: flex;
             font-size: 15px;
             height: 35px;
             background-color: #ecf2ff;
             font-weight: 700;
            text-indent: 8px;
            border-radius: 6px;
-          
-           >div{
-
-           }
+        
        
  
            div{
-            
+            white-space: nowrap;
+            min-width: 70px;
+
             &::before{
                 content:"";
                 width: 1px;
@@ -354,12 +352,14 @@ ul{
         display: flex;
         border-bottom: 1px solid #dadada;
         font-size: 14px;
+       
 
         .cell{
             white-space: nowrap;
             padding: 0px 8px;
             height: 40px;
             line-height: 38px;
+            min-width: 70px;
         }
     }
 }
