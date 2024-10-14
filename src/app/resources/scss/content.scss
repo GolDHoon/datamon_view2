@@ -10,6 +10,7 @@
 
         .custInfo_wrap{
             width: calc(100% - 30px);
+            min-width: 1024px;
             height: calc(100% - 30px);
             overflow: scroll;
             padding: 20px;
@@ -37,6 +38,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+
 
         button{
             background-color: #fff;
@@ -101,7 +104,7 @@ li{
 
 .filter_box{
 position: relative;
-right: 1px;
+right: 0px;
 width: 200px;
 border:  1px solid $main100;
 border-radius: 0px 4px 4px 0px;
@@ -249,6 +252,8 @@ ul{
 
         .search_filter{
             position: relative;
+            display: flex;
+            gap:8px;
 
             .output_t{
                 display: none;
@@ -267,7 +272,8 @@ ul{
             &.on_tab{
                 .output_t{
                     position: absolute;
-                    left: 74px;
+                    left: 84px;
+                    top:38px;
                     z-index: 100;
                     display: block;
                     .list{
@@ -348,50 +354,88 @@ ul{
 
 .table{
     margin-top: 20px;
-    height: 500px;
+    height: 580px;
     overflow-y: scroll;
-    background-color: #eee;
-    .rdg{
-        background-color: #fff;
-height:100%;
-        .rdg-header-row{
-            border-radius: 4px;
 
-            div{
+    .table_content{
+        position: relative;
+        width: 100%;
+        height: 100%;
 
-                border-bottom: none !important;
-                background-color: #D8E3FA;
 
-            }
 
-        }
-        .rdg-row{
-            background-color: #fff;
+        .table_head{
+            display: flex;
+            font-size: 15px;
+            height: 35px;
+            background-color: #ecf2ff;
+            font-weight: 700;
+           text-indent: 8px;
+           border-radius: 6px;
  
+           div{
+            &::before{
+                content:"";
+                width: 1px;
+                height: 20px;
+                background-color: #dadada;
+            }
+            &:nth-child(1){
+&::before{
+    display: none;
+}
+            }
+           }
         }
+.table_body{
+    margin-bottom: auto;
+    max-height: calc(100% - 35px - 30px);
+    .row{
+        display: flex;
+        border-bottom: 1px solid #dadada;
+        font-size: 14px;
 
-        .rdg-cell{
-            background-color: #fff;
-            border-bottom: 1px solid #dadada;
-            color: #222;
-            padding: 0px 4px;
+        .cell{
+            white-space: nowrap;
+            padding: 0px 8px;
+            height: 40px;
+            line-height: 38px;
+        }
+    }
+}
 
 
+        .pagination{
+            position:absolute;
+            bottom: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: auto;
+            text-align: center;
+            display: flex;
+            gap:4px;
+  
+            button{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid #dadada;
+                border-radius: 30px;
+                width: 30px;
+                height: 30px;
+font-weight: 300;
+color: #333;
+
+                &.current{
+                    font-weight: 800;
+                    background-color: $main100;
+                    border: none;
+                    color: #fff;
+                }
+            }
         }
     }
 
-    &::-webkit-scrollbar-thumb {
-        display: block;
-        border-radius: 10px;
-      }
-     &::-webkit-scrollbar-track {
-        background-color: #eee;
-      }
-    &::-webkit-scrollbar {
-        display: block !important;
-        // -ms-overflow-style: none;
-        scrollbar-width: auto;
-      }
 
 }
 
@@ -431,6 +475,7 @@ height:100%;
         height: 50px;
         svg{
             margin-right: 5px;
+            cursor: pointer;
         }
     }
 

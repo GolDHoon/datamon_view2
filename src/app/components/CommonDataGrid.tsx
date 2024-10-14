@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react'; // Reac
 import { NextPage } from "next"; // Next.js의 NextPage 타입 import
 import { useDrag, useDrop, DndProvider } from 'react-dnd'; // react-dnd를 위한 hook들 import
 import { HTML5Backend } from 'react-dnd-html5-backend'; // HTML5Backend를 사용하는 react-dnd 프론트엔드 백엔드 import
+import { MdArrowDropUp, MdArrowDropDown, MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight, MdOutlineKeyboardDoubleArrowLeft, MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 
 const ItemType = 'COLUMN'; // 드래그 앤 드롭에서 사용할 Item Type 정의
 
@@ -62,14 +63,13 @@ const Column: React.FC<ColumnProps> = ({ column, index, moveColumn, columnWidths
                 display: 'flex',
                 alignItems: 'center',
                 position: 'relative',
-                borderRight: '1px solid #ddd',
-                opacity: isDragging ? 0.5 : 1, // 드래그 중일 때 불투명도 변경
+                opacity: isDragging ? 0.3 : 1, // 드래그 중일 때 불투명도 변경
                 cursor: 'move',
                 userSelect: 'none'
             }}
             onClick={() => onSort(column.key)} // 클릭 시 정렬 함수 호출
         >
-            {column.name} {sortOrder ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
+            {column.name} {sortOrder ? (sortOrder === 'asc' ? <MdArrowDropUp size="20" /> : <MdArrowDropDown size="20" />) : ''}
             {/*정렬 상태에 따라 화살표 표시*/}
             <div
                 style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '5px', cursor: 'col-resize', zIndex: 1 }}
@@ -174,20 +174,28 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
     const handlePageChange = (page: number) => {
         setCurrentPage(page); // 페이지 변경
     };
+    
 
+    const pageRange = 10; 
+    //페이지를 몇개씩 보여줄 것인지
+    const startPage = Math.floor((currentPage - 1) / pageRange) * pageRange + 1;
+    const endPage = Math.min(startPage + pageRange - 1, totalPages);
+
+
+    
     return (
         <DndProvider backend={HTML5Backend}>
-            <div ref={tableRef}>
-                <div style={{ marginBottom: '10px' }}>
+            <div ref={tableRef} className='table_content'>
+                {/* <div style={{ marginBottom: '10px' }}>
                     <span>Rows per page: </span>
                     <select value={rowsPerPage} onChange={handleChangeRowsPerPage}>
                         <option value={5}>5</option>
                         <option value={10}>10</option>
                         <option value={15}>15</option>
                     </select>
-                    <span> of {rows.length} </span> {/* 총 데이터 건수 표시 */}
-                </div>
-                <div style={{ display: 'flex' }}>
+                    <span> of {rows.length} </span> // 총 데이터 건수 표시 
+                </div> */}
+                <div className='table_head'>
                     {currentColumns.map((column, index) => (
                         <Column
                             key={index}
@@ -201,32 +209,46 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
                         />
                     ))}
                 </div>
-                <div>
+                <div className='table_body'>
                     {paginatedRows.map((row, index2) => (
-                        <div key={index2} style={{ display: 'flex' }}>
+                        <div key={index2} className='row'>
                             {currentColumns.map((column, index) => (
-                                <div key={`${index2}-${index}`} style={{ width: columnWidths[index], borderRight: '1px solid #ddd' }}>
+                                <div key={`${index2}-${index}`} style={{ width: columnWidths[index] }} className='cell'>
                                     {row[column.key]}
                                 </div>
                             ))}
                         </div>
                     ))}
                 </div>
-                <div style={{ marginTop: '10px', textAlign: 'center' }}>
-                    <button disabled={currentPage === 1} onClick={() => handlePageChange(1)}>First</button>
-                    <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>Previous</button>
-                    {Array.from({ length: totalPages }, (_, index) => (
-                        <button
-                            key={index}
-                            style={{ fontWeight: currentPage === index + 1 ? 'bold' : 'normal' }}
-                            onClick={() => handlePageChange(index + 1)}
-                        >
-                            {index + 1}
-                        </button>
-                    ))}
-                    <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>Next</button>
-                    <button disabled={currentPage === totalPages} onClick={() => handlePageChange(totalPages)}>Last</button>
-                </div>
+                <div className='pagination'>
+            <button disabled={currentPage === 1} onClick={() => handlePageChange(1)}>
+                <MdOutlineKeyboardArrowLeft />
+            </button>
+            <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
+                <MdOutlineKeyboardDoubleArrowLeft />
+            </button>
+
+            {/* startPage에서 endPage까지 페이지 버튼을 렌더링 */}
+            {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
+                const pageIndex = startPage + index;
+                return (
+                    <button
+                        key={pageIndex}
+                        className={currentPage === pageIndex ? 'current' : ''}
+                        onClick={() => handlePageChange(pageIndex)}
+                    >
+                        {pageIndex}
+                    </button>
+                );
+            })}
+
+            <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
+                <MdOutlineKeyboardArrowRight />
+            </button>
+            <button disabled={currentPage === totalPages} onClick={() => handlePageChange(totalPages)}>
+                <MdOutlineKeyboardDoubleArrowRight />
+            </button>
+        </div>
             </div>
         </DndProvider>
     );
