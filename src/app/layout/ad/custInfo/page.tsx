@@ -7,7 +7,7 @@ import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 import { MdOutlineCalendarToday } from "react-icons/md";
 import CommonDataGrid from "@/app/components/CommonDataGrid";
 import { IoIosSearch } from "react-icons/io";
-import { IoClose } from "react-icons/io5";
+import { GrClose } from "react-icons/gr";
 
 import {useEffect, useState} from "react";
 import restApi from "@/app/resources/js/Axios";
@@ -85,15 +85,81 @@ export default function page (){
 
    {/* 모달 */}
    {isModalOpen && (
-        <div className="modal_wrap">
+  <div>
+          <div className="modal_wrap">
           <div className="modal_header">
-            <IoClose size="30" onClick={closeModal} />
+            <span>업체 정보 리스트</span>
+            <GrClose size="22" onClick={closeModal} />
           </div>
-          <div className="modal_body"></div>
+          <div className="modal_body">
+<ul>
+    <li>
+        <label>유저ID</label>
+        <input type="text" value="Data" />
+    </li>
+    <li>
+        <label>업체명</label>
+        <input type="text" value="Data" />
+    </li>
+    <li>
+        <label>대표명</label>
+        <input type="text" value="Data" />
+    </li>
+    <li>
+        <label>사업자등록번호</label>
+        <input type="text" value="Data" />
+    </li>
+    <li>
+        <label>사업장소재지</label>
+        <input type="text" value="Data" />
+    </li>
+    <li>
+        <label>업태</label>
+        <input type="text" value="Data" />
+    </li>
+    <li>
+        <label>업종</label>
+        <input type="text" value="Data" />
+    </li>
+    <li>
+        <label>유저ID</label>
+        <input type="text" value="Data" />
+    </li>
+    <li>
+        <label>업체명</label>
+        <input type="text" value="Data" />
+    </li>
+    <li>
+        <label>대표명</label>
+        <input type="text" value="Data" />
+    </li>
+    <li>
+        <label>사업자등록번호</label>
+        <input type="text" value="Data" />
+    </li>
+    <li>
+        <label>사업장소재지</label>
+        <input type="text" value="Data" />
+    </li>
+    <li>
+        <label>업태</label>
+        <input type="text" value="Data" />
+    </li>
+    <li>
+        <label>업종</label>
+        <input type="text" value="Data" />
+    </li>
+</ul>
+
+          </div>
           <div className="modal_foot">
-            <button type="button">수정</button> <button type="button">삭제</button>
+            <button type="button">수정</button> <button type="button" className="disable">삭제</button>
           </div>
+         
         </div>
+         <div className="modal_bg" />
+  </div>
+
       )}
 
 {/* ---- */}

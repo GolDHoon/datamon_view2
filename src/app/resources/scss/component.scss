@@ -53,33 +53,85 @@ img {
   }
 }
 
-@mixin customScroll(
-  $w: 5px,
-  $h: 5px,
-  $barcolor: #d8dcec,
-  $bgrcolor: transparent
-) {
-  overflow: hidden;
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    width: $w;
-    height: $h;
+@mixin commonBtn{
+  background-color: #fff;
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  svg{
+      position: relative;
+      top:2px;
+      margin-left: 10px;
   }
-  &::-webkit-scrollbar-thumb {
-    background-color: $barcolor;
-    border-radius: 5px;
+
+  &.type1{
+background-color: $main100;
+color:#fff;
   }
-  &::-webkit-scrollbar-track {
-    background-color: $bgrcolor;
-    border-radius: 5px;
+  &.type2{
+  color: $main100;
+  background-color: #fff;
+  border: 1px solid $main100;
+  svg{
+      fill:$main100;
+  }
+  }
+
+  &.excel{
+      background-color: $main100;
+      color:#fff;
+      padding: 8px;
+     svg{
+      position: relative;
+      right: 5px;
+      transform: scale(1.3);
+     }
   }
 }
 
+@mixin commonInput($h:auto){
+  display: flex;
+  align-items: center;
+  padding: 4px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 90%;
+  margin: 0 auto;
+  input{
+      font-size: 14px;
+      width: 100%;
+      margin-left: 4px;
+      &::placeholder{
+          color: #ddd;
+          font-weight: 300;
+      }
+  }
 
-@mixin commonBtn{
-  
 }
 
 .react-toggle--checked .react-toggle-track{
   background-color: $main100 !important;
+}
+
+
+@mixin scrollBar{
+  /* 스크롤바 전체 기본 꾸미기 */
+&::-webkit-scrollbar {
+    display: block;
+	width: 5px;
+    background-color: transparent;
+}
+
+/* 스크롤바 막대 꾸미기 */
+&::-webkit-scrollbar-thumb {
+    background-color: $main100;
+    border-radius: 10px;
+	
+}
+
+/* 스크롤바 트랙 꾸미기 */
+&::-webkit-scrollbar-track {
+    background-color: #ccc;
+    border-radius: 10px;
+}
 }
