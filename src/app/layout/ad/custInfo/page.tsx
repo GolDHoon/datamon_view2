@@ -14,9 +14,6 @@ import restApi from "@/app/resources/js/Axios";
 import GetConst from "@/app/resources/js/Const";
 
 export default function page (){
-    const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [isTabOpen, setIsTabOpen] = useState(false);
-    const [filterClass, setFilterClass] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [dbList, setDbList] = useState([]);
     const [selectedDbType, setSelectedDbType] = useState("init");
@@ -34,23 +31,6 @@ export default function page (){
     setIsModalOpen(false);
   };
 
-    // 클릭 핸들러
-    const handleClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-      const clickedElement = e.currentTarget;
-  
-      // 조건에 따라 클래스 설정
-      if (clickedElement.classList.contains('text')) {
-        setFilterClass('text');
-      } else if (clickedElement.classList.contains('cal')) {
-        setFilterClass('calendar');
-      } else if (clickedElement.classList.contains('check')) {
-        setFilterClass('check');
-    } else if (clickedElement.classList.contains('toggle')) {
-        setFilterClass('toggle');
-      } else {
-        setFilterClass(''); // 아무 클래스도 없을 때
-      }
-    };
 
     useEffect(() => {
         restApi('get', '/custInfo/custDBCode/list', {}).then(response => {
@@ -164,11 +144,11 @@ export default function page (){
 
 {/* ---- */}
 
-<div className="custInfo_wrap">
-    <div className="title_box">
-        <h2>유저정보 리스트</h2>
-        <div>
-                 <select defaultValue={selectedDbType} onChange={(event) => {
+    <div className="custInfo_wrap">
+        <div className="title_box">
+            <h2>유저정보 리스트</h2>
+            <div>
+                <select defaultValue={selectedDbType} onChange={(event) => {
                     setSelectedDbType(event.target.value)
                 }}>
                     <option value="init" disabled>
@@ -180,9 +160,11 @@ export default function page (){
                         </option>
                     ))}
                 </select>
-                <select defaultValue={selectedDb} onChange={(event) => {setSelectedDb(event.target.value)}}>
+                <select defaultValue={selectedDb} onChange={(event) => {
+                    setSelectedDb(event.target.value)
+                }}>
                     <option value="init" disabled>
-                    데이터 URL을 선택해주세요
+                        데이터 URL을 선택해주세요
                     </option>
                     {dbList.map((dbType, index) => {
                         if (dbType.custDbType === selectedDbType) {
@@ -196,97 +178,14 @@ export default function page (){
                     })}
                 </select>
             </div>
+        </div>
+
+
+        <button className="modalOpen" onClick={openModal}>모달오픈</button>
+        <section className="table">
+            <CommonDataGrid columns={columns} rows={rows}/>
+        </section>
     </div>
-
-    <div className="top_section">
-        <div className="filter">
-            <div className={`search_filter ${isFilterOpen ? 'on_filter' : ''} ${isTabOpen ? 'on_tab' : ''}`} >
-                <button type="button" className="type2"  onClick={() => setIsFilterOpen(!isFilterOpen)} >필터<IoIosArrowDown color="#fff" /></button>
-            <div className="output">
-                <ul className="list">
-                    <li className="text" onClick={handleClick}>이름</li>
-                    <li className="cal" onClick={handleClick}>날짜</li>
-                    <li className="check" onClick={handleClick}>실비</li>
-                    <li className="toggle" onClick={handleClick}>품질</li>
-                    <li>품질변경사유</li>
-                    <li>상태</li>
-                    <li>상태변경사유</li>
-                    <li>사용여부</li>
-                </ul>
-                <div className={`filter_box ${filterClass}`}>
-                 {/* calendar type */}
-                 <div className="calendar_type">
-            <p>
-            <MdOutlineCalendarToday /> 날짜
-            </p>
-            <CommonDatepicker />
-        </div>
-
-        {/* toggle type */}
-        <div className="toggle_type">
-            <ul>
-                <li className="toggle_box"><span>옵션1</span><CommonToggle /> </li>
-            </ul>
-        </div>
-
-        {/* check type */}
-        <div className="check_type">
-            <ul>
-                <li>
-                    <input type="checkbox" name="" id="1" /> <label htmlFor="1">체크리스트1</label>
-                </li>
-            </ul>
-        </div>
-
-        {/* text_type */}
-        <div className="text_type">
-            <div className="input_box">
-            <IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
-            </div>
-
-            <ul>
-                {/* 검색했을 때 뜨는 자동 결과값 */}
-                <li>11</li>
-                <li>22</li>
-                <li>33</li>
-            </ul>
-            </div>
-        </div>
-    </div>
-
-    {/* 검색필터 end */}
-    {/* 탭 표시 start */}
-    <button type="button" className="type1"  onClick={() => setIsTabOpen(!isTabOpen)}>탭 표시<IoIosArrowDown color="#fff" /></button>
-    <div className="output_t">
-    <ul className="list">
-            <li>이름</li>
-            <li>날짜</li>
-            <li>실비</li>
-            <li>품질</li>
-        </ul>
-    </div>
-</div>
-
-<div className="right">
-    {/* <div className="input_box">
-    <IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
-    </div> */}
-    <button type="button" className="excel"><PiMicrosoftExcelLogoFill color="#fff" /></button>
-
-    {/* modal */}
-    <button className="modalOpen" onClick={openModal}>모달오픈</button>
-    {/* modal end */}
-    </div>
-        </div>
-        <div className="tag_box">
-            <button className="tag">ID <IoIosClose/></button>
-            <button className="tag">Country <IoIosClose/></button>
-        </div>
-    </div>
-    <section className="table">
-        <CommonDataGrid columns={columns} rows={rows}/>
-</section>
-</div>
 </CommonLayout>
     )
 }
