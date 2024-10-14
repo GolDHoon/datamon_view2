@@ -89,7 +89,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }[]>([]); // 정렬 설정 상태 관리
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 관리
     const [rowsPerPage, setRowsPerPage] = useState(10); // 페이지 당 보여줄 행 수 상태 관리
-    const [currentRows, setRows] = useState(rows); // 현재 행 상태 관리
+    const [currentRows, setCurrentRows] = useState(rows); // 현재 행 상태 관리
 
     const tableRef = useRef<HTMLDivElement>(null); // 테이블 참조
 
@@ -151,7 +151,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
 
     const onRowDoubleClick = (row:any) => {
         const updatedRows = currentRows.filter(r => r !== row);
-        setRows(updatedRows); // 상태 업데이트
+        setCurrentRows(updatedRows); // 상태 업데이트
     }
 
     const sortedRows = useCallback(
@@ -191,7 +191,9 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
     const endPage = Math.min(startPage + pageRange - 1, totalPages);
 
     useEffect(()=>{
-
+        console.log("터지냐?")
+        setCurrentColumns(columns);
+        setCurrentRows(rows);
     },[columns, rows])
 
     
