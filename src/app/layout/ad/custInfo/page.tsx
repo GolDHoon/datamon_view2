@@ -9,13 +9,20 @@ import CommonDataGrid from "@/app/components/CommonDataGrid";
 import { IoIosSearch } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
+import restApi from "@/app/resources/js/Axios";
+import GetConst from "@/app/resources/js/Const";
 
 export default function page (){
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [isTabOpen, setIsTabOpen] = useState(false);
     const [filterClass, setFilterClass] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [dbList, setDbList] = useState([]);
+    const [selectedDbType, setSelectedDbType] = useState("init");
+    const [selectedDb, setSelectedDb] = useState("init");
+    const [columns, setColumns] = useState([]);
+    const [rows, setRows] = useState([]);
 
   // 모달 열기 함수
   const openModal = () => {
@@ -44,6 +51,35 @@ export default function page (){
         setFilterClass(''); // 아무 클래스도 없을 때
       }
     };
+
+    useEffect(() => {
+        restApi('get', '/custInfo/custDBCode/list', {}).then(response => {
+            // @ts-ignore
+            if(response.status === 200){
+                setDbList(response.data);
+            }else{
+                alert(response.data)
+            }
+        })
+    }, []);
+
+    useEffect(() => {
+        if(selectedDb !== "init"){
+            restApi('get', '/custInfo/list', {
+                custDBType:selectedDbType,
+                custDBCode:selectedDb,
+            }).then(response => {
+                // @ts-ignore
+                if(response.status === 200){
+                    console.log(response.data);
+                    setColumns(response.data.columnInfoList);
+                    setRows(response.data.dataList);
+                }else{
+                    alert(response.data)
+                }
+            });
+        }
+    }, [selectedDb]);
     return (
 <CommonLayout>
 
@@ -141,58 +177,56 @@ export default function page (){
 </div>
 
 <div className="right">
-{/* <div className="input_box">
-<IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
-</div> */}
-<button type="button" className="excel"><PiMicrosoftExcelLogoFill color="#fff" /></button>
+    {/* <div className="input_box">
+    <IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
+    </div> */}
+    <button type="button" className="excel"><PiMicrosoftExcelLogoFill color="#fff" /></button>
 
-{/* modal */}
-<button className="modalOpen" onClick={openModal}>모달오픈</button>
-{/* modal end */}
-</div>
-</div>
+    {/* modal */}
+    <button className="modalOpen" onClick={openModal}>모달오픈</button>
+    {/* modal end */}
+    </div>
+            <div>
+                <select defaultValue={selectedDbType} onChange={(event) => {
+                    setSelectedDbType(event.target.value)
+                }}>
+                    <option value="init" disabled>
+                        DB유형을 선택해주세요
+                    </option>
+                    {dbList.map((dbType) => (
+                        <option key={dbType.custDbType} value={dbType.custDbType}>
+                            {GetConst("dbTypeList")[dbType?.custDbType]}
+                        </option>
+                    ))}
+                </select>
+                <select defaultValue={selectedDb} onChange={(event) => {setSelectedDb(event.target.value)}}>
+                    <option value="init" disabled>
+                        DB를 선택해주세요
+                    </option>
+                    {dbList.map((dbType, index) => {
+                        if (dbType.custDbType === selectedDbType) {
+                            return dbType.custDbCodeList.map((db, index2) => (
+                                <option key={db.key} value={db.key}>
+                                    {db[db.key]}
+                                </option>
+                            ));
+                        }
+                        return null; // 특정 조건의 경우 아무것도 반환하지 않는 경우를 처리
+                    })}
+                </select>
+            </div>
+        </div>
 
-<div className="tag_box">
-    <button className="tag">ID <IoIosClose /></button>
-<button className="tag">Country <IoIosClose /></button>
+        <div className="tag_box">
+            <button className="tag">ID <IoIosClose/></button>
+            <button className="tag">Country <IoIosClose/></button>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
-<section className="table">
-     <CommonDataGrid columns={[{
-         filterType: "text",
-         columnType: "custom",
-         name: "이름",
-         key: "이름"
-     }, {
-         filterType: "text",
-         columnType: "custom",
-         name: "번호",
-         key: "번호"
-     }, {
-         filterType: "date",
-         columnType: "basic",
-         name: "생성일",
-         key: "createDate"
-     }]}
-     rows={[{이름:"손철훈1", 번호:"01080704601"}
-     ,{이름:"손철훈2", 번호:"01080704601"}
-     ,{이름:"손철훈3", 번호:"01080704601"}
-     ,{이름:"손철훈4", 번호:"01080704601"}
-     ,{이름:"손철훈5", 번호:"01080704601"}
-     ,{이름:"손철훈6", 번호:"01080704601"}
-     ,{이름:"손철훈7", 번호:"01080704601"}
-     ,{이름:"손철훈8", 번호:"01080704601"}
-     ,{이름:"손철훈9", 번호:"01080704601"}
-     ,{이름:"손철훈10", 번호:"01080704601"}
-     ,{이름:"손철훈11", 번호:"01080704601"}
-     ,{이름:"손철훈12", 번호:"01080704601"}
-     ,{이름:"손철훈13", 번호:"01080704601"}
-     ,{이름:"손철훈14", 번호:"01080704601"}
-     ,{이름:"손철훈15", 번호:"01080704601"}
-     ,{이름:"손철훈16", 번호:"01080704601"}]}/>
+    <section className="table">
+        <CommonDataGrid columns={columns} rows={rows}/>
 </section>
 </div>
 </CommonLayout>

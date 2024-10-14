@@ -81,6 +81,8 @@ const Column: React.FC<ColumnProps> = ({ column, index, moveColumn, columnWidths
 
 // CommonDataGrid 컴포넌트 정의
 const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) => {
+    console.log("Columns: ", columns);
+    console.log("Rows: ", rows);
     const [columnWidths, setColumnWidths] = useState(columns.map(() => 100)); // 컬럼 너비 초기화
     const [resizing, setResizing] = useState<{ index: number; initialX: number; initialWidth: number } | null>(null); // 리사이즈 상태 관리
     const [currentColumns, setCurrentColumns] = useState(columns); // 현재 컬럼 상태 관리

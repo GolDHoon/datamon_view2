@@ -4,7 +4,7 @@ import "../../../resources/scss/main/login.scss";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import { useRouter } from 'next/navigation';
-import restApi from "@/app/resources/js/axios";
+import restApi from "@/app/resources/js/Axios";
 
 interface LoginProps {
     params?: { companyId: string };
