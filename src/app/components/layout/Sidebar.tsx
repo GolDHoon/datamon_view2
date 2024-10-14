@@ -44,12 +44,11 @@ export default function Sidebar(){
                 <li>고객DB 매핑 요청 승인</li>
             </ul>
         </li>
-        <li className={`mli ${isActive6 ? 'on' : ''}`}     onClick={() => setIsActive6(!isActive6)} > <MdManageSearch  size="20" /> 고객정보 관리 <IoIosArrowDown />
-
+        <li className={`mli ${isActive6 ? 'on' : ''}`}     onClick={() => setIsActive6(!isActive6)} > <MdManageSearch  size="20" /> 고객정보 목록 <IoIosArrowDown />
 <ul>
-    <li>그룹별 고객정보 목록</li>
     <li>고객DB별 고객정보 목록</li>
     <li>고객DB별 이력</li>
+    <li>고객DB 삭제</li>
 </ul>
 </li>
         <li className={`mli ${isActive4 ? 'on' : ''}`}     onClick={() => setIsActive4(!isActive4)} > <TbBeta  size="20" /> Beta기능 <IoIosArrowDown />

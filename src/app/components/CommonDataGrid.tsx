@@ -191,11 +191,9 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
     const endPage = Math.min(startPage + pageRange - 1, totalPages);
 
     useEffect(()=>{
-        console.log("터지냐?")
         setCurrentColumns(columns);
         setCurrentRows(rows);
     },[columns, rows])
-
     
     return (
         <DndProvider backend={HTML5Backend}>
@@ -220,7 +218,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
                             onMouseDown={onMouseDown}
                             onSort={handleSort}
                             sortOrder={sortConfig.find(config => config.key === column.key)?.direction || null}
-                        />
+                            />
                     ))}
                 </div>
                 <div className='table_body'>

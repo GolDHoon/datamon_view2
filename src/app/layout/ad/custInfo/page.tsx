@@ -167,13 +167,39 @@ export default function page (){
 <div className="custInfo_wrap">
     <div className="title_box">
         <h2>유저정보 리스트</h2>
-        <p>유저 정보 리스트 소개를 표시합니다.</p>
+        <div>
+                 <select defaultValue={selectedDbType} onChange={(event) => {
+                    setSelectedDbType(event.target.value)
+                }}>
+                    <option value="init" disabled>
+                        데이터 유형을 선택해주세요
+                    </option>
+                    {dbList.map((dbType) => (
+                        <option key={dbType.custDbType} value={dbType.custDbType}>
+                            {GetConst("dbTypeList")[dbType?.custDbType]}
+                        </option>
+                    ))}
+                </select>
+                <select defaultValue={selectedDb} onChange={(event) => {setSelectedDb(event.target.value)}}>
+                    <option value="init" disabled>
+                    데이터 URL을 선택해주세요
+                    </option>
+                    {dbList.map((dbType, index) => {
+                        if (dbType.custDbType === selectedDbType) {
+                            return dbType.custDbCodeList.map((db, index2) => (
+                                <option key={db.key} value={db.key}>
+                                    {db[db.key]}
+                                </option>
+                            ));
+                        }
+                        return null; // 특정 조건의 경우 아무것도 반환하지 않는 경우를 처리
+                    })}
+                </select>
+            </div>
     </div>
 
     <div className="top_section">
-
         <div className="filter">
-
             <div className={`search_filter ${isFilterOpen ? 'on_filter' : ''} ${isTabOpen ? 'on_tab' : ''}`} >
                 <button type="button" className="type2"  onClick={() => setIsFilterOpen(!isFilterOpen)} >필터<IoIosArrowDown color="#fff" /></button>
             <div className="output">
@@ -195,7 +221,6 @@ export default function page (){
             </p>
             <CommonDatepicker />
         </div>
-
 
         {/* toggle type */}
         <div className="toggle_type">
@@ -252,45 +277,12 @@ export default function page (){
     <button className="modalOpen" onClick={openModal}>모달오픈</button>
     {/* modal end */}
     </div>
-            <div>
-                <select defaultValue={selectedDbType} onChange={(event) => {
-                    setSelectedDbType(event.target.value)
-                }}>
-                    <option value="init" disabled>
-                        DB유형을 선택해주세요
-                    </option>
-                    {dbList.map((dbType) => (
-                        <option key={dbType.custDbType} value={dbType.custDbType}>
-                            {GetConst("dbTypeList")[dbType?.custDbType]}
-                        </option>
-                    ))}
-                </select>
-                <select defaultValue={selectedDb} onChange={(event) => {setSelectedDb(event.target.value)}}>
-                    <option value="init" disabled>
-                        DB를 선택해주세요
-                    </option>
-                    {dbList.map((dbType, index) => {
-                        if (dbType.custDbType === selectedDbType) {
-                            return dbType.custDbCodeList.map((db, index2) => (
-                                <option key={db.key} value={db.key}>
-                                    {db[db.key]}
-                                </option>
-                            ));
-                        }
-                        return null; // 특정 조건의 경우 아무것도 반환하지 않는 경우를 처리
-                    })}
-                </select>
-            </div>
         </div>
-
         <div className="tag_box">
             <button className="tag">ID <IoIosClose/></button>
             <button className="tag">Country <IoIosClose/></button>
-
         </div>
-
     </div>
-
     <section className="table">
         <CommonDataGrid columns={columns} rows={rows}/>
 </section>
