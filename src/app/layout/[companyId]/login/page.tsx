@@ -8,7 +8,6 @@ import restApi from "@/app/resources/js/axios";
 
 interface LoginProps {
     params?: { companyId: string };
-    searchParams?: any;
 }
 
 const Login: NextPage<LoginProps> = ({ params }) => {
@@ -20,7 +19,6 @@ const Login: NextPage<LoginProps> = ({ params }) => {
     const [idxValue, setIdx] = useState('');
 
     useEffect(() => {
-
         try {
             restApi('get', '/sign/getCompanyInfo', {companyId:companyId}).then(response => {
                 // @ts-ignore

@@ -17,7 +17,7 @@ export default function page (){
     const [filterClass, setFilterClass] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-      // 모달 열기 함수
+  // 모달 열기 함수
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -27,8 +27,6 @@ export default function page (){
     setIsModalOpen(false);
   };
 
- 
- 
     // 클릭 핸들러
     const handleClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
       const clickedElement = e.currentTarget;
@@ -169,9 +167,33 @@ export default function page (){
 
 </div>
 
-{/* <section className="table">
-     <CommonDataGrid/> 
-</section> */}
+<section className="table">
+     <CommonDataGrid columns={[{
+         filterType: "text",
+         columnType: "custom",
+         name: "이름",
+         key: "이름"
+     }, {
+         filterType: "text",
+         columnType: "custom",
+         name: "번호",
+         key: "번호"
+     }, {
+         filterType: "date",
+         columnType: "basic",
+         name: "생성일",
+         key: "createDate"
+     }]}
+     rows={[{이름:"손철훈", 번호:"01080704601"}
+     ,{이름:"손철훈", 번호:"01080704601"}
+     ,{이름:"손철훈", 번호:"01080704601"}
+     ,{이름:"손철훈", 번호:"01080704601"}
+     ,{이름:"손철훈", 번호:"01080704601"}
+     ,{이름:"손철훈", 번호:"01080704601"}
+     ,{이름:"손철훈", 번호:"01080704601"}
+     ,{이름:"손철훈", 번호:"01080704601"}
+     ,{이름:"손철훈", 번호:"01080704601"}]}/>
+</section>
 </div>
 </CommonLayout>
     )
