@@ -110,6 +110,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
     const [autoTempComplateFilterList, setTempAutoComplateFilterList] = useState([]);
     const [autoComplateFilterList, setAutoComplateFilterList] = useState([]);
     const [checkList, setCheckList] = useState([]);
+    const [tabFilterList, setTabFilterList] = useState([]);
 
     const tableRef = useRef<HTMLDivElement>(null); // 테이블 참조
 
@@ -253,6 +254,29 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
         const updatedFilterList = filterList.filter(filter => (filter.name !== clickedFilter.name || filter.value !== clickedFilter.value))
         setFilterList(updatedFilterList); // 상태 갱신
     };
+
+    
+    const handleTabClickFilter = (clickedFilter) => {
+        const updatedFilterList = tabFilterList.filter(filter => (filter.name !== clickedFilter.name ))
+        setTabFilterList(updatedFilterList);
+    };
+
+    const addTabFilter = (clickedFilter) => {
+        const newFilter = {
+            key: clickedFilter.key,
+            name: clickedFilter.name,
+            type: clickedFilter.filterType
+        };
+
+        const isDuplicate = tabFilterList.some(filter => filter.key === newFilter.key);
+    
+        // 중복이 없을 때만 새로운 필터 추가
+        if (!isDuplicate) {
+            const updatedFilterList = [...tabFilterList, newFilter];
+            setTabFilterList(updatedFilterList);
+        } 
+    };
+    
     const handleAutoComplateFilterRegister = (value: any) => {
         const newFilter = {
             key: currentFilterKey,
@@ -421,7 +445,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
                                     <div className="output_t">
                                     <ul className="list">
                                         {currentColumns.map((data, index) => (
-                                            <li key={index} onClick={()=>console.log("누름")}>{data.name}</li>
+                                            <li key={index} onClick={()=>addTabFilter(data)}>{data.name}</li>
                                         ))}
                                     </ul>
                                     </div>
@@ -444,9 +468,13 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
 
                             </div>
                         </div>
-                        <div className="tag_box">
-                            <button className="tag">ID <IoIosClose/></button>
-                            <button className="tag">Country <IoIosClose/></button>
+                        <div className="tag_box">   
+                            {
+                                    tabFilterList.map((filter:any, index) => (
+                                        // <span key={index}> <b></b> {`${filter.value}`} <IoIosClose   onClick={() => handleClickFilter(filter)}/></span>
+                                        <button key={index} className="tag">{filter.name} <IoIosClose onClick={()=>handleTabClickFilter(filter)}/></button>
+                                    ))
+                                }
                         </div>
                     </div>
                 </div>
