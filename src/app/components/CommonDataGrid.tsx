@@ -71,11 +71,10 @@ const Column: React.FC<ColumnProps> = ({ column, index, moveColumn, columnWidths
         <div
             ref={ref}
             style={{
-                width: columnWidths[index] || 'auto', // 컬럼 너비 초기화 및 NaN 방지
+                width: columnWidths[index] || 150, // 컬럼 너비 초기화 및 NaN 방지
                 display: 'flex',
                 alignItems: 'center',
                 position: 'relative',
-               // borderRight: '1px solid #ddd',
                 opacity: isDragging ? 0.5 : 1, // 드래그 중일 때 불투명도 변경
                 cursor: 'move',
                 userSelect: 'none'
