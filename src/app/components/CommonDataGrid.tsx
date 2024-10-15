@@ -71,11 +71,11 @@ const Column: React.FC<ColumnProps> = ({ column, index, moveColumn, columnWidths
         <div
             ref={ref}
             style={{
-                width: columnWidths[index] || 150, // 컬럼 너비 초기화 및 NaN 방지
+                width: columnWidths[index] || 'auto', // 컬럼 너비 초기화 및 NaN 방지
                 display: 'flex',
                 alignItems: 'center',
                 position: 'relative',
-                borderRight: '1px solid #ddd',
+               // borderRight: '1px solid #ddd',
                 opacity: isDragging ? 0.5 : 1, // 드래그 중일 때 불투명도 변경
                 cursor: 'move',
                 userSelect: 'none'
@@ -85,8 +85,8 @@ const Column: React.FC<ColumnProps> = ({ column, index, moveColumn, columnWidths
             {column.name} {sortOrder ? (sortOrder === 'asc' ? <MdArrowDropUp size="20" /> : <MdArrowDropDown size="20" />) : ''}
             {/*정렬 상태에 따라 화살표 표시*/}
             <div
-                style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '5px', cursor: 'col-resize', zIndex: 1 }}
-                onMouseDown={(e) => onMouseDown(index, e)} // 리사이즈 시작
+                onMouseDown={(e) => onMouseDown(index, e)} // 리사이즈 시작 
+                className='cell_resize'
             />
         </div>
     );
