@@ -65,44 +65,18 @@ const Column: React.FC<ColumnProps> = ({ column, index, moveColumn, columnWidths
         }),
     });
 
-
-
-    // const [TableHeadWidths, setTableHeadWidths] = useState([]); // 너비를 저장할 상태
-
-    // useEffect(() => {
-    //     const calculateWidths = () => {
-    //         const rows = document.querySelectorAll('.row'); // .row 요소 선택
-    //         const widths = []; // 너비를 저장할 배열
-            
-    //         for (const row of rows) {
-    //             const cells = row.querySelectorAll('.cell'); // 각 .row 안의 .cell 선택
-    //             for (const cell of cells) {
-    //                 widths.push(cell.offsetWidth); // 각 .cell의 너비를 배열에 추가
-    //             }
-    //         }
-    
-    //         setTableHeadWidths(widths); // 상태 업데이트
-    //     };
-    
-    //     calculateWidths(); // 너비 계산 함수 호출
-    
-    //     window.addEventListener('resize', calculateWidths); // 리사이즈 시 너비 재계산
-    //     return () => {
-    //         window.removeEventListener('resize', calculateWidths); // 컴포넌트 언마운트 시 리스너 제거
-    //     };
-    // }, []); // 빈 배열로 처음 렌더링될 때만 실행
-
     drag(drop(ref)); // ref에 drag와 drop 연결
 
     return (
         <div
             ref={ref}
             style={{
-              //  width: TableHeadWidths[index] ? `${TableHeadWidths[index]}px` : 'auto', // 현재 컬럼 너비 설정
+                width: columnWidths[index] || 150, // 컬럼 너비 초기화 및 NaN 방지
                 display: 'flex',
                 alignItems: 'center',
                 position: 'relative',
-                opacity: isDragging ? 0.3 : 1, // 드래그 중일 때 불투명도 변경
+                borderRight: '1px solid #ddd',
+                opacity: isDragging ? 0.5 : 1, // 드래그 중일 때 불투명도 변경
                 cursor: 'move',
                 userSelect: 'none'
             }}
@@ -118,13 +92,9 @@ const Column: React.FC<ColumnProps> = ({ column, index, moveColumn, columnWidths
     );
 };
 
-
-
 // CommonDataGrid 컴포넌트 정의
 const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) => {
-    console.log("Columns: ", columns);
-    console.log("Rows: ", rows);
-    const [columnWidths, setColumnWidths] = useState(columns.map(() => 100)); // 컬럼 너비 초기화
+    const [columnWidths, setColumnWidths] = useState<number[]>(columns.map(() => 100)); // 컬럼 너비 초기화
     const [resizing, setResizing] = useState<{ index: number; initialX: number; initialWidth: number } | null>(null); // 리사이즈 상태 관리
     const [currentColumns, setCurrentColumns] = useState(columns); // 현재 컬럼 상태 관리
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }[]>([]); // 정렬 설정 상태 관리
@@ -162,6 +132,10 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
         };
     }, [resizing, columnWidths]);
 
+    useEffect(() => {
+        setColumnWidths(columns.map(() => 100)); // 컬럼이 변경될 때마다 너비 초기화
+    }, [columns]);
+
     const onMouseDown = (index: number, e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
         setResizing({ index, initialX: e.clientX, initialWidth: columnWidths[index] }); // 리사이즈 시작 시 상태 설정
@@ -197,7 +171,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
         setSortConfig(newSortConfig); // 정렬 상태 갱신
     };
 
-    const onRowDoubleClick = (row:any) => {
+    const onRowDoubleClick = (row: any) => {
         const updatedRows = currentRows.filter(r => r !== row);
         setCurrentRows(updatedRows); // 상태 업데이트
     }
@@ -218,8 +192,9 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
         },
         [sortConfig]
     );
+
     // 클릭 핸들러
-    const handleClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, data:any) => {
+    const handleClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, data: any) => {
         const clickedElement = e.currentTarget;
 
         // 조건에 따라 클래스 설정
@@ -240,11 +215,11 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
         }
     };
 
-    const handleTextFilter = (event : any) => {
+    const handleTextFilter = (event: any) => {
         console.log(event.target.value)
-        if(event.target.value === ''){
+        if (event.target.value === '') {
             setAutoComplateFilterList(autoTempComplateFilterList);
-        }else{
+        } else {
             // @ts-ignore
             setAutoComplateFilterList(
                 autoTempComplateFilterList.filter(item =>
@@ -255,7 +230,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
         return null;
     }
 
-    const handleAutoComplateFilterRegister = (value : any) => {
+    const handleAutoComplateFilterRegister = (value: any) => {
         const newFilter = {
             key: currentFilterKey,
             value: value,
@@ -279,16 +254,15 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
         setCurrentPage(page); // 페이지 변경
     };
 
-
     const pageRange = 10;
     //페이지를 몇개씩 보여줄 것인지
     const startPage = Math.floor((currentPage - 1) / pageRange) * pageRange + 1;
     const endPage = Math.min(startPage + pageRange - 1, totalPages);
 
-    useEffect(()=>{
+    useEffect(() => {
         setCurrentColumns(columns);
         setCurrentRows(rows);
-    },[columns, rows])
+    }, [columns, rows]);
 
     return (
         <DndProvider backend={HTML5Backend}>
@@ -397,8 +371,8 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
 
                         <div className="right">
                             {/* <div className="input_box">
-    <IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
-    </div> */}
+                            <IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
+                            </div> */}
                             <button type="button" className="excel"><PiMicrosoftExcelLogoFill color="#fff"/></button>
 
 
@@ -418,7 +392,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
                         <option value={10}>10</option>
                         <option value={15}>15</option>
                     </select>
-                    <span> of {rows.length} </span> // 총 데이터 건수 표시 
+                    <span> of {rows.length} </span> // 총 데이터 건수 표시
                 </div> */}
                 <div className='table_head'>
                     {currentColumns.map((column, index) => (
