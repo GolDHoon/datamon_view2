@@ -262,6 +262,8 @@
             flex-wrap: wrap;
             gap:6px;
             span{
+            display: flex;
+            align-items: center;
 font-size: 13px;
 padding: 6px 12px;
 background-color: #d9e6fd;
@@ -269,6 +271,9 @@ border-radius: 20px;
 color:#333;
 b{
     font-weight: 800;
+}
+svg{
+margin-left: 8px;
 }
             }
         }
@@ -304,6 +309,7 @@ b{
         .tag{
             border-radius: 4px;
             position: relative;
+        
         font-size: 13px;
             background-color: $main200;
             padding: 4px 22px 4px 8px;

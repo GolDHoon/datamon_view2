@@ -250,7 +250,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
 // setFilterList를 갱신함(currentFilterKey값이 같은걸 없는 버전으로)
     const handleClickFilter = (clickedFilter) => {
         // 클릭한 필터를 제외한 새로운 리스트로 상태 업데이트
-        const updatedFilterList = filterList.filter(filter => filter.name !== clickedFilter.name);
+        const updatedFilterList = filterList.filter(filter => (filter.name !== clickedFilter.name || filter.value !== clickedFilter.value))
         setFilterList(updatedFilterList); // 상태 갱신
     };
     const handleAutoComplateFilterRegister = (value: any) => {
@@ -419,19 +419,18 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
                                     <button type="button" className="type1" onClick={() => setIsTabOpen(!isTabOpen)}>탭
                                         표시<IoIosArrowDown color="#fff"/></button>
                                     <div className="output_t">
-                                        <ul className="list">
-                                            <li>이름</li>
-                                            <li>날짜</li>
-                                            <li>실비</li>
-                                            <li>품질</li>
-                                        </ul>
+                                    <ul className="list">
+                                        {currentColumns.map((data, index) => (
+                                            <li key={index} onClick={()=>console.log("누름")}>{data.name}</li>
+                                        ))}
+                                    </ul>
                                     </div>
                                 </div>
                                 {/* 탭 표시 end */}                        </div>
                             <div className='filter_value'>
                                 {
                                     filterList.map((filter, index) => (
-                                        <span key={index} className='tag'  onClick={() => handleClickFilter(filter)} > <b>{`${filter.name}:`}</b> {`${filter.value}`}</span>
+                                        <span key={index}> <b>{`${filter.name}:`}</b> {`${filter.value}`} <IoIosClose   onClick={() => handleClickFilter(filter)}/></span>
                                     ))
                                 }
                             </div>
