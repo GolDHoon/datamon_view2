@@ -181,7 +181,7 @@ export default function page (){
         </div>
 
 
-        <button className="modalOpen" onClick={openModal}>모달오픈</button>
+        {/* <button className="modalOpen" onClick={openModal}>모달오픈</button> */}
         <section className="table">
             <CommonDataGrid columns={columns} rows={rows}/>
         </section>

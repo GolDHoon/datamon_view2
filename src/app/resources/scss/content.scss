@@ -36,223 +36,245 @@
 }
 
 .top_section{
-    .filter{
+    margin-bottom: 10px;
+    .filter_wrap{
         display: flex;
         align-items: center;
-        justify-content: space-between;
-
-        button{
-   @include commonBtn;
+        gap:6px;
+.search_filter{
+    .search, .tab{
+        position: relative;
+        &>button{
+            white-space: nowrap;
+            @include commonBtn;
 
             & + .output{
                 display: none;
-
-.list{
-display: flex;
-flex-direction: column;
-width: 150px;
-height: 100%;
-overflow-y: scroll;
-background-color: #fff;
-border:  1px solid $main100;
-// border-radius: 4px 0px 0px 4px;
-border-radius: 4px;
-padding: 0px 8px;
-li{
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-   font-size: 14px;
-   padding: 10px 4px;
-    border-bottom: 1px solid #dadada;
-}
-}
-
-.filter_box{
-position: relative;
-right: 0px;
-width: 200px;
-border:  1px solid $main100;
-border-radius: 0px 4px 4px 0px;
-background-color: #fff;
-display: none;
-
-&.calendar, &.toggle, &.check, &.text{
-    display: block;
-}
-
-&.calendar{
-    .calendar_type{
-        display: block;
-    }
-.toggle_type, .check_type, .text_type{
-display: none;
-}
-}
-&.toggle{
-    .toggle_type{
-        display: block;
-    }
-.calendar_type, .check_type, .text_type{
-display: none;
-}
-}
-&.check{
-    .check_type{
-        display: block;
-    }
-.toggle_type, .calendar_type, .text_type{
-display: none;
-}
-}
-
-&.text{
-    .text_type{
-        display: block;
-    }
-    .toggle_type, .calendar_type, .check_type{
-        display: none;
-    }
-}
-
-
-.calendar_type{
-padding: 12px;
-    p{
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        gap:10px;
-    }
-    .react-datepicker-wrapper{
-        border: 1px solid #dadada;
-        border-radius: 4px;
-        overflow: hidden;
-        padding: 4px;
-        width: calc(100% - 8px);
-        margin-top: 10px;
-    }
-
-}
-
-.toggle_type{
-
-ul{
-    display: flex;
-flex-wrap: wrap;
-gap:10px;
-justify-content: space-between;
-padding: 12px;
-    li{
-    min-width: 50%;
-        display: flex;
-        align-items: center;
-        span{
+            }
+        }
+        .list{
+            display: flex;
+            flex-direction: column;
+            width: 150px;
+            height: 100%;
+            overflow-y: scroll;
+            background-color: #fff;
+            border:  1px solid $main100;
+            // border-radius: 4px 0px 0px 4px;
+            border-radius: 4px;
+            padding: 0px 8px;
+            li{
+            display: flex;
+            align-items: center;
+            cursor: pointer;
             font-size: 14px;
-            margin-right: 8px;
-        }
-    }
-}
-
-}
-
-.check_type{
-ul{
-    padding: 12px;
-
-    li{
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap:4px;
-
-        input{
-            min-width: 22px;
-            height: 22px;
-        }
-        label{
-            font-size: 14px;
-            @include txtellipsis;
-        }
-    }
-}
-}
-
-.text_type{
-    padding: 12px 0;
-    .input_box{
-@include commonInput;
-      }
-
-      ul{
-        padding: 8px 12px;
-        display: flex;
-        flex-direction: column;
-        gap:3px;
-
-        li{
-            font-size: 14px;
-        }
-      }
-}
-
-}
-
+            padding: 10px 4px;
+            border-bottom: 1px solid #dadada;
             }
         }
 
+        .filter_box{
+            width: 200px;
+            border:  1px solid $main100;
+            border-radius: 0px 4px 4px 0px;
+            background-color: #fff;
+            display: none;
+            
+            &.calendar, &.toggle, &.check, &.text{
+            display: block;
+            }
+            &.calendar{
+            .calendar_type{
+                display: block;
+            }
+            .toggle_type, .check_type, .text_type{
+            display: none;
+            }
+            }
+            &.toggle{
+            .toggle_type{
+                display: block;
+            }
+            .calendar_type, .check_type, .text_type{
+            display: none;
+            }
+            }
+            &.check{
+            .check_type{
+                display: block;
+            }
+            .toggle_type, .calendar_type, .text_type{
+            display: none;
+            }
+            }         
+            &.text{
+            .text_type{
+                display: block;
+            }
+            .toggle_type, .calendar_type, .check_type{
+                display: none;
+            }
+            }   
+            .calendar_type{
+            padding: 12px;
+            p{
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                gap:10px;
+            }
+            .react-datepicker-wrapper{
+                border: 1px solid #dadada;
+                border-radius: 4px;
+                overflow: hidden;
+                padding: 4px;
+                width: calc(100% - 8px);
+                margin-top: 10px;
+            }
+            }
+            .toggle_type{
+            ul{
+            display: flex;
+            flex-wrap: wrap;
+            gap:10px;
+            justify-content: space-between;
+            padding: 12px;
+            li{
+            min-width: 50%;
+                display: flex;
+                align-items: center;
+                span{
+                    font-size: 14px;
+                    margin-right: 8px;
+                }
+            }
+            }
+            
+            }
+            .check_type{
+            ul{
+            padding: 12px;
+            
+            li{
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap:4px;
+            
+                input{
+                    min-width: 22px;
+                    height: 22px;
+                }
+                label{
+                    font-size: 14px;
+                    @include txtellipsis;
+                }
+            }
+            }
+            }   
+            .text_type{
+            padding: 12px 0;
+            .input_box{
+            @include commonInput;
+              }
+            
+              ul{
+                padding: 8px 12px;
+                display: flex;
+                flex-direction: column;
+                gap:3px;
+            
+                li{
+                    font-size: 14px;
+                }
+              }
+            }
+            }
+
+    }
+
+}
         .search_filter{
             position: relative;
             display: flex;
             gap:8px;
 
-            .output_t{
-                display: none;
-            }
+.tab{
+    .output_t{
+        display: none;
+    }
+}
  
             &.on_filter{
-                .output{
-                    display: flex;
-                    position: absolute;
-                    top: 37px;
-                    z-index: 10;
-                    height: 240px;
-                }
+ .search{
+    .output{
+        display: flex;
+        position: absolute;
+        top: 40px;
+        z-index: 10;
+        height: 240px;
+    }
+ }
             }
 
             &.on_tab{
-                .output_t{
-                    position: absolute;
-                    left: 84px;
-                    top:38px;
-                    z-index: 100;
-                    display: block;
-                    .list{
-                        display: flex !important;
-                        flex-direction: column;
-                        width: 150px;
-                        height: 100%;
-                        overflow-y: scroll;
-                        background-color: #fff;
-                        border:  1px solid $main100;
-                        // border-radius: 4px 0px 0px 4px;
-                        border-radius: 4px;
-                        padding: 0px 8px;
-                        li{
-                            display: flex;
-                            align-items: center;
-                            cursor: pointer;
-                           font-size: 14px;
-                           padding: 10px 4px;
-                            border-bottom: 1px solid #dadada;
+          .tab{
+            .output_t{
+                display: block;
+                position: absolute;
+                left: 0px;
+                top: 40px;
+                z-index: 10;
+
+                .list{
+                    display: flex !important;
+                    flex-direction: column;
+                    width: 150px;
+                    height: 100%;
+                    overflow-y: scroll;
+                    background-color: #fff;
+                    border:  1px solid $main100;
+                    // border-radius: 4px 0px 0px 4px;
+                    border-radius: 4px;
+                    padding: 0px 8px;
+                    li{
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
+                       font-size: 14px;
+                       padding: 10px 4px;
+                        border-bottom: 1px solid #dadada;
+
+                        &:hover{
+                            font-weight: 700;
                         }
-                        }
-                }
+                    }
+                    }
+            }
+          }
             
             }
         }
 
+        .filter_value{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap:6px;
+            span{
+font-size: 13px;
+padding: 6px 12px;
+background-color: #d9e6fd;
+border-radius: 20px;
+color:#333;
+b{
+    font-weight: 800;
+}
+            }
+        }
+
         .right{
+        margin-left: auto;
           .input_box{
             display: flex;
             align-items: center;
@@ -266,6 +288,9 @@ ul{
                     font-weight: 300;
                 }
             }
+          }
+          button{
+           @include commonBtn; 
           }
         }
       
@@ -307,13 +332,15 @@ ul{
     width: 100%;
     max-width: 1600px;
     margin-top: 20px;
-    height: calc(100vh - 180px);
+    height: auto;
     overflow: hidden;
 
     .table_content{
         position: relative;
         width: 100%;
-        height: 100%;
+
+        // top content, filter단에서 컴포넌트가 세로로 추가될 경우 이부분 수정해야함
+        height:calc(100vh - 230px);
 
         .table_head{
             display: flex;
@@ -384,8 +411,6 @@ ul{
   
     }
 }
-
-
         .pagination{
             position:absolute;
             bottom: 0px;

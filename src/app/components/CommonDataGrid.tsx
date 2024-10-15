@@ -229,6 +229,15 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
         return null;
     }
 
+
+// 내가 누른 필터 리스트랑 currentFilterKey값이 같은걸 찾아서
+// setFilterList를 갱신함(currentFilterKey값이 같은걸 없는 버전으로)
+const handleClickFilter = (clickedFilter) => {
+    // 클릭한 필터를 제외한 새로운 리스트로 상태 업데이트
+    const updatedFilterList = filterList.filter(filter => filter.name !== clickedFilter.name);
+    setFilterList(updatedFilterList); // 상태 갱신
+};
+ 
     const handleAutoComplateFilterRegister = (value: any) => {
         const newFilter = {
             key: currentFilterKey,
@@ -267,9 +276,11 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
         <DndProvider backend={HTML5Backend}>
             <div>
                 <div className="top_section">
-                    <div className="filter">
+                    <div className="filter_wrap">
                         <div
                             className={`search_filter ${isFilterOpen ? 'on_filter' : ''} ${isTabOpen ? 'on_tab' : ''}`}>
+                            {/* 검색필터 start */}
+                            <div className='search'>
                             <button type="button" className="type2"
                                     onClick={() => setIsFilterOpen(!isFilterOpen)}>필터<IoIosArrowDown color="#fff"/>
                             </button>
@@ -346,10 +357,12 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
                                     </div>
                                 </div>
                             </div>
-
+                            </div>
                             {/* 검색필터 end */}
+
                             {/* 탭 표시 start */}
-                            <button type="button" className="type1" onClick={() => setIsTabOpen(!isTabOpen)}>탭
+                             <div className='tab'>
+              <button type="button" className="type1" onClick={() => setIsTabOpen(!isTabOpen)}>탭
                                 표시<IoIosArrowDown color="#fff"/></button>
                             <div className="output_t">
                                 <ul className="list">
@@ -359,14 +372,17 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
                                     <li>품질</li>
                                 </ul>
                             </div>
+                              </div>
+                            {/* 탭 표시 end */}
                         </div>
-                        <div>
+                        <div className='filter_value'>
                             {
                                 filterList.map((filter, index) => (
-                                    <span key={index}>{`${filter.name}:${filter.value}`}</span>
+                                    <span key={index} className='tag'  onClick={() => handleClickFilter(filter)} > <b>{`${filter.name}:`}</b> {`${filter.value}`}</span>
                                 ))
                             }
                         </div>
+
 
                         <div className="right">
                             {/* <div className="input_box">
