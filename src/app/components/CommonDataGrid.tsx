@@ -15,6 +15,8 @@ import {IoIosArrowDown, IoIosClose, IoIosSearch} from "react-icons/io";
 import CommonDatepicker from "@/app/components/CommonDatepicker";
 import CommonToggle from "@/app/components/CommonToggle";
 import {PiMicrosoftExcelLogoFill} from "react-icons/pi";
+import {Simulate} from "react-dom/test-utils";
+import input = Simulate.input;
 
 const ItemType = 'COLUMN'; // 드래그 앤 드롭에서 사용할 Item Type 정의
 
@@ -84,7 +86,7 @@ const Column: React.FC<ColumnProps> = ({ column, index, moveColumn, columnWidths
             {column.name} {sortOrder ? (sortOrder === 'asc' ? <MdArrowDropUp size="20" /> : <MdArrowDropDown size="20" />) : ''}
             {/*정렬 상태에 따라 화살표 표시*/}
             <div
-                onMouseDown={(e) => onMouseDown(index, e)} // 리사이즈 시작 
+                onMouseDown={(e) => onMouseDown(index, e)} // 리사이즈 시작
                 className='cell_resize'
             />
         </div>
@@ -107,6 +109,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
     const [filterList, setFilterList] = useState([])
     const [autoTempComplateFilterList, setTempAutoComplateFilterList] = useState([]);
     const [autoComplateFilterList, setAutoComplateFilterList] = useState([]);
+    const [checkList, setCheckList] = useState([]);
 
     const tableRef = useRef<HTMLDivElement>(null); // 테이블 참조
 
@@ -176,8 +179,15 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
     }
 
     const sortedRows = useCallback(
-        (rows: any[]) => {
-            return rows.sort((a, b) => {
+        (currentRows: any[]) => {
+            // currentRows가 undefined일 경우 빈 배열로 초기화
+            currentRows = currentRows || [];
+
+            if (currentRows.length <= 1) {
+                return currentRows;
+            }
+
+            return currentRows.sort((a, b) => {
                 for (let { key, direction } of sortConfig) {
                     if (a[key] < b[key]) {
                         return direction === 'asc' ? -1 : 1;
@@ -196,16 +206,24 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
     const handleClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, data: any) => {
         const clickedElement = e.currentTarget;
 
+        setCurrentFilterKey(data.key);
+
         // 조건에 따라 클래스 설정
         if (clickedElement.classList.contains('text')) {
             setFilterClass('text');
-            setCurrentFilterKey(data.key);
             // @ts-ignore
-            setAutoComplateFilterList([...new Set(currentRows.map(rows => rows[data.key]))]);
-            setTempAutoComplateFilterList([...new Set(currentRows.map(rows => rows[data.key]))]);
+            setAutoComplateFilterList([
+                ...new Set(rows.map(row => JSON.stringify({ key:[data.key], [data.key]: row[data.key] })))
+            ].map(str => JSON.parse(str)));
+            setTempAutoComplateFilterList([
+                ...new Set(rows.map(row => JSON.stringify({ key:[data.key], [data.key]: row[data.key] })))
+            ].map(str => JSON.parse(str)));
         } else if (clickedElement.classList.contains('cal')) {
             setFilterClass('calendar');
         } else if (clickedElement.classList.contains('check')) {
+            setCheckList([
+                ...new Set(rows.map(row => JSON.stringify({ key:[data.key], [data.key]: row[data.key] })))
+            ].map(str => JSON.parse(str)));
             setFilterClass('check');
         } else if (clickedElement.classList.contains('toggle')) {
             setFilterClass('toggle');
@@ -215,36 +233,57 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
     };
 
     const handleTextFilter = (event: any) => {
-        console.log(event.target.value)
         if (event.target.value === '') {
             setAutoComplateFilterList(autoTempComplateFilterList);
         } else {
             // @ts-ignore
             setAutoComplateFilterList(
                 autoTempComplateFilterList.filter(item =>
-                    item.includes(event.target.value)
+                    item[item.key].includes(event.target.value)
                 )
             );
         }
         return null;
     }
 
-
 // 내가 누른 필터 리스트랑 currentFilterKey값이 같은걸 찾아서
 // setFilterList를 갱신함(currentFilterKey값이 같은걸 없는 버전으로)
-const handleClickFilter = (clickedFilter) => {
-    // 클릭한 필터를 제외한 새로운 리스트로 상태 업데이트
-    const updatedFilterList = filterList.filter(filter => filter.name !== clickedFilter.name);
-    setFilterList(updatedFilterList); // 상태 갱신
-};
- 
+    const handleClickFilter = (clickedFilter) => {
+        // 클릭한 필터를 제외한 새로운 리스트로 상태 업데이트
+        const updatedFilterList = filterList.filter(filter => filter.name !== clickedFilter.name);
+        setFilterList(updatedFilterList); // 상태 갱신
+    };
     const handleAutoComplateFilterRegister = (value: any) => {
         const newFilter = {
             key: currentFilterKey,
             value: value,
-            name: currentColumns.find(column => column.key === currentFilterKey)?.name
+            name: currentColumns.find(column => column.key === currentFilterKey)?.name,
+            type: currentColumns.find(column => column.key === currentFilterKey)?.filterType
         };
         const updatedFilterList = [...filterList, newFilter];
+        // @ts-ignore
+        setFilterList(updatedFilterList);
+    }
+
+    const handleCheckFilterRegister = (event:any, check:any) => {
+        const checkedInputs = document.querySelectorAll('input[name="' + event.target.name + '"]:checked');
+        const labels = Array.from(checkedInputs).map(input => {
+            const label = document.querySelector('label[for="' + input.id + '"]');
+            return label ? label.innerText : ''; // label이 존재하는 경우에만 innerText를 반환
+        }).filter(text => text !== ''); // 빈 텍스트는 제외
+        const result = labels.join(', ');
+
+        let updatedFilterList = filterList.filter(filter => filter.key !== currentFilterKey);
+
+        if(checkedInputs.length !== 0){
+            updatedFilterList.push({
+                key: currentFilterKey,
+                value: result,
+                name: currentColumns.find(column => column.key === currentFilterKey)?.name,
+                type: currentColumns.find(column => column.key === currentFilterKey)?.filterType
+            });
+        }
+
         // @ts-ignore
         setFilterList(updatedFilterList);
     }
@@ -256,7 +295,7 @@ const handleClickFilter = (clickedFilter) => {
 
     const paginatedRows = sortedRows(currentRows).slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage); // 페이지네이션된 행
 
-    const totalPages = Math.ceil(currentRows.length / rowsPerPage); // 총 페이지 수 계산
+    const totalPages = currentRows ? Math.ceil(currentRows.length / rowsPerPage) : 0; // 총 페이지 수 계산
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page); // 페이지 변경
@@ -266,6 +305,20 @@ const handleClickFilter = (clickedFilter) => {
     //페이지를 몇개씩 보여줄 것인지
     const startPage = Math.floor((currentPage - 1) / pageRange) * pageRange + 1;
     const endPage = Math.min(startPage + pageRange - 1, totalPages);
+
+    useEffect(() => {
+        let tempRows = rows
+        filterList.forEach(filter => {
+            switch (filter.type){
+                case "text":tempRows = tempRows.filter(row => row[filter.key].includes(filter.value));
+                    break;
+                case "select": tempRows = tempRows.filter(row => filter.value.includes(row[filter.key]));
+                    break;
+                default:break;
+            }
+        })
+        setCurrentRows(tempRows)
+    }, [filterList]);
 
     useEffect(() => {
         setCurrentColumns(columns);
@@ -281,126 +334,125 @@ const handleClickFilter = (clickedFilter) => {
                             className={`search_filter ${isFilterOpen ? 'on_filter' : ''} ${isTabOpen ? 'on_tab' : ''}`}>
                             {/* 검색필터 start */}
                             <div className='search'>
-                            <button type="button" className="type2"
-                                    onClick={() => setIsFilterOpen(!isFilterOpen)}>필터<IoIosArrowDown color="#fff"/>
-                            </button>
-                            <div className="output">
-                                <ul className="list">
-                                    {currentColumns.map((data, index) => {
-                                        switch (data.filterType) {
-                                            case "text" : {
-                                                return <li key={index} className="text"
-                                                           onClick={event => handleClick(event, data)}>{data.name}</li>
-                                            }
-                                            case "select": {
-                                                return <li key={index} className="check"
-                                                           onClick={event => handleClick(event, data)}>{data.name}</li>
-                                            }
-                                            case "date" : {
-                                                return <li key={index} className="cal"
-                                                           onClick={event => handleClick(event, data)}>{data.name}</li>
-                                            }
-                                            case "toggle": {
-                                                return <li key={index} className="toggle"
-                                                           onClick={event => handleClick(event, data)}>{data.name}</li>;
+                                <button type="button" className="type2"
+                                        onClick={() => setIsFilterOpen(!isFilterOpen)}>필터<IoIosArrowDown color="#fff"/>
+                                </button>
+                                <div className="output">
+                                    <ul className="list">
+                                        {currentColumns.map((data, index) => {
+                                            switch (data.filterType) {
+                                                case "text" : {
+                                                    return <li key={index} className="text"
+                                                               onClick={event => handleClick(event, data)}>{data.name}</li>
+                                                }
+                                                case "select": {
+                                                    return <li key={index} className="check"
+                                                               onClick={event => handleClick(event, data)}>{data.name}</li>
+                                                }
+                                                case "date" : {
+                                                    return <li key={index} className="cal"
+                                                               onClick={event => handleClick(event, data)}>{data.name}</li>
+                                                }
+                                                case "toggle": {
+                                                    return <li key={index} className="toggle"
+                                                               onClick={event => handleClick(event, data)}>{data.name}</li>;
 
+                                                }
+                                                default :
+                                                    return null;
                                             }
-                                            default :
-                                                return null;
-                                        }
-                                    })}
-                                </ul>
-                                <div className={`filter_box ${filterClass}`}>
-                                    {/* calendar type */}
-                                    <div className="calendar_type">
-                                        <p>
-                                            <MdOutlineCalendarToday/> 날짜
-                                        </p>
-                                        <CommonDatepicker/>
-                                    </div>
-
-                                    {/* toggle type */}
-                                    <div className="toggle_type">
-                                        <ul>
-                                            <li className="toggle_box"><span>옵션1</span><CommonToggle/></li>
-                                        </ul>
-                                    </div>
-
-                                    {/* check type */}
-                                    <div className="check_type">
-                                        <ul>
-                                            <li>
-                                                <input type="checkbox" name="" id="1"/> <label
-                                                htmlFor="1">체크리스트1</label>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    {/* text_type */}
-                                    <div className="text_type">
-                                        <div className="input_box">
-                                            <IoIosSearch/><input type="text" placeholder="검색어를 입력하세요"
-                                                                 onChange={event => handleTextFilter(event)}
-                                                                 onKeyDown={event => {
-                                                                     if (event.key === 'Enter') {
-                                                                         handleAutoComplateFilterRegister(event.target.value)
-                                                                     }
-                                                                 }}/>
+                                        })}
+                                    </ul>
+                                    <div className={`filter_box ${filterClass}`}>
+                                        {/* calendar type */}
+                                        <div className="calendar_type">
+                                            <p>
+                                                <MdOutlineCalendarToday/> 날짜
+                                            </p>
+                                            <CommonDatepicker/>
                                         </div>
 
-                                        <ul>
-                                            {/* 검색했을 때 뜨는 자동 결과값 */}
-                                            {autoComplateFilterList.map((auto, index) => (
-                                                <li key={index} onClick={(evnet) => handleAutoComplateFilterRegister(auto)}>{auto}</li>
-                                            ))}
-                                        </ul>
+                                        {/* toggle type */}
+                                        <div className="toggle_type">
+                                            <ul>
+                                                <li className="toggle_box"><span>옵션1</span><CommonToggle/></li>
+                                            </ul>
+                                        </div>
+
+                                        {/* check type */}
+                                        <div className="check_type">
+                                            <ul>
+                                                {checkList.map((check, index)=> (
+                                                    <li key={index}>
+                                                        <input type="checkbox" name={check.key} id={`${check[check.key]}-${index}`} onChange={(event) => handleCheckFilterRegister(event, check)}/>
+                                                        <label htmlFor={`${check[check.key]}-${index}`}>{check[check.key]}</label>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+
+                                        {/* text_type */}
+                                        <div className="text_type">
+                                            <div className="input_box">
+                                                <IoIosSearch/><input type="text" placeholder="검색어를 입력하세요"
+                                                                     onChange={event => handleTextFilter(event)}
+                                                                     onKeyDown={event => {
+                                                                         if (event.key === 'Enter') {
+                                                                             handleAutoComplateFilterRegister(event.target.value)
+                                                                         }
+                                                                     }}/>
+                                            </div>
+
+                                            <ul>
+                                                {/* 검색했을 때 뜨는 자동 결과값 */}
+                                                {autoComplateFilterList.map((auto, index) => (
+                                                    <li key={index} onClick={(evnet) => handleAutoComplateFilterRegister(auto[auto.key])}>{auto[auto.key]}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                                {/* 검색필터 end */}
+                                {/* 탭 표시 start */}
+                                <div className='tab'>
+                                    <button type="button" className="type1" onClick={() => setIsTabOpen(!isTabOpen)}>탭
+                                        표시<IoIosArrowDown color="#fff"/></button>
+                                    <div className="output_t">
+                                        <ul className="list">
+                                            <li>이름</li>
+                                            <li>날짜</li>
+                                            <li>실비</li>
+                                            <li>품질</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                {/* 탭 표시 end */}                        </div>
+                            <div className='filter_value'>
+                                {
+                                    filterList.map((filter, index) => (
+                                        <span key={index} className='tag'  onClick={() => handleClickFilter(filter)} > <b>{`${filter.name}:`}</b> {`${filter.value}`}</span>
+                                    ))
+                                }
                             </div>
-                            {/* 검색필터 end */}
 
-                            {/* 탭 표시 start */}
-                             <div className='tab'>
-              <button type="button" className="type1" onClick={() => setIsTabOpen(!isTabOpen)}>탭
-                                표시<IoIosArrowDown color="#fff"/></button>
-                            <div className="output_t">
-                                <ul className="list">
-                                    <li>이름</li>
-                                    <li>날짜</li>
-                                    <li>실비</li>
-                                    <li>품질</li>
-                                </ul>
-                            </div>
-                              </div>
-                            {/* 탭 표시 end */}
-                        </div>
-                        <div className='filter_value'>
-                            {
-                                filterList.map((filter, index) => (
-                                    <span key={index} className='tag'  onClick={() => handleClickFilter(filter)} > <b>{`${filter.name}:`}</b> {`${filter.value}`}</span>
-                                ))
-                            }
-                        </div>
-
-
-                        <div className="right">
-                            {/* <div className="input_box">
+                            <div className="right">
+                                {/* <div className="input_box">
                             <IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
                             </div> */}
-                            <button type="button" className="excel"><PiMicrosoftExcelLogoFill color="#fff"/></button>
+                                <button type="button" className="excel"><PiMicrosoftExcelLogoFill color="#fff"/></button>
 
 
+                            </div>
+                        </div>
+                        <div className="tag_box">
+                            <button className="tag">ID <IoIosClose/></button>
+                            <button className="tag">Country <IoIosClose/></button>
                         </div>
                     </div>
-                    <div className="tag_box">
-                        <button className="tag">ID <IoIosClose/></button>
-                        <button className="tag">Country <IoIosClose/></button>
-                    </div>
                 </div>
-            </div>
-            <div ref={tableRef} className='table_content'>
-                {/* <div style={{ marginBottom: '10px' }}>
+                <div ref={tableRef} className='table_content'>
+                    {/* <div style={{ marginBottom: '10px' }}>
                     <span>Rows per page: </span>
                     <select value={rowsPerPage} onChange={handleChangeRowsPerPage}>
                         <option value={5}>5</option>
@@ -409,63 +461,63 @@ const handleClickFilter = (clickedFilter) => {
                     </select>
                     <span> of {rows.length} </span> // 총 데이터 건수 표시
                 </div> */}
-                <div className='table_head'>
-                    {currentColumns.map((column, index) => (
-                        <Column
-                            key={index}
-                            column={column}
-                            index={index}
-                            moveColumn={moveColumn}
-                            columnWidths={columnWidths}
-                            onMouseDown={onMouseDown}
-                            onSort={handleSort}
-                            sortOrder={sortConfig.find(config => config.key === column.key)?.direction || null}
-                        />
-                    ))}
-                </div>
-                <div className='table_body'>
-                    {paginatedRows.map((row, index2) => (
-                        <div key={index2} className='row'>
-                            {currentColumns.map((column, index) => (
-                                <div key={`${index2}-${index}`} style={{ width: columnWidths[index] }} className='cell'>
-                                    {row[column.key]}
-                                </div>
-                            ))}
-                        </div>
-                    ))}
-                </div>
-                <div className='pagination'>
-                    <button disabled={currentPage === 1} onClick={() => handlePageChange(1)}>
-                        <MdOutlineKeyboardArrowLeft />
-                    </button>
-                    <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
-                        <MdOutlineKeyboardDoubleArrowLeft />
-                    </button>
+                    <div className='table_head'>
+                        {currentColumns.map((column, index) => (
+                            <Column
+                                key={index}
+                                column={column}
+                                index={index}
+                                moveColumn={moveColumn}
+                                columnWidths={columnWidths}
+                                onMouseDown={onMouseDown}
+                                onSort={handleSort}
+                                sortOrder={sortConfig.find(config => config.key === column.key)?.direction || null}
+                            />
+                        ))}
+                    </div>
+                    <div className='table_body'>
+                        {paginatedRows.map((row, index2) => (
+                            <div key={index2} className='row'>
+                                {currentColumns.map((column, index) => (
+                                    <div key={`${index2}-${index}`} style={{ width: columnWidths[index] }} className='cell'>
+                                        {row[column.key]}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                    <div className='pagination'>
+                        <button disabled={currentPage === 1} onClick={() => handlePageChange(1)}>
+                            <MdOutlineKeyboardArrowLeft />
+                        </button>
+                        <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
+                            <MdOutlineKeyboardDoubleArrowLeft />
+                        </button>
 
-                    {/* startPage에서 endPage까지 페이지 버튼을 렌더링 */}
-                    {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
-                        const pageIndex = startPage + index;
-                        return (
-                            <button
-                                key={pageIndex}
-                                className={currentPage === pageIndex ? 'current' : ''}
-                                onClick={() => handlePageChange(pageIndex)}
-                            >
-                                {pageIndex}
-                            </button>
-                        );
-                    })}
+                        {/* startPage에서 endPage까지 페이지 버튼을 렌더링 */}
+                        {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
+                            const pageIndex = startPage + index;
+                            return (
+                                <button
+                                    key={pageIndex}
+                                    className={currentPage === pageIndex ? 'current' : ''}
+                                    onClick={() => handlePageChange(pageIndex)}
+                                >
+                                    {pageIndex}
+                                </button>
+                            );
+                        })}
 
-                    <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
-                        <MdOutlineKeyboardArrowRight />
-                    </button>
-                    <button disabled={currentPage === totalPages} onClick={() => handlePageChange(totalPages)}>
-                        <MdOutlineKeyboardDoubleArrowRight />
-                    </button>
+                        <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
+                            <MdOutlineKeyboardArrowRight />
+                        </button>
+                        <button disabled={currentPage === totalPages} onClick={() => handlePageChange(totalPages)}>
+                            <MdOutlineKeyboardDoubleArrowRight />
+                        </button>
+                    </div>
                 </div>
-            </div>
         </DndProvider>
-    );
+);
 };
 
 export default CommonDataGrid; // CommonDataGrid 컴포넌트 기본 export
