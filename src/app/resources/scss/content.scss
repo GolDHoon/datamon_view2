@@ -345,7 +345,7 @@ ul{
             }
 
 
-            &.cell_resize{
+            .cell_resize{
                 min-width: 0px;
                 position: absolute;
                 right: 0;
@@ -373,6 +373,7 @@ ul{
 
         .cell{
             white-space: nowrap;
+            @include txtellipsis;
             padding: 0px 8px;
             height: 40px;
             line-height: 38px;
