@@ -67,7 +67,6 @@ const Page: React.FC<PageProps> = ({ params }) => {
             }).then(response => {
                 // @ts-ignore
                 if(response.status === 200){
-                    console.log(response.data)
                     setColumns(response.data.columnInfoList);
                     setRows(response.data.dataList);
                 }else{
