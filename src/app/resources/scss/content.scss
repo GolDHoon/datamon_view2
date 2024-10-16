@@ -545,17 +545,31 @@ z-index: 10;
                 align-items: center;
                 gap:10px;
                 width: 100%;
-                height: 38px;
+                height: auto;
 label{
-    width: 35%;
+    width: 120px;
     text-align: right;
     font-weight: 700;
     font-size: 14px;
 }
 input{
-    width: 65%;
+    width: calc(100% - 130px);
     padding: 6px 8px;
     background-color: #ecf2ff;
+}
+textarea{
+    width: calc(100% - 130px);
+    padding: 6px 8px;
+    background-color: #ecf2ff;
+    border: none;
+    resize: vertical;
+    &:focus{
+outline: none;
+border: none;
+    }
+    &::placeholder{
+color: #666;
+    }
 }
             }
         }
