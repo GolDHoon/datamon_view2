@@ -1,5 +1,5 @@
 "use client";
-import CommonLayout from "../../../components/layout/CommonLayout";
+import CommonLayout from "../../../../components/layout/CommonLayout";
 import CommonToggle from "@/app/components/CommonToggle";
 import CommonDatepicker from "@/app/components/CommonDatepicker";
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
@@ -154,7 +154,7 @@ export default function page (){
                     <option value="init" disabled>
                         데이터 유형을 선택해주세요
                     </option>
-                    {dbList.map((dbType) => (
+                    {dbList.map((dbType:any) => (
                         <option key={dbType.custDbType} value={dbType.custDbType}>
                             {GetConst("dbTypeList")[dbType?.custDbType]}
                         </option>
@@ -166,9 +166,9 @@ export default function page (){
                     <option value="init" disabled>
                         데이터 URL을 선택해주세요
                     </option>
-                    {dbList.map((dbType, index) => {
+                    {dbList.map((dbType:any, index) => {
                         if (dbType.custDbType === selectedDbType) {
-                            return dbType.custDbCodeList.map((db, index2) => (
+                            return dbType.custDbCodeList.map((db:any, index2:number) => (
                                 <option key={db.key} value={db.key}>
                                     {db[db.key]}
                                 </option>

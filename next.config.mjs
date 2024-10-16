@@ -11,16 +11,16 @@ const nextConfig = {
                 destination: '/layout/home',
             },
             {
-                source: '/ad/custInfo',
-                destination: '/layout/ad/custInfo',
+                source: '/ad/custInfo/:dynamic',
+                destination: '/layout/ad/custInfo/:dynamic',
             },
             {
-                source: '/client/custInfo',
-                destination: '/layout/client/custInfo',
+                source: '/client/custInfo/:dynamic',
+                destination: '/layout/client/custInfo/:dynamic',
             },
             {
-                source: '/crm/custInfo',
-                destination: '/layout/crm/custInfo',
+                source: '/crm/custInfo/:dynamic',
+                destination: '/layout/crm/custInfo/:dynamic',
             },
         ];
     },

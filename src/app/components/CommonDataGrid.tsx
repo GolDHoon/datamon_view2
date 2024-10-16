@@ -41,7 +41,7 @@ interface ColumnProps {
 const Column: React.FC<ColumnProps> = ({ column, index, moveColumn, columnWidths, onMouseDown, onSort, sortOrder }) => {
     const ref = useRef<HTMLDivElement>(null); // 드래그 앤 드롭을 위한 ref 생성
 
-    const [, drop] = useDrop({
+    const [,drop] = useDrop({
         accept: ItemType, // 드롭할 수 있는 Item Type 설정
         hover(item: any) {
             if (!ref.current) {
@@ -106,10 +106,10 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
     const [isTabOpen, setIsTabOpen] = useState(false);
     const [filterClass, setFilterClass] = useState('');
     const [currentFilterKey, setCurrentFilterKey] = useState('')
-    const [filterList, setFilterList] = useState([])
-    const [autoTempComplateFilterList, setTempAutoComplateFilterList] = useState([]);
-    const [autoComplateFilterList, setAutoComplateFilterList] = useState([]);
-    const [checkList, setCheckList] = useState([]);
+    const [filterList, setFilterList] = useState<any[]>([])
+    const [autoTempComplateFilterList, setTempAutoComplateFilterList] = useState<any[]>([]);
+    const [autoComplateFilterList, setAutoComplateFilterList] = useState<any[]>([]);
+    const [checkList, setCheckList] = useState<any[]>([]);
     const [tabFilterList, setTabFilterList] = useState([]);
 
     const tableRef = useRef<HTMLDivElement>(null); // 테이블 참조
@@ -222,9 +222,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
         } else if (clickedElement.classList.contains('cal')) {
             setFilterClass('calendar');
         } else if (clickedElement.classList.contains('check')) {
-            setCheckList([
-                ...new Set(rows.map(row => JSON.stringify({ key:[data.key], [data.key]: row[data.key] })))
-            ].map(str => JSON.parse(str)));
+            setCheckList([ ...new Set(rows.map(row => JSON.stringify({ key:[data.key], [data.key]: row[data.key] })))].map(str => JSON.parse(str)));
             setFilterClass('check');
         } else if (clickedElement.classList.contains('toggle')) {
             setFilterClass('toggle');
@@ -249,34 +247,31 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
 
 // 내가 누른 필터 리스트랑 currentFilterKey값이 같은걸 찾아서
 // setFilterList를 갱신함(currentFilterKey값이 같은걸 없는 버전으로)
-    const handleClickFilter = (clickedFilter) => {
+    const handleClickFilter = (clickedFilter:any) => {
         // 클릭한 필터를 제외한 새로운 리스트로 상태 업데이트
-        const updatedFilterList = filterList.filter(filter => (filter.name !== clickedFilter.name || filter.value !== clickedFilter.value))
+        const updatedFilterList = filterList.filter(filter => filter.name !== clickedFilter.name || filter.value !== clickedFilter.value);
         setFilterList(updatedFilterList); // 상태 갱신
     };
-
-    
-    const handleTabClickFilter = (clickedFilter) => {
-        const updatedFilterList = tabFilterList.filter(filter => (filter.name !== clickedFilter.name ))
+    const handleTabClickFilter = (clickedFilter:any) => {
+        const updatedFilterList = tabFilterList.filter((filter:any) => (filter.name !== clickedFilter.name ))
         setTabFilterList(updatedFilterList);
     };
 
-    const addTabFilter = (clickedFilter) => {
+    const addTabFilter = (clickedFilter:any) => {
         const newFilter = {
             key: clickedFilter.key,
             name: clickedFilter.name,
             type: clickedFilter.filterType
         };
 
-        const isDuplicate = tabFilterList.some(filter => filter.key === newFilter.key);
-    
+        const isDuplicate = tabFilterList.some((filter:any) => filter.key === newFilter.key);
+
         // 중복이 없을 때만 새로운 필터 추가
         if (!isDuplicate) {
-            const updatedFilterList = [...tabFilterList, newFilter];
+            const updatedFilterList:any = [...tabFilterList, newFilter];
             setTabFilterList(updatedFilterList);
-        } 
+        }
     };
-    
     const handleAutoComplateFilterRegister = (value: any) => {
         const newFilter = {
             key: currentFilterKey,
@@ -292,7 +287,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
     const handleCheckFilterRegister = (event:any, check:any) => {
         const checkedInputs = document.querySelectorAll('input[name="' + event.target.name + '"]:checked');
         const labels = Array.from(checkedInputs).map(input => {
-            const label = document.querySelector('label[for="' + input.id + '"]');
+            const label:any = document.querySelector('label[for="' + input.id + '"]');
             return label ? label.innerText : ''; // label이 존재하는 경우에만 innerText를 반환
         }).filter(text => text !== ''); // 빈 텍스트는 제외
         const result = labels.join(', ');
@@ -354,8 +349,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
             <div>
                 <div className="top_section">
                     <div className="filter_wrap">
-                        <div
-                            className={`search_filter ${isFilterOpen ? 'on_filter' : ''} ${isTabOpen ? 'on_tab' : ''}`}>
+                        <div className={`search_filter ${isFilterOpen ? 'on_filter' : ''} ${isTabOpen ? 'on_tab' : ''}`}>
                             {/* 검색필터 start */}
                             <div className='search'>
                                 <button type="button" className="type2"
@@ -421,8 +415,9 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
                                                 <IoIosSearch/><input type="text" placeholder="검색어를 입력하세요"
                                                                      onChange={event => handleTextFilter(event)}
                                                                      onKeyDown={event => {
+                                                                         const target:any = event.target;
                                                                          if (event.key === 'Enter') {
-                                                                             handleAutoComplateFilterRegister(event.target.value)
+                                                                             handleAutoComplateFilterRegister(target.value)
                                                                          }
                                                                      }}/>
                                             </div>
@@ -437,49 +432,47 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
                                     </div>
                                 </div>
                             </div>
-                                {/* 검색필터 end */}
-                                {/* 탭 표시 start */}
-                                <div className='tab'>
-                                    <button type="button" className="type1" onClick={() => setIsTabOpen(!isTabOpen)}>탭
-                                        표시<IoIosArrowDown color="#fff"/></button>
-                                    <div className="output_t">
+                            {/* 검색필터 end */}
+                            {/* 탭 표시 start */}
+                            <div className='tab'>
+                                <button type="button" className="type1" onClick={() => setIsTabOpen(!isTabOpen)}>탭
+                                    표시<IoIosArrowDown color="#fff"/></button>
+                                <div className="output_t">
                                     <ul className="list">
                                         {currentColumns.map((data, index) => (
                                             <li key={index} onClick={()=>addTabFilter(data)}>{data.name}</li>
                                         ))}
                                     </ul>
-                                    </div>
                                 </div>
-                                {/* 탭 표시 end */}                        </div>
-                            <div className='filter_value'>
-                                {
-                                    filterList.map((filter, index) => (
-                                        <span key={index}> <b>{`${filter.name}:`}</b> {`${filter.value}`} <IoIosClose   onClick={() => handleClickFilter(filter)}/></span>
-                                    ))
-                                }
                             </div>
+                            {/* 탭 표시 end */}                        </div>
+                        <div className='filter_value'>
+                            {
+                                filterList.map((filter, index) => (
+                                    <span key={index}> <b>{`${filter.name}:`}</b> {`${filter.value}`} <IoIosClose   onClick={() => handleClickFilter(filter)}/></span>
+                                ))
+                            }
+                        </div>
 
-                            <div className="right">
-                                {/* <div className="input_box">
+                        <div className="right">
+                            {/* <div className="input_box">
                             <IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
                             </div> */}
-                                <button type="button" className="excel"><PiMicrosoftExcelLogoFill color="#fff"/></button>
-
-
-                            </div>
-                        </div>
-                        <div className="tag_box">   
-                            {
-                                    tabFilterList.map((filter:any, index) => (
-                                        // <span key={index}> <b></b> {`${filter.value}`} <IoIosClose   onClick={() => handleClickFilter(filter)}/></span>
-                                        <button key={index} className="tag">{filter.name} <IoIosClose onClick={()=>handleTabClickFilter(filter)}/></button>
-                                    ))
-                                }
+                            <button type="button" className="excel"><PiMicrosoftExcelLogoFill color="#fff"/></button>
                         </div>
                     </div>
+                    <div className="tag_box">
+                        {
+                            tabFilterList.map((filter:any, index) => (
+                                // <span key={index}> <b></b> {`${filter.value}`} <IoIosClose   onClick={() => handleClickFilter(filter)}/></span>
+                                <button key={index} className="tag">{filter.name} <IoIosClose onClick={()=>handleTabClickFilter(filter)}/></button>
+                            ))
+                        }
+                    </div>
                 </div>
-                <div ref={tableRef} className='table_content'>
-                    {/* <div style={{ marginBottom: '10px' }}>
+            </div>
+            <div ref={tableRef} className='table_content'>
+                {/* <div style={{ marginBottom: '10px' }}>
                     <span>Rows per page: </span>
                     <select value={rowsPerPage} onChange={handleChangeRowsPerPage}>
                         <option value={5}>5</option>
@@ -488,63 +481,63 @@ const CommonDataGrid: NextPage<DataGridProps> = ({ columns = [], rows = [] }) =>
                     </select>
                     <span> of {rows.length} </span> // 총 데이터 건수 표시
                 </div> */}
-                    <div className='table_head'>
-                        {currentColumns.map((column, index) => (
-                            <Column
-                                key={index}
-                                column={column}
-                                index={index}
-                                moveColumn={moveColumn}
-                                columnWidths={columnWidths}
-                                onMouseDown={onMouseDown}
-                                onSort={handleSort}
-                                sortOrder={sortConfig.find(config => config.key === column.key)?.direction || null}
-                            />
-                        ))}
-                    </div>
-                    <div className='table_body'>
-                        {paginatedRows.map((row, index2) => (
-                            <div key={index2} className='row'>
-                                {currentColumns.map((column, index) => (
-                                    <div key={`${index2}-${index}`} style={{ width: columnWidths[index] }} className='cell'>
-                                        {row[column.key]}
-                                    </div>
-                                ))}
-                            </div>
-                        ))}
-                    </div>
-                    <div className='pagination'>
-                        <button disabled={currentPage === 1} onClick={() => handlePageChange(1)}>
-                            <MdOutlineKeyboardArrowLeft />
-                        </button>
-                        <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
-                            <MdOutlineKeyboardDoubleArrowLeft />
-                        </button>
-
-                        {/* startPage에서 endPage까지 페이지 버튼을 렌더링 */}
-                        {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
-                            const pageIndex = startPage + index;
-                            return (
-                                <button
-                                    key={pageIndex}
-                                    className={currentPage === pageIndex ? 'current' : ''}
-                                    onClick={() => handlePageChange(pageIndex)}
-                                >
-                                    {pageIndex}
-                                </button>
-                            );
-                        })}
-
-                        <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
-                            <MdOutlineKeyboardArrowRight />
-                        </button>
-                        <button disabled={currentPage === totalPages} onClick={() => handlePageChange(totalPages)}>
-                            <MdOutlineKeyboardDoubleArrowRight />
-                        </button>
-                    </div>
+                <div className='table_head'>
+                    {currentColumns.map((column, index) => (
+                        <Column
+                            key={index}
+                            column={column}
+                            index={index}
+                            moveColumn={moveColumn}
+                            columnWidths={columnWidths}
+                            onMouseDown={onMouseDown}
+                            onSort={handleSort}
+                            sortOrder={sortConfig.find(config => config.key === column.key)?.direction || null}
+                        />
+                    ))}
                 </div>
+                <div className='table_body'>
+                    {paginatedRows.map((row, index2) => (
+                        <div key={index2} className='row'>
+                            {currentColumns.map((column, index) => (
+                                <div key={`${index2}-${index}`} style={{ width: columnWidths[index] }} className='cell'>
+                                    {row[column.key]}
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </div>
+                <div className='pagination'>
+                    <button disabled={currentPage === 1} onClick={() => handlePageChange(1)}>
+                        <MdOutlineKeyboardArrowLeft />
+                    </button>
+                    <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
+                        <MdOutlineKeyboardDoubleArrowLeft />
+                    </button>
+
+                    {/* startPage에서 endPage까지 페이지 버튼을 렌더링 */}
+                    {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
+                        const pageIndex = startPage + index;
+                        return (
+                            <button
+                                key={pageIndex}
+                                className={currentPage === pageIndex ? 'current' : ''}
+                                onClick={() => handlePageChange(pageIndex)}
+                            >
+                                {pageIndex}
+                            </button>
+                        );
+                    })}
+
+                    <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
+                        <MdOutlineKeyboardArrowRight />
+                    </button>
+                    <button disabled={currentPage === totalPages} onClick={() => handlePageChange(totalPages)}>
+                        <MdOutlineKeyboardDoubleArrowRight />
+                    </button>
+                </div>
+            </div>
         </DndProvider>
-);
+    );
 };
 
 export default CommonDataGrid; // CommonDataGrid 컴포넌트 기본 export
