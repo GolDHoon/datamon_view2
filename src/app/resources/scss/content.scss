@@ -7,6 +7,18 @@
         height: 100vh;
         background-color: #E8E8E8;   
 
+       .home_wrap{
+        width: 100%;
+        height: 100%;
+        .wait_message{
+        font-size: 24px;
+        height: 100%;
+         display: flex;
+         align-items: center;
+         justify-content: center;   
+        }
+       }
+
 
         .custInfo_wrap{
             width: calc(100% - 30px);

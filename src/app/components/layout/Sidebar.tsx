@@ -46,9 +46,9 @@ export default function Sidebar(){
         </li>
         <li className={`mli ${isActive6 ? 'on' : ''}`}     onClick={() => setIsActive6(!isActive6)} > <MdManageSearch  size="20" /> 고객정보 목록 <IoIosArrowDown />
 <ul>
-    <li>고객DB별 고객정보 목록</li>
-    <li>고객DB별 이력</li>
-    <li>고객DB 삭제</li>
+    <li><Link href="/ad/custInfo/">고객정보 목록</Link></li>
+    {/* <li>고객DB별 이력</li>
+    <li>고객DB 삭제</li> */}
 </ul>
 </li>
         <li className={`mli ${isActive4 ? 'on' : ''}`}     onClick={() => setIsActive4(!isActive4)} > <TbBeta  size="20" /> Beta기능 <IoIosArrowDown />
