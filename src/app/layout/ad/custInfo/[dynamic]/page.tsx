@@ -1,5 +1,6 @@
 "use client";
 import CommonLayout from "../../../../components/layout/CommonLayout";
+import Modal from "../../../../components/layout/ad/custInfo/Modal";
 import CommonToggle from "@/app/components/CommonToggle";
 import CommonDatepicker from "@/app/components/CommonDatepicker";
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
@@ -7,7 +8,7 @@ import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 import { MdOutlineCalendarToday } from "react-icons/md";
 import CommonDataGrid from "@/app/components/CommonDataGrid";
 import { IoIosSearch } from "react-icons/io";
-import { GrClose } from "react-icons/gr";
+
 
 import {useEffect, useState} from "react";
 import restApi from "@/app/resources/js/Axios";
@@ -78,91 +79,13 @@ const Page: React.FC<PageProps> = ({ params }) => {
     }, [selectedDb]);
     return (
 <CommonLayout>
-
-   {/* 모달 */}
-   {isModalOpen && (
-  <div>
-          <div className="modal_wrap">
-          <div className="modal_header">
-            <span>업체 정보 리스트</span>
-            <GrClose size="22" onClick={closeModal} />
-          </div>
-          <div className="modal_body">
-<ul>
-    <li>
-        <label>유저ID</label>
-        <input type="text" value="Data" />
-    </li>
-    <li>
-        <label>업체명</label>
-        <input type="text" value="Data" />
-    </li>
-    <li>
-        <label>대표명</label>
-        <input type="text" value="Data" />
-    </li>
-    <li>
-        <label>사업자등록번호</label>
-        <input type="text" value="Data" />
-    </li>
-    <li>
-        <label>사업장소재지</label>
-        <input type="text" value="Data" />
-    </li>
-    <li>
-        <label>업태</label>
-        <input type="text" value="Data" />
-    </li>
-    <li>
-        <label>업종</label>
-        <input type="text" value="Data" />
-    </li>
-    <li>
-        <label>유저ID</label>
-        <input type="text" value="Data" />
-    </li>
-    <li>
-        <label>업체명</label>
-        <input type="text" value="Data" />
-    </li>
-    <li>
-        <label>대표명</label>
-        <input type="text" value="Data" />
-    </li>
-    <li>
-        <label>사업자등록번호</label>
-        <input type="text" value="Data" />
-    </li>
-    <li>
-        <label>사업장소재지</label>
-        <input type="text" value="Data" />
-    </li>
-    <li>
-        <label>업태</label>
-        <input type="text" value="Data" />
-    </li>
-    <li>
-        <label>업종</label>
-        <input type="text" value="Data" />
-    </li>
-</ul>
-
-          </div>
-          <div className="modal_foot">
-            <button type="button">수정</button> <button type="button" className="disable">삭제</button>
-          </div>
-
-        </div>
-         <div className="modal_bg" />
-  </div>
-
-      )}
+<Modal isOpen={isModalOpen} onClose={closeModal} />
 
 {/* ---- */}
 
     <div className="custInfo_wrap">
         <div className="title_box">
-            <h2>유저정보 리스트</h2>
+            <h2>고객정보 목록</h2>
             <div>
                 <select defaultValue="init" onChange={(event) => {
                     const selectedValue = event.target.value.split('|');
