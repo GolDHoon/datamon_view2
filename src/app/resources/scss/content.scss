@@ -562,6 +562,11 @@ input, textarea, select, div{
 input{
     padding: 6px 8px;
     background-color: #ecf2ff;
+
+    &.read_only{
+        background-color: #ddd;
+        color: #aaa;
+    }
 }
 textarea{
     padding: 6px 8px;

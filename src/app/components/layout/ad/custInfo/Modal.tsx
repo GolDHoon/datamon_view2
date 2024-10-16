@@ -39,7 +39,7 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
                           inputComponent = (
                               <li key={index}>
                                   <label>{item.name}</label>
-                                  <input type="text" value={dataJson[item.key]} readOnly={true}/>
+                                  <input type="text" className='read_only' value={dataJson[item.key]} readOnly={true}/>
                               </li>
                           );
                       }else{
