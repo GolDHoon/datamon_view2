@@ -60,8 +60,6 @@ export default function Sidebar(){
         }
     },[])
 
-
-
     return (
 <nav className={ isActive1 ? 'min' : ''}>
 <h1><Link href="/home">DATAMON</Link></h1>
@@ -88,16 +86,16 @@ export default function Sidebar(){
             </ul>
         </li> */}
         
-{["USTY_MAST", "USTY_INME", "USTY_CAME"].includes(userType) ? null : (
-    <li className={`mli ${isActive6 ? 'on' : ''}`} onClick={() => setIsActive6(!isActive6)}>
-        <MdManageSearch size="20" /> 고객정보 목록 <IoIosArrowDown />
-        <ul>
-            <li><Link href={custInfoUrl}>고객정보 목록</Link></li>
-            {/* <li>고객DB별 이력</li>
-            {/* <li>고객DB 삭제</li> */}
-        </ul>
-    </li>
-)}
+        {["USTY_MAST", "USTY_INME", "USTY_CAME"].includes(userType) ? null : (
+            <li className={`mli ${isActive6 ? 'on' : ''}`} onClick={() => setIsActive6(!isActive6)}>
+                <MdManageSearch size="20" /> 고객정보 목록 <IoIosArrowDown />
+                <ul>
+                    <li><Link href={custInfoUrl}>고객정보 목록</Link></li>
+                    {/* <li>고객DB별 이력</li>
+                    {/* <li>고객DB 삭제</li> */}
+                </ul>
+            </li>
+        )}
 
 
 
