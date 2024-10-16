@@ -17,6 +17,7 @@ export default function Sidebar(){
     const [isActive3, setIsActive3] = useState(false);
     const [isActive4, setIsActive4] = useState(false);
     const [isActive6, setIsActive6] = useState(false);
+const [custInfoUrl, setCuseInfoUrl] = useState("")
 
     return (
 <nav className={ isActive1 ? 'min' : ''}>
@@ -24,7 +25,7 @@ export default function Sidebar(){
 <i className="right_toggle" onClick={() => setIsActive1(!isActive1)}><BsArrowLeftShort color="fff" size="26" />arrow</i>
 <div className="nav_wrap">
     <ul className="gnb">
-        <li className="mli" > <FaRegNoteSticky size="20" /> 공지사항 
+        {/* <li className="mli" > <FaRegNoteSticky size="20" /> 공지사항 
 </li>
         <li className={`mli ${isActive2 ? 'on' : ''}`}   onClick={() => setIsActive2(!isActive2)} ><FaMarker  size="20" /> 마스터 계정 관리 <IoIosArrowDown />
             <ul>
@@ -42,21 +43,25 @@ export default function Sidebar(){
                 <li>사용자 계정 목록</li>
                 <li>고객DB 매핑 요청 승인</li>
             </ul>
-        </li>
+        </li> */}
+
+
+
         <li className={`mli ${isActive6 ? 'on' : ''}`}     onClick={() => setIsActive6(!isActive6)} > <MdManageSearch  size="20" /> 고객정보 목록 <IoIosArrowDown />
 <ul>
-    <li><Link href="/ad/custInfo/">고객정보 목록</Link></li>
+    <li><Link href={custInfoUrl}>고객정보 목록</Link></li>
     {/* <li>고객DB별 이력</li>
     <li>고객DB 삭제</li> */}
 </ul>
 </li>
-        <li className={`mli ${isActive4 ? 'on' : ''}`}     onClick={() => setIsActive4(!isActive4)} > <TbBeta  size="20" /> Beta기능 <IoIosArrowDown />
+
+        {/* <li className={`mli ${isActive4 ? 'on' : ''}`}     onClick={() => setIsActive4(!isActive4)} > <TbBeta  size="20" /> Beta기능 <IoIosArrowDown />
 
             <ul>
                 <li>광고플랫폼 DB관리</li>
             </ul>
         </li>
-        <li className="mli"> <RiCustomerService2Fill  size="20" />고객센터</li>
+        <li className="mli"> <RiCustomerService2Fill  size="20" />고객센터</li> */}
     </ul>
 </div>
 </nav>
