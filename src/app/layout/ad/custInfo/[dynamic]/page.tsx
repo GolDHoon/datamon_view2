@@ -13,13 +13,23 @@ import {useEffect, useState} from "react";
 import restApi from "@/app/resources/js/Axios";
 import GetConst from "@/app/resources/js/Const";
 
-export default function page (){
+// PageProps 타입 정의
+interface PageProps {
+    params: {
+        dynamic: string;
+    };
+}
+
+// 페이지 컴포넌트
+const Page: React.FC<PageProps> = ({ params }) => {
+    const { dynamic } = params;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [dbList, setDbList] = useState([]);
     const [selectedDbType, setSelectedDbType] = useState("init");
     const [selectedDb, setSelectedDb] = useState("init");
     const [columns, setColumns] = useState([]);
     const [rows, setRows] = useState([]);
+    const [selectedIdx, setSelectedIdx] = useState();
 
   // 모달 열기 함수
   const openModal = () => {
@@ -31,6 +41,13 @@ export default function page (){
     setIsModalOpen(false);
   };
 
+
+  const handleOnRowDoubleClick = (idx:any) => {
+      console.log(idx)
+      debugger
+      setSelectedIdx(idx)
+      openModal()
+  }
 
     useEffect(() => {
         restApi('get', '/custInfo/custDBCode/list', {}).then(response => {
@@ -51,7 +68,6 @@ export default function page (){
             }).then(response => {
                 // @ts-ignore
                 if(response.status === 200){
-                    console.log(response.data);
                     setColumns(response.data.columnInfoList);
                     setRows(response.data.dataList);
                 }else{
@@ -135,7 +151,7 @@ export default function page (){
           <div className="modal_foot">
             <button type="button">수정</button> <button type="button" className="disable">삭제</button>
           </div>
-         
+
         </div>
          <div className="modal_bg" />
   </div>
@@ -148,34 +164,23 @@ export default function page (){
         <div className="title_box">
             <h2>유저정보 리스트</h2>
             <div>
-                <select defaultValue={selectedDbType} onChange={(event) => {
-                    setSelectedDbType(event.target.value)
+                <select defaultValue="init" onChange={(event) => {
+                    const selectedValue = event.target.value.split('|');
+                    setSelectedDbType(selectedValue[0]);
+                    setSelectedDb(selectedValue[1]);
                 }}>
                     <option value="init" disabled>
-                        데이터 유형을 선택해주세요
+                        DB선택
                     </option>
-                    {dbList.map((dbType:any) => (
-                        <option key={dbType.custDbType} value={dbType.custDbType}>
-                            {GetConst("dbTypeList")[dbType?.custDbType]}
-                        </option>
-                    ))}
-                </select>
-                <select defaultValue={selectedDb} onChange={(event) => {
-                    setSelectedDb(event.target.value)
-                }}>
-                    <option value="init" disabled>
-                        데이터 URL을 선택해주세요
-                    </option>
-                    {dbList.map((dbType:any, index) => {
-                        if (dbType.custDbType === selectedDbType) {
-                            return dbType.custDbCodeList.map((db:any, index2:number) => (
-                                <option key={db.key} value={db.key}>
+                    {dbList.map((dbType: any) => (
+                        <optgroup key={dbType.custDbType} label={GetConst("dbTypeList")[dbType.custDbType]}>
+                            {dbType.custDbCodeList.map((db: any) => (
+                                <option key={db.key} value={`${dbType.custDbType}|${db.key}`}>
                                     {db[db.key]}
                                 </option>
-                            ));
-                        }
-                        return null; // 특정 조건의 경우 아무것도 반환하지 않는 경우를 처리
-                    })}
+                            ))}
+                        </optgroup>
+                    ))}
                 </select>
             </div>
         </div>
@@ -183,9 +188,15 @@ export default function page (){
 
         {/* <button className="modalOpen" onClick={openModal}>모달오픈</button> */}
         <section className="table">
-            <CommonDataGrid columns={columns} rows={rows}/>
+            <CommonDataGrid
+                columns={columns}
+                rows={rows}
+                downLoadFileName={`고객정보목록_${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`}
+                handleRowDoubleClick={handleOnRowDoubleClick}/>
         </section>
     </div>
 </CommonLayout>
     )
 }
+
+export default Page;
