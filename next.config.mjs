@@ -22,6 +22,10 @@ const nextConfig = {
                 source: '/crm/custInfo/:dynamic',
                 destination: '/layout/crm/custInfo/:dynamic',
             },
+            {
+                source: '/(.*)',  // 이 부분을 추가하여 나머지 모든 경로를 404로 리다이렉트합니다.
+                destination: '/404'
+            }
         ];
     },
 };
