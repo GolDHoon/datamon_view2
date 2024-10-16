@@ -57,7 +57,7 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
                       <li key={index}>
                         <label>{item.name}</label>
                           <div>
-                              dataJson[item.key]
+                              {dataJson[item.key]}
                           </div>
                       </li>
                   );
