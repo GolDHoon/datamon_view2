@@ -30,14 +30,14 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
                     inputComponent = (
                         <li key={index}>
                           <label>{item.name}</label>
-                          <textarea></textarea>
+                          <textarea value={dataJson[item.key]}></textarea>
                         </li>
                     );
                   }else{
                     inputComponent = (
                         <li key={index}>
                           <label>{item.name}</label>
-                          <input type="text" value="Data"/>
+                          <input type="text" value={dataJson[item.key]}/>
                         </li>
                     );
                   }
@@ -46,6 +46,9 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
                   inputComponent = (
                       <li key={index}>
                         <label>{item.name}</label>
+                          <select>
+                              <option>개발중</option>
+                          </select>
                       </li>
                   );
                   break;
@@ -53,6 +56,9 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
                   inputComponent = (
                       <li key={index}>
                         <label>{item.name}</label>
+                          <div>
+                              dataJson[item.key]
+                          </div>
                       </li>
                   );
                   break;
