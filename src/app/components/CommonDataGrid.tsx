@@ -100,10 +100,10 @@ const Column: React.FC<ColumnProps> = ({column, index, moveColumn, columnWidths,
 const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downLoadFileName, handleRowDoubleClick}) => {
     const [columnWidths, setColumnWidths] = useState<number[]>(columns.map(() => 100)); // 컬럼 너비 초기화
     const [resizing, setResizing] = useState<{ index: number; initialX: number; initialWidth: number } | null>(null); // 리사이즈 상태 관리
-    const [currentColumns, setCurrentColumns] = useState(columns); // 현재 컬럼 상태 관리
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }[]>([]); // 정렬 설정 상태 관리
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 관리
     const [rowsPerPage, setRowsPerPage] = useState(10); // 페이지 당 보여줄 행 수 상태 관리
+    const [currentColumns, setCurrentColumns] = useState(columns); // 현재 컬럼 상태 관리
     const [currentRows, setCurrentRows] = useState(rows); // 현재 행 상태 관리
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [isTabOpen, setIsTabOpen] = useState(false);
@@ -113,7 +113,12 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
     const [autoTempComplateFilterList, setTempAutoComplateFilterList] = useState<any[]>([]);
     const [autoComplateFilterList, setAutoComplateFilterList] = useState<any[]>([]);
     const [checkList, setCheckList] = useState<any[]>([]);
-    const [tabFilterList, setTabFilterList] = useState<any[]>([]);
+    const [tabFilterList, setTabFilterList] = useState<any[]>(columns.map((column:any) => {return {
+        key: column.key,
+        name: column.name,
+        type: column.filterType
+    }}));
+    const [tempCurrentColumns, setTempCurrentColumns] = useState<any[]>(columns);
     const [fileInfo, setFileInfo] = useState<any>({
         downLoadFile : {
             name :downLoadFileName
@@ -420,6 +425,10 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
     }, [filterList]);
 
     useEffect(() => {
+        setCurrentColumns(tempCurrentColumns.filter((column:any) => tabFilterList.map((tabFilter:any) => {return tabFilter.key;}).includes(column.key)))
+    }, [tabFilterList]);
+
+    useEffect(() => {
         setCurrentColumns(columns);
         setCurrentRows(rows);
     }, [columns, rows]);
@@ -523,7 +532,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                                     표시<IoIosArrowDown color="#fff"/></button>
                                 <div className="output_t">
                                     <ul className="list">
-                                        {currentColumns.map((data, index) => (
+                                        {tempCurrentColumns.map((data, index) => (
                                             <li key={index} onClick={() => addTabFilter(data)}>{data.name}</li>
                                         ))}
                                     </ul>
