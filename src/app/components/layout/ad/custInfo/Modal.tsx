@@ -30,7 +30,7 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
                     inputComponent = (
                         <li key={index}>
                           <label>{item.name}</label>
-                          <textarea></textarea>
+                          <textarea placeholder='메모를 입력하세요'></textarea>
                         </li>
                     );
                   }else{
@@ -61,63 +61,6 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
               }
              return inputComponent;
             })}
-
-            {/*<li>*/}
-            {/*    <label>유저ID</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>업체명</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>대표명</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>사업자등록번호</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>사업장소재지</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>업태</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>업종</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>유저ID</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>업체명</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>대표명</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>사업자등록번호</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>사업장소재지</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>업태</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>업종</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
           </ul>
         </div>
         <div className="modal_foot">
