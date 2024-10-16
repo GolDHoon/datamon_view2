@@ -37,7 +37,7 @@ export default function Sidebar(){
                 setCuseInfoUrl("/client/custInfo/list");
                 break; 
             case 'USTY_CLME': // 클라이언트 직원 계정
-            setCuseInfoUrl("/client/custInfo/list");
+                setCuseInfoUrl("/client/custInfo/list");
                 break; 
              case 'USTY_ADAC': // 광고 에이전시 어드민 계정
                 setCuseInfoUrl("/ad/custInfo/list");
@@ -56,6 +56,7 @@ export default function Sidebar(){
 
     useEffect(()=>{
         if(!!getSession('userType')){
+            // @ts-ignore
             setUserType(getSession('userType'));
         }
     },[])

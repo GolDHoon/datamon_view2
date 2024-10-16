@@ -105,7 +105,6 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
                                                 <textarea
                                                     value={item.value}
                                                     onChange={(event) => handleChange(item.key, event.target.value)}
-                                                    readOnly={true}
                                                     placeholder='메모를 입력하세요'
                                                 />
                                             ) : item.key === "ip" ? (
@@ -116,11 +115,21 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
                                                     readOnly
                                                 />
                                             ) : (
-                                                <input
-                                                    type="text"
-                                                    value={item.value}
-                                                    onChange={(event) => handleChange(item.key, event.target.value)}
-                                                />
+                                                item.key.includes("utm") ? (
+                                                    <input
+                                                        type="text"
+                                                        value={item.value}
+                                                        className='read_only'
+                                                        readOnly
+                                                        onChange={(event) => handleChange(item.key, event.target.value)}
+                                                    />
+                                                ) : (
+                                                    <input
+                                                        type="text"
+                                                        value={item.value}
+                                                        onChange={(event) => handleChange(item.key, event.target.value)}
+                                                    />
+                                                )
                                             )}
                                         </li>
                                     );

@@ -1,6 +1,6 @@
 "use client";
 import CommonLayout from "../../../../components/layout/CommonLayout";
-import Modal from "../../../../components/layout/ad/custInfo/Modal";
+import Modal from "../../../../components/layout/client/custInfo/Modal";
 import CommonDataGrid from "@/app/components/CommonDataGrid";
 
 
@@ -27,8 +27,8 @@ const Page: React.FC<PageProps> = ({ params }) => {
     const [selectedDb, setSelectedDb] = useState("init");
     const [columns, setColumns] = useState([]);
     const [rows, setRows] = useState([]);
-    const [selectRow, setSelectRow] = useState();
-
+    const [selectRow, setSelectRow] = useState()
+    
   // 모달 열기 함수
   const openModal = () => {
     setIsModalOpen(true);
@@ -37,7 +37,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
   // 모달 닫기 함수
   const closeModal = () => {
     setIsModalOpen(false);
-    getDataList()
+      getDataList();
   };
 
 
@@ -46,34 +46,35 @@ const Page: React.FC<PageProps> = ({ params }) => {
       openModal()
   }
 
-  const getDataList = () => {
-      try{
-          restApi('get', '/custInfo/list', {
-              custDBType:selectedDbType,
-              custDBCode:selectedDb,
-          }).then(response => {
-              // @ts-ignore
-              if(response.status === 200){
-                  setColumns(response.data.columnInfoList);
-                  setRows(response.data.dataList);
-              }else{
-                  alert(response.data)
-              }
-          });
-      }catch (error){
-          // @ts-ignore
-          router('/' + getSession("companyName") + '/login');
-      }
-  }
+    const getDataList = () => {
+        try{
+            restApi('get', '/custInfo/list', {
+                custDBType:selectedDbType,
+                custDBCode:selectedDb,
+            }).then(response => {
+                // @ts-ignore
+                if(response.status === 200){
+                    setColumns(response.data.columnInfoList);
+                    setRows(response.data.dataList);
+                }else{
+                    alert(response.data)
+                }
+            });
+        }catch (error){
+            // @ts-ignore
+            router('/' + getSession("companyName") + '/login');
+        }
+    }
 
     useEffect(() => {
         if(dynamic !== 'list'){
             router.push('/home');
         }
 
-        if(!["USTY_DEVL", "USTY_ADAC", "USTY_AAME"].includes(getSession("userType") as string)){
+        if(!["USTY_DEVL", "USTY_CLNT", "USTY_CLME"].includes(getSession("userType") as string)){
             router.push('/home');
         }
+
 
         try {
             restApi('get', '/custInfo/custDBCode/list', {}).then(response => {
@@ -82,6 +83,8 @@ const Page: React.FC<PageProps> = ({ params }) => {
                     setDbList(response.data);
                 }else{
                     alert(response.data)
+                    // @ts-ignore
+                    router('/' + getSession("companyName") + '/login');
                 }
             })
         }catch (errro) {
@@ -92,7 +95,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
 
     useEffect(() => {
         if(selectedDb !== "init"){
-            getDataList()
+            getDataList();
         }
     }, [selectedDb]);
     return (

@@ -105,7 +105,6 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
                                                 <textarea
                                                     value={item.value}
                                                     onChange={(event) => handleChange(item.key, event.target.value)}
-                                                    readOnly={true}
                                                     placeholder='메모를 입력하세요'
                                                 />
                                             ) : item.key === "ip" ? (

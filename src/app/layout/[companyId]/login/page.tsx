@@ -29,6 +29,7 @@ const Login: NextPage<LoginProps> = ({ params }) => {
                 }else{
                     alert(response.data)
                 }
+                setSession("companyName",companyName);
             })
         } catch (error){
             // console.log()
