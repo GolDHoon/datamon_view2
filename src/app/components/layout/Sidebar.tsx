@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaRegNoteSticky } from "react-icons/fa6";
 import { FaMarker } from "react-icons/fa";
 import { PiUserListBold } from "react-icons/pi";
@@ -10,6 +10,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { MdManageSearch } from "react-icons/md";
 import Link from 'next/link'
 import "../../resources/scss/main/sidebar.scss";
+import { getSession } from '@/app/resources/js/Session';
 
 export default function Sidebar(){
     const [isActive1, setIsActive1] = useState(false);
@@ -17,7 +18,49 @@ export default function Sidebar(){
     const [isActive3, setIsActive3] = useState(false);
     const [isActive4, setIsActive4] = useState(false);
     const [isActive6, setIsActive6] = useState(false);
-const [custInfoUrl, setCuseInfoUrl] = useState("")
+    const [custInfoUrl, setCuseInfoUrl] = useState("");
+    const [userType, setUserType] = useState("");
+
+    
+    useEffect(()=>{
+        switch (getSession('userType')) {
+            case 'USTY_MAST': //master 어드민 계정
+                setCuseInfoUrl("");
+                break; 
+            case 'USTY_DEVL': // 개발자 계정
+                setCuseInfoUrl("/client/custInfo/list");
+                break; 
+             case 'USTY_INME': // 마스터 직원 계정
+                setCuseInfoUrl("");
+                break; 
+            case 'USTY_CLNT': // 클라이언트 어드민 계정
+                setCuseInfoUrl("/client/custInfo/list");
+                break; 
+            case 'USTY_CLME': // 클라이언트 직원 계정
+            setCuseInfoUrl("/client/custInfo/list");
+                break; 
+             case 'USTY_ADAC': // 광고 에이전시 어드민 계정
+                setCuseInfoUrl("/ad/custInfo/list");
+                break; 
+            case 'USTY_AAME': // 광고 에이전시 직원 계정
+                setCuseInfoUrl("/ad/custInfo/list");
+                break; 
+            case 'USTY_CRAC': // CRM 어드민 계정
+                setCuseInfoUrl("/crm/custInfo/list");
+                break; 
+            case 'USTY_CAME': // CRM 직원 계정
+                setCuseInfoUrl("");
+                break; 
+        }
+    },[userType])
+
+    useEffect(()=>{
+        if(!!getSession('userType')){
+            setUserType(getSession('userType'));
+        }
+    },[])
+
+
 
     return (
 <nav className={ isActive1 ? 'min' : ''}>
@@ -44,16 +87,19 @@ const [custInfoUrl, setCuseInfoUrl] = useState("")
                 <li>고객DB 매핑 요청 승인</li>
             </ul>
         </li> */}
+        
+{["USTY_MAST", "USTY_INME", "USTY_CAME"].includes(userType) ? null : (
+    <li className={`mli ${isActive6 ? 'on' : ''}`} onClick={() => setIsActive6(!isActive6)}>
+        <MdManageSearch size="20" /> 고객정보 목록 <IoIosArrowDown />
+        <ul>
+            <li><Link href={custInfoUrl}>고객정보 목록</Link></li>
+            {/* <li>고객DB별 이력</li>
+            {/* <li>고객DB 삭제</li> */}
+        </ul>
+    </li>
+)}
 
 
-
-        <li className={`mli ${isActive6 ? 'on' : ''}`}     onClick={() => setIsActive6(!isActive6)} > <MdManageSearch  size="20" /> 고객정보 목록 <IoIosArrowDown />
-<ul>
-    <li><Link href={custInfoUrl}>고객정보 목록</Link></li>
-    {/* <li>고객DB별 이력</li>
-    <li>고객DB 삭제</li> */}
-</ul>
-</li>
 
         {/* <li className={`mli ${isActive4 ? 'on' : ''}`}     onClick={() => setIsActive4(!isActive4)} > <TbBeta  size="20" /> Beta기능 <IoIosArrowDown />
 

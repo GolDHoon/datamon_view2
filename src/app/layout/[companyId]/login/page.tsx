@@ -5,6 +5,7 @@ import Link from "next/link";
 import {useEffect, useState} from "react";
 import { useRouter } from 'next/navigation';
 import restApi from "@/app/resources/js/Axios";
+import { setSession } from '@/app/resources/js/Session';
 
 interface LoginProps {
     params?: { companyId: string };
@@ -54,6 +55,8 @@ const Login: NextPage<LoginProps> = ({ params }) => {
               }).then(response => {
                 // @ts-ignore
                 if(response.status === 200){
+                    setSession('userType', response.data.userType)
+
                     if (typeof window !== 'undefined') {
                         router.push('/home');
                     }
@@ -69,7 +72,6 @@ const Login: NextPage<LoginProps> = ({ params }) => {
         }
     };
 
-
     return (
         <div className="login_wrap">
             <em className="comp">{companyName}</em>
@@ -77,14 +79,15 @@ const Login: NextPage<LoginProps> = ({ params }) => {
             <div className="form_cont">
                 <input type="text" value={idValue} onChange={(event)=>{setId(event.target.value)}} placeholder="아이디"/>
                 <input type="password" value={pwValue} onChange={(event)=>{setPw(event.target.value)}} placeholder="비밀번호"/>
-                <div>
+                {/* <div>
                     <div className="check_box">
                         <input id="id" type="checkbox"/> <label htmlFor="id">아이디저장</label>
                     </div>
                     <p><Link href="">아이디/비밀번호 찾기</Link></p>
-                </div>
-                <button type="button" className="login" onClick={loginEffect}>로그인</button>
-                <button>회원가입</button>
+                </div> */}
+                {/* 추후 기능 개발 시 style 삭제 요망 */}
+                <button type="button" style={{marginTop: "24px"}} className="login" onClick={loginEffect}>로그인</button>
+                {/* <button>회원가입</button> */}
             </div>
         </div>
     );
