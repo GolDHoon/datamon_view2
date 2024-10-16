@@ -1,5 +1,6 @@
 import React from 'react';
 import { GrClose } from 'react-icons/gr';
+import GetConst from "@/app/resources/js/Const";
 
 interface ModalProps {
     isOpen: boolean; 
@@ -34,20 +35,31 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
                         </li>
                     );
                   }else{
-                    inputComponent = (
-                        <li key={index}>
-                          <label>{item.name}</label>
-                          <input type="text" value={dataJson[item.key]}/>
-                        </li>
-                    );
+                      if(item.key === "ip"){
+                          inputComponent = (
+                              <li key={index}>
+                                  <label>{item.name}</label>
+                                  <input type="text" value={dataJson[item.key]} readOnly={true}/>
+                              </li>
+                          );
+                      }else{
+                          inputComponent = (
+                              <li key={index}>
+                                  <label>{item.name}</label>
+                                  <input type="text" value={dataJson[item.key] }/>
+                              </li>
+                          );
+                      }
                   }
                   break;
                 case "select":
                   inputComponent = (
                       <li key={index}>
                         <label>{item.name}</label>
-                          <select>
-                              <option>개발중</option>
+                          <select defaultValue={GetConst("cdbsCode").find((code:any) => dataJson[item.key] === code.value).key}>
+                              {GetConst("cdbsCode").map((code:any, index2:number) => (
+                                <option key={index2} value={code.key}>{code.value}</option>
+                              ))}
                           </select>
                       </li>
                   );
@@ -57,7 +69,7 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
                       <li key={index}>
                         <label>{item.name}</label>
                           <div>
-                              {dataJson[item.key]}
+                              {dataJson[item.key].replace("T", " ")}
                           </div>
                       </li>
                   );
@@ -67,63 +79,6 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
               }
              return inputComponent;
             })}
-
-            {/*<li>*/}
-            {/*    <label>유저ID</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>업체명</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>대표명</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>사업자등록번호</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>사업장소재지</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>업태</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>업종</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>유저ID</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>업체명</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>대표명</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>사업자등록번호</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>사업장소재지</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>업태</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
-          {/*  <li>*/}
-          {/*    <label>업종</label>*/}
-          {/*    <input type="text" value="Data" />*/}
-          {/*  </li>*/}
           </ul>
         </div>
         <div className="modal_foot">
