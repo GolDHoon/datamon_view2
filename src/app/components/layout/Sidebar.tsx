@@ -20,16 +20,15 @@ export default function Sidebar(){
 
     return (
 <nav className={ isActive1 ? 'min' : ''}>
-<h1>DATAMON</h1>
+<h1><Link href="/home">DATAMON</Link></h1>
 <i className="right_toggle" onClick={() => setIsActive1(!isActive1)}><BsArrowLeftShort color="fff" size="26" />arrow</i>
 <div className="nav_wrap">
     <ul className="gnb">
         <li className="mli" > <FaRegNoteSticky size="20" /> 공지사항 
 </li>
         <li className={`mli ${isActive2 ? 'on' : ''}`}   onClick={() => setIsActive2(!isActive2)} ><FaMarker  size="20" /> 마스터 계정 관리 <IoIosArrowDown />
-
             <ul>
-                <li> <Link href="/layout/login">공지사항 관리</Link></li>
+                <li> <Link href="/">공지사항 관리</Link></li>
                 <li> <Link href="/">문의 관리</Link></li>
                 <li>홍보페이지 관리</li>
             </ul>

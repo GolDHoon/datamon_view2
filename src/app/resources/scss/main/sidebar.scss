@@ -17,18 +17,24 @@ nav{
     background-color: #fff;
 
     h1{
+        transition: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
         font-weight: 900;
-        padding-bottom: 28px;
+        padding-bottom: 16px;
+        font-size: 20px;
         border-bottom: 1px solid #ddd;
 
         &::before{
             content:"";
             display: inline-block;
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             background-image: url("../../img/logo.png");
             background-size: contain;
             background-repeat: no-repeat;
+            margin-right: 8px;
         }
     }
 
@@ -159,6 +165,7 @@ nav{
             &::before{
                 width: 30px;
                 height: 30px;
+                margin-right: 0;
             }
         }
 
