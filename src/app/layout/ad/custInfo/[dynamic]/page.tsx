@@ -30,8 +30,8 @@ const Page: React.FC<PageProps> = ({ params }) => {
     const [selectedDb, setSelectedDb] = useState("init");
     const [columns, setColumns] = useState([]);
     const [rows, setRows] = useState([]);
-    const [selectedIdx, setSelectedIdx] = useState();
-
+    const [selectRow, setSelectRow] = useState()
+    
   // 모달 열기 함수
   const openModal = () => {
     setIsModalOpen(true);
@@ -44,9 +44,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
 
 
   const handleOnRowDoubleClick = (idx:any) => {
-      console.log(idx)
-      debugger
-      setSelectedIdx(idx)
+      setSelectRow(rows.find((row:any)=>row.idx === idx));
       openModal()
   }
 
@@ -69,6 +67,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
             }).then(response => {
                 // @ts-ignore
                 if(response.status === 200){
+                    console.log(response.data)
                     setColumns(response.data.columnInfoList);
                     setRows(response.data.dataList);
                 }else{
@@ -79,7 +78,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
     }, [selectedDb]);
     return (
 <CommonLayout>
-<Modal isOpen={isModalOpen} onClose={closeModal} />
+<Modal isOpen={isModalOpen} onClose={closeModal} typeList={columns} dataJson={selectRow}/>
 
 {/* ---- */}
 
@@ -108,8 +107,6 @@ const Page: React.FC<PageProps> = ({ params }) => {
             </div>
         </div>
 
-
-        {/* <button className="modalOpen" onClick={openModal}>모달오픈</button> */}
         <section className="table">
             <CommonDataGrid
                 columns={columns}
