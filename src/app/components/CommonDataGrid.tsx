@@ -118,7 +118,6 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
         name: column.name,
         type: column.filterType
     }}));
-    const [tempCurrentColumns, setTempCurrentColumns] = useState<any[]>(columns);
     const [fileInfo, setFileInfo] = useState<any>({
         downLoadFile : {
             name :downLoadFileName
@@ -425,7 +424,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
     }, [filterList]);
 
     useEffect(() => {
-        setCurrentColumns(tempCurrentColumns.filter((column:any) => tabFilterList.map((tabFilter:any) => {return tabFilter.key;}).includes(column.key)))
+        setCurrentColumns(columns.filter((column:any) => tabFilterList.map((tabFilter:any) => {return tabFilter.key;}).includes(column.key)))
     }, [tabFilterList]);
 
     useEffect(() => {
@@ -532,7 +531,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                                     표시<IoIosArrowDown color="#fff"/></button>
                                 <div className="output_t">
                                     <ul className="list">
-                                        {tempCurrentColumns.map((data, index) => (
+                                        {columns.map((data, index) => (
                                             <li key={index} onClick={() => addTabFilter(data)}>{data.name}</li>
                                         ))}
                                     </ul>
