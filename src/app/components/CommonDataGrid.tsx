@@ -113,6 +113,10 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
     const [autoTempComplateFilterList, setTempAutoComplateFilterList] = useState<any[]>([]);
     const [autoComplateFilterList, setAutoComplateFilterList] = useState<any[]>([]);
     const [checkList, setCheckList] = useState<any[]>([]);
+
+    const [allCheckSelected, setAllCheckSelected] = useState(false);
+    const [selectedColumns, setSelectedColumns] = useState([]);
+
     const [tabFilterList, setTabFilterList] = useState<any[]>(columns.map((column:any) => {return {
         key: column.key,
         name: column.name,
@@ -217,6 +221,19 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
     // 클릭 핸들러
     const handleClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, data: any) => {
         const clickedElement = e.currentTarget;
+// 10.17 추가
+
+
+    // 모든 요소에서 'on' 클래스 제거
+    const allElements = document.querySelectorAll('.list li'); // .list는 부모 선택자로 바꿔주세요
+    allElements.forEach(element => {
+        element.classList.remove('on');
+    });
+
+    // 클릭한 요소에 'on' 클래스 추가
+    clickedElement.classList.add('on');
+
+//10.17 추가 end
 
         setCurrentFilterKey(data.key);
 
@@ -261,8 +278,67 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
         return null;
     }
 
-// 내가 누른 필터 리스트랑 currentFilterKey값이 같은걸 찾아서
-// setFilterList를 갱신함(currentFilterKey값이 같은걸 없는 버전으로)
+        // 탭 체크박스 기능 start
+        const handleCheckboxAll = () => {
+            const newAllCheckSelected = !allCheckSelected;
+            setAllCheckSelected(newAllCheckSelected);
+
+            if (newAllCheckSelected) {
+                const allColumnNames = columns.map(data => data.name);
+                setSelectedColumns(allColumnNames);
+
+                const newFilters = columns.map(data => ({
+                    key: data.key,
+                    name: data.name,
+                    type: data.filterType,
+                }));
+
+                setTabFilterList(prev => {
+                    const updatedFilterList = [...prev];
+                    newFilters.forEach(newFilter => {
+                        if (!updatedFilterList.some(filter => filter.key === newFilter.key)) {
+                            updatedFilterList.push(newFilter);
+                        }
+                    });
+                    return updatedFilterList;
+                });
+            } else {
+                setSelectedColumns([]);
+                setTabFilterList(prev => {
+                    const updatedFilterList = prev.filter(filter =>
+                        !columns.some(data => data.name === filter.name)
+                    );
+                    return updatedFilterList;
+                });
+            }
+        };
+
+        const handleCheckboxChange = (data:any) => {
+            if (selectedColumns.includes(data.name)) {
+                setSelectedColumns(prev => prev.filter(name => name !== data.name));
+                setTabFilterList(prev => 
+                    prev.filter(filter => filter.name !== data.name)
+                );
+            } else {
+                setSelectedColumns(prev => [...prev, data.name]);
+                const newFilter = {
+                    key: data.key,
+                    name: data.name,
+                    type: data.filterType,
+                };
+
+                setTabFilterList(prev => {
+                    const updatedFilterList = [...prev];
+                    if (!updatedFilterList.some(filter => filter.key === newFilter.key)) {
+                        updatedFilterList.push(newFilter);
+                    }
+                    return updatedFilterList;
+                });
+            }
+        };
+
+        // 탭 체크박스 기능 end
+
     const handleClickFilter = (clickedFilter: any) => {
         // 클릭한 필터를 제외한 새로운 리스트로 상태 업데이트
         const updatedFilterList = filterList.filter(filter => filter.name !== clickedFilter.name || filter.value !== clickedFilter.value);
@@ -346,6 +422,8 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
             setFilterList(updatedFilterList);
         }
     }
+
+
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setRowsPerPage(Number(event.target.value));
@@ -442,7 +520,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                             {/* 검색필터 start */}
                             <div className='search'>
                                 <button type="button" className="type2"
-                                        onClick={() => setIsFilterOpen(!isFilterOpen)}>필터<IoIosArrowDown color="#fff"/>
+                                        onMouseOver={() => {setIsFilterOpen(!isFilterOpen); setIsTabOpen(false)}}>필터<IoIosArrowDown color="#fff"/>
                                 </button>
                                 <div className="output">
                                     <ul className="list">
@@ -527,13 +605,25 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                             {/* 검색필터 end */}
                             {/* 탭 표시 start */}
                             <div className='tab'>
-                                <button type="button" className="type1" onClick={() => setIsTabOpen(!isTabOpen)}>탭
+                                <button type="button" className="type1" onMouseOver={() => {setIsTabOpen(!isTabOpen); setIsFilterOpen(false)} }>탭
                                     표시<IoIosArrowDown color="#fff"/></button>
                                 <div className="output_t">
                                     <ul className="list">
-                                        {columns.map((data, index) => (
-                                            <li key={index} onClick={() => addTabFilter(data)}>{data.name}</li>
-                                        ))}
+                                    <li onClick={handleCheckboxAll}>
+                                        {allCheckSelected ? '전체 해제' : '전체 선택'}
+                                    </li>
+                                    {columns.map((data, index) => (
+                                            <li key={index}>
+                                            <input
+                                                type="checkbox"
+                                                id={data.name}
+                                                checked={selectedColumns.includes(data.name)} // 체크 상태 설정
+                                                onChange={() => handleCheckboxChange(data)}
+                                            /> 
+                                            <label htmlFor={data.name}>{data.name}</label>
+                                        </li>
+                                    ))}
+
                                     </ul>
                                 </div>
                             </div>
