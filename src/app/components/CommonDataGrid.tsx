@@ -115,7 +115,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
     const [checkList, setCheckList] = useState<any[]>([]);
 
     const [allCheckSelected, setAllCheckSelected] = useState(false);
-    const [selectedColumns, setSelectedColumns] = useState([]);
+    const [selectedColumns, setSelectedColumns] = useState<any[]>([]);
 
     const [tabFilterList, setTabFilterList] = useState<any[]>(columns.map((column:any) => {return {
         key: column.key,
