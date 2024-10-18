@@ -80,7 +80,7 @@ const Column: React.FC<ColumnProps> = ({column, index, moveColumn, columnWidths,
                 display: 'flex',
                 alignItems: 'center',
                 position: 'relative',
-                opacity: isDragging ? 0.5 : 1, // 드래그 중일 때 불투명도 변경
+                opacity: isDragging ? 0.35 : 1, // 드래그 중일 때 불투명도 변경
                 cursor: 'move',
                 userSelect: 'none'
             }}
@@ -186,11 +186,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
         // @ts-ignore
         setSortConfig(newSortConfig); // 정렬 상태 갱신
     };
-
-    const onRowDoubleClick = (row: any) => {
-        handleRowDoubleClick(row);
-    }
-
+ 
     const sortedRows = useCallback(
         (currentRows: any[]) => {
             // currentRows가 undefined일 경우 빈 배열로 초기화
@@ -216,10 +212,8 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
     );
 
     // 클릭 핸들러
-    const handleClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, data: any) => {
+    const handleTabAndFilterClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, data: any) => {
         const clickedElement = e.currentTarget;
-// 10.17 추가
-
 
     // 모든 요소에서 'on' 클래스 제거
     const allElements = document.querySelectorAll('.list li'); // .list는 부모 선택자로 바꿔주세요
@@ -229,8 +223,6 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
 
     // 클릭한 요소에 'on' 클래스 추가
     clickedElement.classList.add('on');
-
-//10.17 추가 end
 
         setCurrentFilterKey(data.key);
 
@@ -345,21 +337,6 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
         setTabFilterList(updatedFilterList);
     };
 
-    const addTabFilter = (clickedFilter: any) => {
-        const newFilter = {
-            key: clickedFilter.key,
-            name: clickedFilter.name,
-            type: clickedFilter.filterType
-        };
-
-        const isDuplicate = tabFilterList.some((filter: any) => filter.key === newFilter.key);
-
-        // 중복이 없을 때만 새로운 필터 추가
-        if (!isDuplicate) {
-            const updatedFilterList: any = [...tabFilterList, newFilter];
-            setTabFilterList(updatedFilterList);
-        }
-    };
     const handleAutoComplateFilterRegister = (value: any) => {
         const newFilter = {
             key: currentFilterKey,
@@ -419,23 +396,17 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
         }
     }
 
-
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setRowsPerPage(Number(event.target.value));
-        setCurrentPage(1); // 페이지당 행 수 변경 시 페이지를 1로 초기화
-    };
-
+    //페이지별로 데이터 자르기
     const paginatedRows = sortedRows(currentRows).slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage); // 페이지네이션된 행
 
-    const totalPages = currentRows ? Math.ceil(currentRows.length / rowsPerPage) : 0; // 총 페이지 수 계산
+    // 총 페이지 수 계산    
+    const totalPages = currentRows ? Math.ceil(currentRows.length / rowsPerPage) : 0; 
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page); // 페이지 변경
     };
-
+    // 몇 페이지씩 보여줄 것인지    
     const pageRange = 10;
-    //페이지를 몇개씩 보여줄 것인지
     const startPage = Math.floor((currentPage - 1) / pageRange) * pageRange + 1;
     const endPage = Math.min(startPage + pageRange - 1, totalPages);
 
@@ -531,19 +502,19 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                                             switch (data.filterType) {
                                                 case "text" : {
                                                     return <li key={index} className="text"
-                                                               onClick={event => handleClick(event, data)}>{data.name}</li>
+                                                               onClick={event => handleTabAndFilterClick(event, data)}>{data.name}</li>
                                                 }
                                                 case "select": {
                                                     return <li key={index} className="check"
-                                                               onClick={event => handleClick(event, data)}>{data.name}</li>
+                                                               onClick={event => handleTabAndFilterClick(event, data)}>{data.name}</li>
                                                 }
                                                 case "date" : {
                                                     return <li key={index} className="cal"
-                                                               onClick={event => handleClick(event, data)}>{data.name}</li>
+                                                               onClick={event => handleTabAndFilterClick(event, data)}>{data.name}</li>
                                                 }
                                                 case "toggle": {
                                                     return <li key={index} className="toggle"
-                                                               onClick={event => handleClick(event, data)}>{data.name}</li>;
+                                                               onClick={event => handleTabAndFilterClick(event, data)}>{data.name}</li>;
                                                 }
                                                 default :
                                                     return null;
@@ -642,9 +613,6 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                         </div>
 
                         <div className="right">
-                            {/* <div className="input_box">
-                            <IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
-                            </div> */}
                             {!!useExcelDownload ? (
                                 useExcelDownload ? (
                                     <button type="button" className="excel"><PiMicrosoftExcelLogoFill
@@ -656,7 +624,6 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                     <div className="tag_box">
                         {
                             tabFilterList.map((filter: any, index) => (
-                                // <span key={index}> <b></b> {`${filter.value}`} <IoIosClose   onClick={() => handleClickFilter(filter)}/></span>
                                 <button key={index} className="tag">{filter.name} <IoIosClose
                                     onClick={() => handleTabClickFilter(filter)}/></button>
                             ))
@@ -665,15 +632,6 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                 </div>
             </div>
             <div ref={tableRef} className='table_content'>
-                {/* <div style={{ marginBottom: '10px' }}>
-                    <span>Rows per page: </span>
-                    <select value={rowsPerPage} onChange={handleChangeRowsPerPage}>
-                        <option value={5}>5</option>
-                        <option value={10}>10</option>
-                        <option value={15}>15</option>
-                    </select>
-                    <span> of {rows.length} </span> // 총 데이터 건수 표시
-                </div> */}
                 <div className='table_head'>
                     {currentColumns.map((column, index) => (
                         <Column
@@ -733,4 +691,4 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
     );
 };
 
-export default CommonDataGrid; // CommonDataGrid 컴포넌트 기본 export
+export default CommonDataGrid; 
