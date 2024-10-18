@@ -57,12 +57,12 @@ const Page: React.FC<PageProps> = ({ params }) => {
                     setColumns(response.data.columnInfoList);
                     setRows(response.data.dataList);
                 }else{
-                    alert(response.data)
+                     (response.data)
                 }
             });
         }catch (error){
             // @ts-ignore
-            router('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyName") + '/login');
         }
     }
 
@@ -131,10 +131,13 @@ const Page: React.FC<PageProps> = ({ params }) => {
 
         <section className="table">
             <CommonDataGrid
-                columns={columns}
-                rows={rows}
+                columns={columns} // 칼럼데이터
+                rows={rows} //행 데이터
                 downLoadFileName={`고객정보목록_${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`}
-                handleRowDoubleClick={handleOnRowDoubleClick}/>
+                // 엑셀파일 명칭
+                handleRowDoubleClick={handleOnRowDoubleClick} //행을 더블클릭했을 때에 대한 함수
+                useExcelDownload={true}
+            />
         </section>
     </div>
 </CommonLayout>

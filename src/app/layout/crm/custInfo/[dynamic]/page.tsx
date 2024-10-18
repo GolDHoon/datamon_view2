@@ -62,7 +62,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
             });
         }catch (error){
             // @ts-ignore
-            router('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyName") + '/login');
         }
     }
 
@@ -134,7 +134,9 @@ const Page: React.FC<PageProps> = ({ params }) => {
                 columns={columns}
                 rows={rows}
                 downLoadFileName={`고객정보목록_${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`}
-                handleRowDoubleClick={handleOnRowDoubleClick}/>
+                handleRowDoubleClick={handleOnRowDoubleClick}
+                useExcelDownload={true}
+            />
         </section>
     </div>
 </CommonLayout>

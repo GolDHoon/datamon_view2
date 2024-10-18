@@ -26,6 +26,7 @@ interface DataGridProps {
     rows?: any[],
     downLoadFileName?: string
     handleRowDoubleClick: (idx : any) => void
+    useExcelDownload?: boolean
 }
 
 // ColumnProps 인터페이스 정의. Column 컴포넌트에서 사용할 여러 프로퍼티들을 포함
@@ -97,7 +98,7 @@ const Column: React.FC<ColumnProps> = ({column, index, moveColumn, columnWidths,
 };
 
 // CommonDataGrid 컴포넌트 정의
-const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downLoadFileName, handleRowDoubleClick}) => {
+const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downLoadFileName, handleRowDoubleClick, useExcelDownload}) => {
     const [columnWidths, setColumnWidths] = useState<number[]>(columns.map(() => 100)); // 컬럼 너비 초기화
     const [resizing, setResizing] = useState<{ index: number; initialX: number; initialWidth: number } | null>(null); // 리사이즈 상태 관리
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }[]>([]); // 정렬 설정 상태 관리
@@ -130,26 +131,30 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
 
     const tableRef = useRef<HTMLDivElement>(null); // 테이블 참조
 
-    useEffect(() => {
-        const onMouseMove = (e: MouseEvent) => {
-            if (resizing) {
-                const delta = e.clientX - resizing.initialX;
-                const newWidths = [...columnWidths];
-                newWidths[resizing.index] = Math.max(resizing.initialWidth + delta, 50); // 최소 너비 50px 제한
-                setColumnWidths(newWidths); // 너비 갱신
-            }
-        };
+    //엑셀 다운로드 기능
+    const handleDownloadCSV = (event: any) => {
+        // 현재 표시된 컬럼 헤더 가져오기
+        const headers = currentColumns.map(column => column.name).join(',');
 
-        const onMouseUp = () => setResizing(null); // 리사이즈 종료 시 상태 초기화
+        // 현재 표시된 행 가져오기
+        const data = currentRows.map(row =>
+            currentColumns.map(column => String(row[column.key])).join(',')
+        ).join('\n');
 
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
+        // CSV 파일 생성 (UTF-8 BOM 추가)
+        const bom = "\uFEFF"; // UTF-8 BOM
+        const csvContent = `${bom}${headers}\n${data}`;
 
-        return () => {
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-        };
-    }, [resizing, columnWidths]);
+        // CSV 파일 다운로드를 위한 링크 생성 및 클릭
+        const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${csvContent}`);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", fileInfo.downLoadFile.name + ".csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
 
     useEffect(() => {
         setColumnWidths(columns.map(() => 100)); // 컬럼이 변경될 때마다 너비 초기화
@@ -159,14 +164,6 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
         e.preventDefault();
         setResizing({index, initialX: e.clientX, initialWidth: columnWidths[index]}); // 리사이즈 시작 시 상태 설정
     };
-
-    const moveColumn = useCallback((dragIndex: number, hoverIndex: number) => {
-        const draggedColumn = currentColumns[dragIndex];
-        const newColumns = [...currentColumns];
-        newColumns.splice(dragIndex, 1);
-        newColumns.splice(hoverIndex, 0, draggedColumn);
-        setCurrentColumns(newColumns); // 드래그 앤 드롭으로 컬럼 순서 변경
-    }, [currentColumns]);
 
     const handleSort = (columnKey: string) => {
         const existingSort = sortConfig.find(config => config.key === columnKey);
@@ -336,7 +333,6 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                 });
             }
         };
-
         // 탭 체크박스 기능 end
 
     const handleClickFilter = (clickedFilter: any) => {
@@ -456,30 +452,37 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
         return startDate <= date && date <= endDate;
     }
 
-    const handleDownloadCSV = (event: any) => {
-        console.log("눌렀다");
+    //열변경 콜 백, 컬럼 위치 변경
+    const moveColumn = useCallback((dragIndex: number, hoverIndex: number) => {
+        const draggedColumn = currentColumns[dragIndex];
+        const newColumns = [...currentColumns];
+        newColumns.splice(dragIndex, 1);
+        newColumns.splice(hoverIndex, 0, draggedColumn);
+        setCurrentColumns(newColumns); // 드래그 앤 드롭으로 컬럼 순서 변경
+    }, [currentColumns]);
 
-        // 현재 표시된 컬럼 헤더 가져오기
-        const headers = currentColumns.map(column => column.name).join(',');
 
-        // 현재 표시된 행 가져오기
-        const data = currentRows.map(row =>
-            currentColumns.map(column => String(row[column.key])).join(',')
-        ).join('\n');
+    //컬럼 리 사이징
+    useEffect(() => {
+        const onMouseMove = (e: MouseEvent) => {
+            if (resizing) {
+                const delta = e.clientX - resizing.initialX;
+                const newWidths = [...columnWidths];
+                newWidths[resizing.index] = Math.max(resizing.initialWidth + delta, 50); // 최소 너비 50px 제한
+                setColumnWidths(newWidths); // 너비 갱신
+            }
+        };
 
-        // CSV 파일 생성 (UTF-8 BOM 추가)
-        const bom = "\uFEFF"; // UTF-8 BOM
-        const csvContent = `${bom}${headers}\n${data}`;
+        const onMouseUp = () => setResizing(null); // 리사이즈 종료 시 상태 초기화
 
-        // CSV 파일 다운로드를 위한 링크 생성 및 클릭
-        const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${csvContent}`);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", fileInfo.downLoadFile.name + ".csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+
+        return () => {
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        };
+    }, [resizing, columnWidths]);
 
     useEffect(() => {
         let tempRows = rows
@@ -642,8 +645,12 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                             {/* <div className="input_box">
                             <IoIosSearch /><input type="text" placeholder="검색어를 입력하세요" />
                             </div> */}
-                            <button type="button" className="excel"><PiMicrosoftExcelLogoFill
-                                onClick={(event) => handleDownloadCSV(event)} color="#fff"/></button>
+                            {!!useExcelDownload ? (
+                                useExcelDownload ? (
+                                    <button type="button" className="excel"><PiMicrosoftExcelLogoFill
+                                        onClick={(event) => handleDownloadCSV(event)} color="#fff"/></button>
+                                ) : null
+                            ): null }
                         </div>
                     </div>
                     <div className="tag_box">
