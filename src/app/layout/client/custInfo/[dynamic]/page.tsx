@@ -137,6 +137,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
                 // 엑셀파일 명칭
                 handleRowDoubleClick={handleOnRowDoubleClick} //행을 더블클릭했을 때에 대한 함수
                 useExcelDownload={true}
+                useTabFilterButton={true}
             />
         </section>
     </div>

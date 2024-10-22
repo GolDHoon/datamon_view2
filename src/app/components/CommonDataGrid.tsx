@@ -27,6 +27,7 @@ interface DataGridProps {
     downLoadFileName?: string
     handleRowDoubleClick: (idx : any) => void
     useExcelDownload?: boolean
+    useTabFilterButton? : boolean;
 }
 
 // ColumnProps 인터페이스 정의. Column 컴포넌트에서 사용할 여러 프로퍼티들을 포함
@@ -98,7 +99,7 @@ const Column: React.FC<ColumnProps> = ({column, index, moveColumn, columnWidths,
 };
 
 // CommonDataGrid 컴포넌트 정의
-const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downLoadFileName, handleRowDoubleClick, useExcelDownload}) => {
+const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downLoadFileName, handleRowDoubleClick, useExcelDownload, useTabFilterButton}) => {
     const [columnWidths, setColumnWidths] = useState<number[]>(columns.map(() => 100)); // 컬럼 너비 초기화
     const [resizing, setResizing] = useState<{ index: number; initialX: number; initialWidth: number } | null>(null); // 리사이즈 상태 관리
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }[]>([]); // 정렬 설정 상태 관리
@@ -578,29 +579,36 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                             </div>
                             {/* 검색필터 end */}
                             {/* 탭 표시 start */}
-                            <div className='tab'>
-                                <button type="button" className="type1" onMouseOver={() => {setIsTabOpen(!isTabOpen); setIsFilterOpen(false)} }>탭
-                                    표시<IoIosArrowDown color="#fff"/></button>
-                                <div className="output_t">
-                                    <ul className="list">
-                                    <li onClick={handleCheckboxAll}>
-                                        {allCheckSelected ? '전체 해제' : '전체 선택'}
-                                    </li>
-                                    {columns.map((data, index) => (
-                                            <li key={index}>
-                                            <input
-                                                type="checkbox"
-                                                id={data.name}
-                                                checked={selectedColumns.includes(data.name)} // 체크 상태 설정
-                                                onChange={() => handleCheckboxChange(data)}
-                                            /> 
-                                            <label htmlFor={data.name}>{data.name}</label>
-                                        </li>
-                                    ))}
 
-                                    </ul>
+                            {!!useTabFilterButton ? (
+                                useTabFilterButton ? (
+                                    <div className='tab'>
+                                    <button type="button" className="type1" onMouseOver={() => {setIsTabOpen(!isTabOpen); setIsFilterOpen(false)} }>탭
+                                        표시<IoIosArrowDown color="#fff"/></button>
+                                    <div className="output_t">
+                                        <ul className="list">
+                                        <li onClick={handleCheckboxAll}>
+                                            {allCheckSelected ? '전체 해제' : '전체 선택'}
+                                        </li>
+                                        {columns.map((data, index) => (
+                                                <li key={index}>
+                                                <input
+                                                    type="checkbox"
+                                                    id={data.name}
+                                                    checked={selectedColumns.includes(data.name)} // 체크 상태 설정
+                                                    onChange={() => handleCheckboxChange(data)}
+                                                /> 
+                                                <label htmlFor={data.name}>{data.name}</label>
+                                            </li>
+                                        ))}
+    
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
+                                ) : null
+                            ): null }
+
+                
                             {/* 탭 표시 end */}
                         </div>
                         <div className='filter_value'>

@@ -133,6 +133,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
                 downLoadFileName={`고객정보목록_${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`}
                 handleRowDoubleClick={handleOnRowDoubleClick}
                 useExcelDownload={true}
+                useTabFilterButton={true}
             />
         </section>
     </div>
