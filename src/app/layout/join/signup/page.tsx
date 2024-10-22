@@ -82,12 +82,16 @@ const Step2: React.FC<{
         <div className="content">
           <div className="input_box">
             <label>아이디*</label>
-            <input
+              <div>
+              <input
               type="text"
               placeholder="영어 소문자 및 숫자"
               value={username}
               onChange={handleUsernameChange}
             />
+              <button type="button">중복체크</button>
+            </div>
+
             <p>{username ? '' : '아이디를 입력해주세요'}</p>
           </div>
           <div className="input_box">
