@@ -90,6 +90,21 @@ color:#fff;
   }
 }
 
+@mixin btnBox{
+  width: 100%;
+  display: flex;
+  gap:20px;
+button{
+&:nth-child(1){
+  background-color: #F0F0F0;
+}
+&:nth-child(2){
+  background-color: $main100;
+  color:#fff;
+}
+}
+}
+
 @mixin commonInput($h:auto){
   display: flex;
   align-items: center;
@@ -114,6 +129,19 @@ color:#fff;
   background-color: $main100 !important;
 }
 
+@mixin InputBasicStyle{
+  padding: 8px 14px;
+  background-color: #f9f9fc;
+  border: 1px solid #d8d8d8;
+  border-radius: 4px;
+  &::placeholder{
+    color: #ddd;
+}
+&:focus{
+  outline: none;
+}
+}
+
 
 @mixin scrollBar{
   /* 스크롤바 전체 기본 꾸미기 */
@@ -136,3 +164,14 @@ color:#fff;
     border-radius: 10px;
 }
 }
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+

@@ -23,6 +23,10 @@ const nextConfig = {
                 destination: '/layout/crm/custInfo/:dynamic',
             },
             {
+                source: '/join/signup',
+                destination: '/layout/join/signup',
+            },
+            {
                 source: '/(.*)',  // 이 부분을 추가하여 나머지 모든 경로를 404로 리다이렉트합니다.
                 destination: '/404'
             }
