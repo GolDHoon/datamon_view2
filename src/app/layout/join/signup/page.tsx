@@ -271,7 +271,7 @@ const SignUp: React.FC = () => {
           //  debugger
             // @ts-ignore
             if(response.status === 200){
-              router.push('/join/signup')
+              router.push(`/join/signup/complete?username=${encodeURIComponent(signUpData.username)}&name=${encodeURIComponent(signUpData.name)}`)
 
             }else{
                 alert(response.data.detailReason)
