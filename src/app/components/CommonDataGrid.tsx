@@ -28,6 +28,7 @@ interface DataGridProps {
     handleRowDoubleClick: (idx : any) => void
     useExcelDownload?: boolean
     useTabFilterButton? : boolean;
+    useNewContentButton? : boolean;
 }
 
 // ColumnProps 인터페이스 정의. Column 컴포넌트에서 사용할 여러 프로퍼티들을 포함
@@ -99,7 +100,7 @@ const Column: React.FC<ColumnProps> = ({column, index, moveColumn, columnWidths,
 };
 
 // CommonDataGrid 컴포넌트 정의
-const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downLoadFileName, handleRowDoubleClick, useExcelDownload, useTabFilterButton}) => {
+const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downLoadFileName, handleRowDoubleClick, useExcelDownload, useTabFilterButton, useNewContentButton}) => {
     const [columnWidths, setColumnWidths] = useState<number[]>(columns.map(() => 100)); // 컬럼 너비 초기화
     const [resizing, setResizing] = useState<{ index: number; initialX: number; initialWidth: number } | null>(null); // 리사이즈 상태 관리
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }[]>([]); // 정렬 설정 상태 관리
@@ -695,6 +696,17 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                     </button>
                 </div>
             </div>
+
+
+            {!!useNewContentButton ? (
+                                useNewContentButton ? (
+                                    <div className='button_box'>
+                                    <button type="button" className='type1'>신규</button>
+                                    </div>
+                                ) : null
+                            ): null }
+
+
         </DndProvider>
     );
 };

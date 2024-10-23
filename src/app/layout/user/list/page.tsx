@@ -116,6 +116,7 @@ const Page: React.FC = () => {
                 handleRowDoubleClick={handleOnRowDoubleClick}
                 useExcelDownload={false}
                 useTabFilterButton={false}
+                useNewContentButton={true}
             />
         </section>
     </ div>

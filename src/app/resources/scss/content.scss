@@ -379,6 +379,8 @@ margin-left: 8px;
         width: 100%;
 
         // top content, filter단에서 컴포넌트가 세로로 추가될 경우 이부분 수정해야함
+        // height:calc(100vh - 230px - 38px);
+        //위 - 아래 -
         height:calc(100vh - 230px);
 
         .table_head{
@@ -454,9 +456,11 @@ margin-left: 8px;
             bottom: 0px;
             left: 50%;
             transform: translateX(-50%);
-            margin-top: auto;
+  
             text-align: center;
-            display: flex;
+            // margin: 16px auto 0;
+           display: flex;
+            // justify-content: center;
             gap:4px;
   
             button{
@@ -479,7 +483,14 @@ color: #333;
             }
         }
     }
-
+.button_box{
+    button{
+        @include commonBtn;
+        margin-left: auto;
+        position: relative;
+        bottom: 38px;
+    }
+}
 
 }
 
