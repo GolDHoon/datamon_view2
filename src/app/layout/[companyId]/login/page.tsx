@@ -26,10 +26,11 @@ const Login: NextPage<LoginProps> = ({ params }) => {
                 if(response.status === 200){
                     setIdx(response.data.companyIdx)
                     setCompanyName(response.data.companyName)
+                    setSession("companyName",response.data.companyName);
+                    setSession("companyIdx",response.data.companyIdx);
                 }else{
                     alert(response.data)
                 }
-                setSession("companyName",companyName);
             })
         } catch (error){
             // console.log()
@@ -100,7 +101,7 @@ const Login: NextPage<LoginProps> = ({ params }) => {
                 </div> */}
                 {/* 추후 기능 개발 시 style 삭제 요망 */}
                 <button type="submit" style={{marginTop: "24px"}} className="login" onClick={loginEffect}>로그인</button>
-                 <button>회원가입</button>
+                 <button type="button" onClick={(e) => {router.push('/join/signup');}}>회원가입</button>
             </div>
         </div>
     );

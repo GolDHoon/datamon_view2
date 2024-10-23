@@ -1,5 +1,7 @@
 'use client';
 import React, {useEffect, useRef, useState} from "react";
+import restApi from "@/app/resources/js/Axios";
+import {getSession} from "@/app/resources/js/Session";
 
 // 1단계 컴포넌트
 const Step1: React.FC<{
@@ -50,7 +52,7 @@ const Step1: React.FC<{
     </div>
   );
 };
-  
+
 
 // 2단계 컴포넌트
 const Step2: React.FC<{
@@ -69,7 +71,7 @@ const Step2: React.FC<{
         setSignUpData
       }) => {
     const [showVerification, setShowVerification] = useState(false); // 인증 입력 필드를 표시하기 위한 상태
-  
+
     const handleRequestVerification = () => {
       setShowVerification(true); // 인증 요청 버튼 클릭 시 인증번호 입력 필드를 표시
     };
@@ -112,7 +114,7 @@ const Step2: React.FC<{
           <div className="input_box">
             <label>연락처*</label>
             <div>
-              <input type="number" placeholder="숫자만 입력하세요"  defaultValue="010" value={signUpData.phone}
+              <input type="number" placeholder="숫자만 입력하세요"  value={signUpData.phone}
                      onChange={(e) => setSignUpData((signUpData:any) => ({ ...signUpData, phone: e.target.value }))}
               />
               {/* <button type="button" onClick={handleRequestVerification}>인증 요청</button> */}
@@ -126,7 +128,7 @@ const Step2: React.FC<{
             {isPhoneVerified && <p>휴대폰 인증번호가 확인되었습니다</p>} */}
           </div>
         </div>
-  
+
         <div className="btn_box">
           <button onClick={prevStep}>이전</button>
           <button onClick={handleNextStep}>다음</button>
@@ -134,7 +136,7 @@ const Step2: React.FC<{
       </div>
     );
   };
-  
+
 
 
 
@@ -147,7 +149,6 @@ const Step3: React.FC<{
     signUpData: any,
     setSignUpData: any
 }> = ({prevStep, submit, handleEmailVerifyClick, isEmailVerified, signUpData, setSignUpData}) => {
-    console.log(signUpData)
   return (
     <div className="fade">
       <div className="content">
@@ -157,7 +158,7 @@ const Step3: React.FC<{
             <input type="email" placeholder="이메일 주소를 입력하세요"
             value={signUpData.email}
             onChange={(e) => setSignUpData((signUpData:any) => ({ ...signUpData, email: e.target.value }))}
-             /> 
+             />
             {/* <button type="button">인증번호 요청</button> */}
 
           </div>
@@ -222,7 +223,32 @@ const SignUp: React.FC = () => {
       return;
     }
 
-    alert("회원가입 완료!");
+    console.log("companyId of session : " + getSession("companyIdx"))
+
+    try {
+        restApi('post', '/member/reqAccount', {
+            userId: signUpData.username,
+            userPw: signUpData.password,
+            companyId: getSession("companyIdx"),
+            name: signUpData.name,
+            role: signUpData.job,
+            contactPhone: signUpData.phone,
+            contactMail: signUpData.email,
+            requestReason: signUpData.reason
+        }).then(response => {
+            debugger
+            // @ts-ignore
+            if(response.status === 200){
+                alert(response.data.message)
+            }else{
+                alert(response.data.detailReason)
+            }
+        })
+    } catch (error){
+        console.log(error)
+    }
+
+    // alert("회원가입 완료!");
   };
 
   return (
@@ -234,9 +260,9 @@ const SignUp: React.FC = () => {
          setSignUpData={setSignUpData}
       />}
       {currentStep === 2 && (
-        <Step2 
+        <Step2
           nextStep={nextStep}
-          prevStep={prevStep} 
+          prevStep={prevStep}
           handlePhoneVerifyClick={handlePhoneVerifyClick}
           isPhoneVerified={isPhoneVerified}
           signUpData={signUpData}
@@ -244,14 +270,14 @@ const SignUp: React.FC = () => {
         />
       )}
       {currentStep === 3 && (
-        <Step3 
-          prevStep={prevStep} 
-          submit={submit} 
-          handleEmailVerifyClick={handleEmailVerifyClick} 
+        <Step3
+          prevStep={prevStep}
+          submit={submit}
+          handleEmailVerifyClick={handleEmailVerifyClick}
           isEmailVerified={isEmailVerified}
           signUpData={signUpData}
-          setSignUpData={setSignUpData} 
-        /> 
+          setSignUpData={setSignUpData}
+        />
       )}
     </div>
   );
