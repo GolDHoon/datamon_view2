@@ -31,6 +31,22 @@ const nextConfig = {
                 destination: '/layout/join/signup/complete',
             },
             {
+                source: '/user/approval/list',
+                destination: '/layout/user/approval/list',
+            },
+            {
+                source: '/user/list',
+                destination: '/layout/user/list',
+            },
+            {
+                source: '/admin/approval/list',
+                destination: '/layout/admin/approval/list',
+            },
+            {
+                source: '/admin/list',
+                destination: '/layout/admin/list',
+            },
+            {
                 source: '/(.*)',  // 이 부분을 추가하여 나머지 모든 경로를 404로 리다이렉트합니다.
                 destination: '/404'
             }
