@@ -154,8 +154,12 @@ const Step3: React.FC<{
         <div className="input_box">
           <label>이메일*</label>
           <div>
-            <input type="email" placeholder="이메일 주소를 입력하세요" /> 
+            <input type="email" placeholder="이메일 주소를 입력하세요"
+            value={signUpData.email}
+            onChange={(e) => setSignUpData((signUpData:any) => ({ ...signUpData, email: e.target.value }))}
+             /> 
             {/* <button type="button">인증번호 요청</button> */}
+
           </div>
           {/* <div>
             <input type="text" placeholder="이메일 인증 키를 입력하세요" />
@@ -177,7 +181,7 @@ const Step3: React.FC<{
 const SignUp: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1); // 현재 스텝 관리
   const [fadeClass, setFadeClass] = useState("fade"); // 페이드 클래스 관리
-  const [signUpData, setSignUpData] = useState({ job: '', name: '', reason: '', username:'', password:'', phone:'010' })
+  const [signUpData, setSignUpData] = useState({ job: '', name: '', reason: '', username:'', password:'', phone:'010', email:'' })
   // 전화번호 인증 상태
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
   // 이메일 인증 상태
@@ -213,6 +217,11 @@ const SignUp: React.FC = () => {
 
   // 회원가입 제출
   const submit = () => {
+    if (signUpData.email.trim() === ''){
+      alert('이메일을 입력해 주세요.');
+      return;
+    }
+
     alert("회원가입 완료!");
   };
 
@@ -241,8 +250,8 @@ const SignUp: React.FC = () => {
           handleEmailVerifyClick={handleEmailVerifyClick} 
           isEmailVerified={isEmailVerified}
           signUpData={signUpData}
-          setSignUpData={setSignUpData}
-        />
+          setSignUpData={setSignUpData} 
+        /> 
       )}
     </div>
   );
