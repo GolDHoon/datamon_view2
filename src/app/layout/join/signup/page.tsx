@@ -73,21 +73,34 @@ const Step2: React.FC<{
         setSignUpData
       }) => {
     const [showVerification, setShowVerification] = useState(false); // 인증 입력 필드를 표시하기 위한 상태
+    const [isDuplicate, setIsDuplicate] = useState(true);
 
     const handleRequestVerification = () => {
       setShowVerification(true); // 인증 요청 버튼 클릭 시 인증번호 입력 필드를 표시
     };
 
-    const isDuplicate = false; // 중복 체크 로직 
+
     const duplicateCheck = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (isDuplicate) {
-        alert('이미 사용 중인 아이디입니다.');
-      } else {
-        alert('사용 가능한 아이디입니다.');
-        const btn = e.target as HTMLButtonElement;
-        btn.innerText = '체크완료';
-        btn.style.backgroundColor = '#2281FF';
-      }
+        restApi('post', '/member/checkIdDuplicate', {
+            userId: signUpData.username,
+            companyId: getSession("companyIdx"),
+        }).then(response => {
+            // @ts-ignore
+            const btn = e.target as HTMLButtonElement;
+            if (response.status !== 200) {
+                alert(response.data);
+                btn.innerText = '중복체크';
+                btn.style.backgroundColor = '#727272';
+                setIsDuplicate(true);
+            } else {
+                alert(response.data.message);
+                btn.innerText = '체크완료';
+                btn.style.backgroundColor = '#2281FF';
+                setIsDuplicate(false);
+            }
+        })
+
+
     };
 
     const handleNextStep = () => {
@@ -97,6 +110,7 @@ const Step2: React.FC<{
         }
         if(isDuplicate){
           alert('아이디 중복체크를 완료하여 주세요.');
+          return;
         }
       nextStep();
     };
@@ -242,8 +256,6 @@ const SignUp: React.FC = () => {
       alert('이메일을 입력해 주세요.');
       return;
     }
-
-    console.log("companyId of session : " + getSession("companyIdx"))
 
     try {
         restApi('post', '/member/reqAccount', {
