@@ -100,7 +100,7 @@ const Login: NextPage<LoginProps> = ({ params }) => {
                 </div> */}
                 {/* 추후 기능 개발 시 style 삭제 요망 */}
                 <button type="submit" style={{marginTop: "24px"}} className="login" onClick={loginEffect}>로그인</button>
-                {/* <button>회원가입</button> */}
+                 <button>회원가입</button>
             </div>
         </div>
     );

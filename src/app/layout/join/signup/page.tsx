@@ -1,82 +1,87 @@
 'use client';
-import React, { useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 
 // 1단계 컴포넌트
-const Step1: React.FC<{ nextStep: () => void }> = ({ nextStep }) => {
-    const [job, setJob] = useState('');
-    const [name, setName] = useState('');
-    const [reason, setReason] = useState('');
-  
-    const handleNextStep = () => {
-      if (job.trim() === '' || name.trim() === '') {
-        alert('필수 입력값을 입력해 주세요.');
-        return;
+const Step1: React.FC<{
+  nextStep: () => void,
+  signUpData: any,
+  setSignUpData: any
+}> = ({nextStep, signUpData, setSignUpData}) => {
+
+  const handleNextStep = () => {
+      if (signUpData.job.trim() === '' || signUpData.name.trim() === '') {
+          alert('필수 입력값을 입력해 주세요.');
+          return;
       }
-      nextStep();
-    };
-  
-    return (
-      <div className="fade">
-        <div className="content">
-          <div className="input_box">
-            <label>직무*</label>
-            <input
-              type="text"
-              placeholder="직무를 입력하세요"
-              value={job}
-              onChange={(e) => setJob(e.target.value)}
-            />
-          </div>
-          <div className="input_box">
-            <label>이름*</label>
-            <input
-              type="text"
-              placeholder="이름을 입력하세요"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="input_box">
-            <label>신청 사유</label>
-            <textarea
-              placeholder="신청 사유"
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-            />
-          </div>
-        </div>
-        <button className="type1" onClick={handleNextStep}>다음</button>
-      </div>
-    );
+    nextStep();
   };
+
+  return (
+    <div className="fade">
+      <div className="content">
+        <div className="input_box">
+          <label>직무*</label>
+          <input
+            type="text"
+            placeholder="직무를 입력하세요"
+            value={signUpData.job}
+            onChange={(e) => setSignUpData((signUpData:any) => ({ ...signUpData, job: e.target.value }))}
+          />
+        </div>
+        <div className="input_box">
+          <label>이름*</label>
+          <input
+            type="text"
+            placeholder="이름을 입력하세요"
+            value={signUpData.name}
+            onChange={(e) => setSignUpData((signUpData:any) => ({ ...signUpData, name: e.target.value }))}
+          />
+        </div>
+        <div className="input_box">
+          <label>신청 사유</label>
+          <textarea
+            placeholder="신청 사유"
+            value={signUpData.reason}
+            onChange={(e) => setSignUpData((signUpData:any) => ({ ...signUpData, reason: e.target.value }))}
+          />
+        </div>
+      </div>
+      <button className="type1" onClick={handleNextStep}>다음</button>
+    </div>
+  );
+};
   
 
 // 2단계 컴포넌트
 const Step2: React.FC<{
-    nextStep: () => void; 
-    prevStep: () => void; 
-    username: string; 
-    password: string; 
-    handleUsernameChange: (e: React.ChangeEvent<HTMLInputElement>) => void; 
-    handlePasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handlePhoneVerifyClick: () => void; 
-    isPhoneVerified: boolean;
-  }> = ({ nextStep, prevStep, username, password, handleUsernameChange, handlePasswordChange, handlePhoneVerifyClick, isPhoneVerified }) => {
-    
+  nextStep: () => void,
+  prevStep: () => void,
+  handlePhoneVerifyClick: () => void,
+  isPhoneVerified: boolean,
+  signUpData: any,
+  setSignUpData: any;
+}> = ({
+        nextStep,
+        prevStep,
+        handlePhoneVerifyClick,
+        isPhoneVerified,
+        signUpData,
+        setSignUpData
+      }) => {
     const [showVerification, setShowVerification] = useState(false); // 인증 입력 필드를 표시하기 위한 상태
   
     const handleRequestVerification = () => {
       setShowVerification(true); // 인증 요청 버튼 클릭 시 인증번호 입력 필드를 표시
     };
-  
+
     const handleNextStep = () => {
-      if (username.trim() === '' || password.trim() === '') {
-        alert('아이디와 비밀번호는 필수 입력값입니다.');
-        return;
-      }
+        if (signUpData.username.trim() === '' || signUpData.password.trim() === '') {
+            alert('아이디와 비밀번호는 필수 입력값입니다.');
+            return;
+        }
       nextStep();
     };
-  
+
     return (
       <div className="fade">
         <div className="content">
@@ -86,28 +91,30 @@ const Step2: React.FC<{
               <input
               type="text"
               placeholder="영어 소문자 및 숫자"
-              value={username}
-              onChange={handleUsernameChange}
+              value={signUpData.username}
+              onChange={(e) => setSignUpData((signUpData:any) => ({ ...signUpData, username: e.target.value }))}
             />
               <button type="button">중복체크</button>
             </div>
 
-            <p>{username ? '' : '아이디를 입력해주세요'}</p>
+            <p>{signUpData.username ? '' : '아이디를 입력해주세요'}</p>
           </div>
           <div className="input_box">
             <label>비밀번호*</label>
             <input
               type="password"
               placeholder="영어, 숫자, 특수문자"
-              value={password}
-              onChange={handlePasswordChange}
+              value={signUpData.password}
+              onChange={(e) => setSignUpData((signUpData:any) => ({ ...signUpData, password: e.target.value }))}
             />
-            <p>{password.length > 0 ? '사용 가능한 비밀번호입니다' : ''}</p>
+            <p>{signUpData.password.length > 0 ? '사용 가능한 비밀번호입니다' : ''}</p>
           </div>
           <div className="input_box">
-            <label>휴대폰 번호 인증*</label>
+            <label>연락처*</label>
             <div>
-              <input type="number" placeholder="숫자만 입력하세요"  value="010"  /> 
+              <input type="number" placeholder="숫자만 입력하세요"  defaultValue="010" value={signUpData.phone}
+                     onChange={(e) => setSignUpData((signUpData:any) => ({ ...signUpData, phone: e.target.value }))}
+              />
               {/* <button type="button" onClick={handleRequestVerification}>인증 요청</button> */}
             </div>
             {/* {showVerification && ( // 인증번호 입력 필드를 조건부로 렌더링
@@ -132,7 +139,15 @@ const Step2: React.FC<{
 
 
 // 3단계 컴포넌트
-const Step3: React.FC<{ prevStep: () => void; submit: () => void; handleEmailVerifyClick: () => void; isEmailVerified: boolean }> = ({ prevStep, submit, handleEmailVerifyClick, isEmailVerified }) => {
+const Step3: React.FC<{
+    prevStep: () => void,
+    submit: () => void,
+    handleEmailVerifyClick: () => void,
+    isEmailVerified: boolean,
+    signUpData: any,
+    setSignUpData: any
+}> = ({prevStep, submit, handleEmailVerifyClick, isEmailVerified, signUpData, setSignUpData}) => {
+    console.log(signUpData)
   return (
     <div className="fade">
       <div className="content">
@@ -162,8 +177,7 @@ const Step3: React.FC<{ prevStep: () => void; submit: () => void; handleEmailVer
 const SignUp: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1); // 현재 스텝 관리
   const [fadeClass, setFadeClass] = useState("fade"); // 페이드 클래스 관리
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [signUpData, setSignUpData] = useState({ job: '', name: '', reason: '', username:'', password:'', phone:'010' })
   // 전화번호 인증 상태
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
   // 이메일 인증 상태
@@ -187,16 +201,6 @@ const SignUp: React.FC = () => {
     }, 50);
   };
 
-  // 아이디 입력 시 상태 업데이트
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-  };
-  
-  // 비밀번호 입력 시 상태 업데이트
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
   // 전화번호 인증 버튼 클릭 핸들러
   const handlePhoneVerifyClick = () => {
     setIsPhoneVerified(true);
@@ -215,17 +219,19 @@ const SignUp: React.FC = () => {
   return (
     <div className="signup_wrap">
       <h3 className={`step step${currentStep}`}>회원가입</h3>
-      {currentStep === 1 && <Step1 nextStep={nextStep} />}
+      {currentStep === 1 &&
+        <Step1 nextStep={nextStep}
+         signUpData={signUpData}
+         setSignUpData={setSignUpData}
+      />}
       {currentStep === 2 && (
         <Step2 
-          nextStep={nextStep} 
+          nextStep={nextStep}
           prevStep={prevStep} 
-          username={username} 
-          password={password} 
-          handleUsernameChange={handleUsernameChange} 
-          handlePasswordChange={handlePasswordChange} 
           handlePhoneVerifyClick={handlePhoneVerifyClick}
           isPhoneVerified={isPhoneVerified}
+          signUpData={signUpData}
+          setSignUpData={setSignUpData}
         />
       )}
       {currentStep === 3 && (
@@ -233,7 +239,9 @@ const SignUp: React.FC = () => {
           prevStep={prevStep} 
           submit={submit} 
           handleEmailVerifyClick={handleEmailVerifyClick} 
-          isEmailVerified={isEmailVerified} 
+          isEmailVerified={isEmailVerified}
+          signUpData={signUpData}
+          setSignUpData={setSignUpData}
         />
       )}
     </div>
