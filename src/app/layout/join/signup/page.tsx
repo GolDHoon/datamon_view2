@@ -2,6 +2,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import restApi from "@/app/resources/js/Axios";
 import {getSession} from "@/app/resources/js/Session";
+import { useRouter } from 'next/navigation';
 
 // 1단계 컴포넌트
 const Step1: React.FC<{
@@ -15,6 +16,7 @@ const Step1: React.FC<{
           alert('필수 입력값을 입력해 주세요.');
           return;
       }
+   
     nextStep();
   };
 
@@ -76,13 +78,30 @@ const Step2: React.FC<{
       setShowVerification(true); // 인증 요청 버튼 클릭 시 인증번호 입력 필드를 표시
     };
 
+    const isDuplicate = false; // 중복 체크 로직 
+    const duplicateCheck = (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (isDuplicate) {
+        alert('이미 사용 중인 아이디입니다.');
+      } else {
+        alert('사용 가능한 아이디입니다.');
+        const btn = e.target as HTMLButtonElement;
+        btn.innerText = '체크완료';
+        btn.style.backgroundColor = '#2281FF';
+      }
+    };
+
     const handleNextStep = () => {
         if (signUpData.username.trim() === '' || signUpData.password.trim() === '') {
             alert('아이디와 비밀번호는 필수 입력값입니다.');
             return;
         }
+        if(isDuplicate){
+          alert('아이디 중복체크를 완료하여 주세요.');
+        }
       nextStep();
     };
+
+
 
     return (
       <div className="fade">
@@ -96,7 +115,7 @@ const Step2: React.FC<{
               value={signUpData.username}
               onChange={(e) => setSignUpData((signUpData:any) => ({ ...signUpData, username: e.target.value }))}
             />
-              <button type="button">중복체크</button>
+              <button type="button" className="usernameBtn" onClick={duplicateCheck}>중복체크</button>
             </div>
 
             <p>{signUpData.username ? '' : '아이디를 입력해주세요'}</p>
@@ -187,6 +206,7 @@ const SignUp: React.FC = () => {
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
   // 이메일 인증 상태
   const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const router = useRouter();
 
   // 다음 스텝으로 이동
   const nextStep = () => {
@@ -236,10 +256,11 @@ const SignUp: React.FC = () => {
             contactMail: signUpData.email,
             requestReason: signUpData.reason
         }).then(response => {
-            debugger
+          //  debugger
             // @ts-ignore
             if(response.status === 200){
-                alert(response.data.message)
+              router.push('/join/signup')
+
             }else{
                 alert(response.data.detailReason)
             }
