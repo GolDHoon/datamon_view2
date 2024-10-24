@@ -67,29 +67,31 @@ export default function Sidebar(){
 <i className="right_toggle" onClick={() => setIsActive1(!isActive1)}><BsArrowLeftShort color="fff" size="26" />arrow</i>
 <div className="nav_wrap">
     <ul className="gnb">
-        {/* <li className="mli" > <FaRegNoteSticky size="20" /> 공지사항 
-</li>
-        <li className={`mli ${isActive2 ? 'on' : ''}`}   onClick={() => setIsActive2(!isActive2)} ><FaMarker  size="20" /> 마스터 계정 관리 <IoIosArrowDown />
-            <ul>
-                <li> <Link href="/">공지사항 관리</Link></li>
-                <li> <Link href="/">문의 관리</Link></li>
-                <li>홍보페이지 관리</li>
-            </ul>
-        </li>
-        <li className={`mli ${isActive3 ? 'on' : ''}`}      onClick={() => setIsActive3(!isActive3)} > <PiUserListBold  size="20" />사용자 관리 <IoIosArrowDown />
+        {/*<li className="mli" > <FaRegNoteSticky size="20" /> 공지사항</li>*/}
+        {/*<li className={`mli ${isActive2 ? 'on' : ''}`}   onClick={() => setIsActive2(!isActive2)} ><FaMarker  size="20" /> 마스터 계정 관리 <IoIosArrowDown />*/}
+        {/*    <ul>*/}
+        {/*        <li> <Link href="/">공지사항 관리</Link></li>*/}
+        {/*        <li> <Link href="/">문의 관리</Link></li>*/}
+        {/*        <li>홍보페이지 관리</li>*/}
+        {/*    </ul>*/}
+        {/*</li>*/}
+        {["USTY_INME","USTY_CLME","USTY_CRAC","USTY_CAME"].includes(userType) ? null : (
+            <li className={`mli ${isActive3 ? 'on' : ''}`} onClick={() => setIsActive3(!isActive3)}><PiUserListBold
+                size="20"/>사용자 관리 <IoIosArrowDown/>
+                <ul>
+                    {["USTY_MAST","USTY_DEVL"].includes(userType) ? (
+                        <li><Link href={"/admin/approval/list"}>admin 계정 신청 목록</Link></li>) : null}
+                    <li><Link href={"/user/approval/list"}>사용자 계정 신청 목록</Link></li>
+                    {["USTY_MAST","USTY_DEVL"].includes(userType) ? (<li><Link href={"/admin/list"}>admin 계정 목록</Link></li>) : null}
+                    <li><Link href={"/user/list"}>사용자 계정 목록</Link></li>
+                    {/*<li>고객DB 매핑 요청 승인</li>*/}
+                </ul>
+            </li>
+        )}
 
-            <ul>
-                <li>마스터 계정 승인</li>
-                <li>계정 승인</li>
-                <li>마스터 계정 목록</li>
-                <li>사용자 계정 목록</li>
-                <li>고객DB 매핑 요청 승인</li>
-            </ul>
-        </li> */}
-        
         {["USTY_MAST", "USTY_INME", "USTY_CAME"].includes(userType) ? null : (
             <li className={`mli ${isActive6 ? 'on' : ''}`} onClick={() => setIsActive6(!isActive6)}>
-                <MdManageSearch size="20" /> 고객정보 목록 <IoIosArrowDown />
+                <MdManageSearch size="20"/> 고객정보 목록 <IoIosArrowDown/>
                 <ul>
                     <li><Link href={custInfoUrl}>고객정보 목록</Link></li>
                     {/* <li>고객DB별 이력</li>

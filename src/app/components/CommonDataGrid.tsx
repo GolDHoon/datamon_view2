@@ -113,8 +113,9 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
     const [filterClass, setFilterClass] = useState('');
     const [currentFilterKey, setCurrentFilterKey] = useState('')
     const [filterList, setFilterList] = useState<any[]>([])
-    const [autoTempComplateFilterList, setTempAutoComplateFilterList] = useState<any[]>([]);
-    const [autoComplateFilterList, setAutoComplateFilterList] = useState<any[]>([]);
+    const [autoCompleteKeyword, setAutoCompleteKeyword] = useState('')
+    const [autoTempCompleteFilterList, setTempAutoCompleteFilterList] = useState<any[]>([]);
+    const [autoCompleteFilterList, setAutoCompleteFilterList] = useState<any[]>([]);
     const [checkList, setCheckList] = useState<any[]>([]);
 
     const [allCheckSelected, setAllCheckSelected] = useState(false);
@@ -232,11 +233,11 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
         if (clickedElement.classList.contains('text')) {
             setFilterClass('text');
             // @ts-ignore
-            setAutoComplateFilterList([...new Set(rows.map(row => JSON.stringify({
+            setAutoCompleteFilterList([...new Set(rows.map(row => JSON.stringify({
                 key: [data.key],
                 [data.key]: row[data.key]
             })))].map(str => JSON.parse(str)));
-            setTempAutoComplateFilterList([...new Set(rows.map(row => JSON.stringify({
+            setTempAutoCompleteFilterList([...new Set(rows.map(row => JSON.stringify({
                 key: [data.key],
                 [data.key]: row[data.key]
             })))].map(str => JSON.parse(str)));
@@ -257,11 +258,11 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
 
     const handleTextFilter = (event: any) => {
         if (event.target.value === '') {
-            setAutoComplateFilterList(autoTempComplateFilterList);
+            setAutoCompleteFilterList(autoTempCompleteFilterList);
         } else {
             // @ts-ignore
-            setAutoComplateFilterList(
-                autoTempComplateFilterList.filter(item =>
+            setAutoCompleteFilterList(
+                autoTempCompleteFilterList.filter(item =>
                     item[item.key].includes(event.target.value)
                 )
             );
@@ -339,7 +340,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
         setTabFilterList(updatedFilterList);
     };
 
-    const handleAutoComplateFilterRegister = (value: any) => {
+    const handleAutoCompleteFilterRegister = (value: any) => {
         const newFilter = {
             key: currentFilterKey,
             value: value,
@@ -504,7 +505,10 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                                             switch (data.filterType) {
                                                 case "text" : {
                                                     return <li key={index} className="text"
-                                                               onClick={event => handleTabAndFilterClick(event, data)}>{data.name}</li>
+                                                               onClick={event => {
+                                                                   setAutoCompleteKeyword('');
+                                                                   handleTabAndFilterClick(event, data);
+                                                               }}>{data.name}</li>
                                                 }
                                                 case "select": {
                                                     return <li key={index} className="check"
@@ -558,21 +562,28 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                                         <div className="text_type">
                                             <div className="input_box">
                                                 <IoIosSearch/><input type="text" placeholder="검색어를 입력하세요"
-                                                                     onChange={event => handleTextFilter(event)}
+                                                                     value={autoCompleteKeyword}
+                                                                     onChange={event => {
+                                                                         setAutoCompleteKeyword(event.target.value);
+                                                                         handleTextFilter(event);
+                                                                     }}
                                                                      onKeyDown={event => {
                                                                          const target: any = event.target;
                                                                          if (event.key === 'Enter') {
-                                                                             handleAutoComplateFilterRegister(target.value)
+                                                                             handleAutoCompleteFilterRegister(target.value)
                                                                          }
                                                                      }}/>
                                             </div>
 
                                             <ul>
                                                 {/* 검색했을 때 뜨는 자동 결과값 */}
-                                                {autoComplateFilterList.map((auto, index) => (
-                                                    <li key={index}
-                                                        onClick={(evnet) => handleAutoComplateFilterRegister(auto[auto.key])}>{auto[auto.key]}</li>
-                                                ))}
+                                                {autoCompleteKeyword !== '' && (
+                                                    autoCompleteFilterList.map((auto, index) => (
+                                                            <li key={index} onClick={(event) => handleAutoCompleteFilterRegister(auto[auto.key])}>
+                                                                {auto[auto.key]}
+                                                            </li>
+                                                    ))
+                                                )}
                                             </ul>
                                         </div>
                                     </div>

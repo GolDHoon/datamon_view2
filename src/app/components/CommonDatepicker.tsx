@@ -28,6 +28,11 @@ const DateRangePicker: NextPage<DateRangePickerProps> = ({ setDate }) => {
         setDate(startDate, endDate);
     }, [startDate, endDate]);
 
+    useEffect(() => {
+        setStartDate(undefined)
+        setEndDate(undefined)
+    }, []);
+
     return (
         <div>
             <DatePicker

@@ -1,33 +1,31 @@
 "use client";
-import CommonLayout from "../../../../components/layout/CommonLayout";
+import CommonLayout from "../../../components/layout/CommonLayout";
 // import Modal from "../../../../components/layout/ad/custInfo/Modal";
 import CommonDataGrid from "@/app/components/CommonDataGrid";
 
 import {useEffect, useState} from "react";
-// import restApi from "@/app/resources/js/Axios";
 // import GetConst from "@/app/resources/js/Const";
 import {useRouter} from "next/navigation";
 // import {getSession} from "@/app/resources/js/Session";
-import {columnInfoList, dataList} from "../../../../resources/testdb/db.json";
+// import {columnInfoList, dataList} from "../../../resources/testdb/db.json";
+import {getSession} from "@/app/resources/js/Session";
+import restApi from "@/app/resources/js/Axios";
 
 
-// // PageProps 타입 정의
-// interface PageProps {
-//     params: {
-//         dynamic: string;
-//     };
-// }
+// PageProps 타입 정의
+interface PageProps {
+    params: {
+        dynamic: string;
+    };
+}
 
 // 페이지 컴포넌트
-const Page: React.FC = () => {
-    // const { dynamic } = params;
+const Page: React.FC<PageProps> = ({ params }) => {
+    const { dynamic } = params;
     const router = useRouter();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [dbList, setDbList] = useState([]);
-    // const [selectedDbType, setSelectedDbType] = useState("init");
-    // const [selectedDb, setSelectedDb] = useState("init");
-    const [columns, setColumns] = useState(columnInfoList);
-    const [rows, setRows] = useState(dataList);
+    const [columns, setColumns] = useState([]);
+    const [rows, setRows] = useState([]);
     const [selectRow, setSelectRow] = useState();
 
   // 모달 열기 함수
@@ -47,25 +45,6 @@ const Page: React.FC = () => {
     //   openModal()
   }
 
-  const getDataList = () => {
-    //   try{
-    //       restApi('get', '/custInfo/list', {
-    //           custDBType:selectedDbType,
-    //           custDBCode:selectedDb,
-    //       }).then(response => {
-    //           // @ts-ignore
-    //           if(response.status === 200){
-    //               setColumns(response.data.columnInfoList);
-    //               setRows(response.data.dataList);
-    //           }else{
-    //               alert(response.data)
-    //           }
-    //       });
-    //   }catch (error){
-    //       // @ts-ignore
-    //       router.push('/' + getSession("companyName") + '/login');
-    //   }
-  }
 
     // useEffect(() => {
     //     if(dynamic !== 'list'){
@@ -91,11 +70,34 @@ const Page: React.FC = () => {
     //     }
     // }, []);
 
-    // useEffect(() => {
-    //     if(selectedDb !== "init"){
-    //         getDataList()
-    //     }
-    // }, [selectedDb]);
+    const getDataList = () => {
+        try {
+            restApi('get', '/member/list', {}).then(response => {
+                // @ts-ignore
+                if(response.status === 200){
+                    setColumns(response.data.columnInfoList)
+                    setRows(response.data.dataList)
+                }else{
+                    alert(response.data)
+                }
+            })
+        }catch (error) {
+            // @ts-ignore
+            router('/' + getSession("companyName") + '/login');
+        }
+    }
+
+    useEffect(() => {
+        if(dynamic !== 'list'){
+            router.push('/home');
+        }
+
+        if(!["USTY_DEVL", "USTY_MAST", "USTY_CLNT", "USTY_ADAC", "USTY_CRAC"].includes(getSession("userType") as string)){
+            router.push('/home');
+        }
+
+        getDataList()
+    }, []);
     return (
 <CommonLayout>
 {/* <Modal isOpen={isModalOpen} onClose={closeModal} typeList={columns} dataJson={selectRow}/> */}
@@ -104,7 +106,7 @@ const Page: React.FC = () => {
 
     <div className="custInfo_wrap">
         <div className="title_box">
-            <h2>admin 계정 승인신청 목록</h2>
+            <h2>사용자 계정 목록</h2>
            
         </div>
 
@@ -116,6 +118,7 @@ const Page: React.FC = () => {
                 handleRowDoubleClick={handleOnRowDoubleClick}
                 useExcelDownload={false}
                 useTabFilterButton={false}
+                useNewContentButton={true}
             />
         </section>
     </ div>
