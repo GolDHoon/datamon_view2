@@ -72,7 +72,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
 
     const getDataList = () => {
         try {
-            restApi('get', '/user/approval/list', {}).then(response => {
+            restApi('get', '/member/approval/list', {}).then(response => {
                 // @ts-ignore
                 if(response.status === 200){
                     setColumns(response.data.columnInfoList)
