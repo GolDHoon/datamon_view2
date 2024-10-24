@@ -1,6 +1,6 @@
 "use client";
 import CommonLayout from "../../../components/layout/CommonLayout";
-// import Modal from "../../../../components/layout/ad/custInfo/Modal";
+import Modal from "../../../components/layout/user/Modal";
 import CommonDataGrid from "@/app/components/CommonDataGrid";
 
 import {useEffect, useState} from "react";
@@ -27,48 +27,30 @@ const Page: React.FC<PageProps> = ({ params }) => {
     const [columns, setColumns] = useState([]);
     const [rows, setRows] = useState([]);
     const [selectRow, setSelectRow] = useState();
+    const [openMode, setOpenMode] = useState("C")
 
   // 모달 열기 함수
-//   const openModal = () => {
-//     setIsModalOpen(true);
-//   };
+    const openModal = (mode:String) => {
+        // @ts-ignore
+        setOpenMode(mode)
+        setIsModalOpen(true);
+    };
 
-  // 모달 닫기 함수
-//   const closeModal = () => {
-//     setIsModalOpen(false);
-//     getDataList()
-//   };
-//   setIsModalOpen(true);
+    // 모달 닫기 함수
+    const closeModal = () => {
+        setIsModalOpen(false);
+        getDataList()
+    };
 
-  const handleOnRowDoubleClick = (idx:any) => {
-    //   setSelectRow(rows.find((row:any)=>row.idx === idx));
-    //   openModal()
-  }
+    const handleOnRowDoubleClick = (idx:any) => {
+        setSelectRow(rows.find((row:any) => row.idx===idx));
+        openModal("M")
+    }
 
+    const handleNewContentButtonClick = () => {
+        openModal("C")
+    }
 
-    // useEffect(() => {
-    //     if(dynamic !== 'list'){
-    //         router.push('/home');
-    //     }
-
-    //     if(!["USTY_DEVL", "USTY_ADAC", "USTY_AAME"].includes(getSession("userType") as string)){
-    //         router.push('/home');
-    //     }
-
-    //     try {
-    //         restApi('get', '/custInfo/custDBCode/list', {}).then(response => {
-    //             // @ts-ignore
-    //             if(response.status === 200){
-    //                 setDbList(response.data);
-    //             }else{
-    //                 alert(response.data)
-    //             }
-    //         })
-    //     }catch (error) {
-    //         // @ts-ignore
-    //         router('/' + getSession("companyName") + '/login');
-    //     }
-    // }, []);
 
     const getDataList = () => {
         try {
@@ -100,7 +82,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
     }, []);
     return (
 <CommonLayout>
-{/* <Modal isOpen={isModalOpen} onClose={closeModal} typeList={columns} dataJson={selectRow}/> */}
+ <Modal isOpen={isModalOpen} onClose={closeModal} typeList={columns} dataJson={selectRow} openMode={openMode}/>
 
 {/* ---- */}
 
@@ -119,6 +101,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
                 useExcelDownload={false}
                 useTabFilterButton={false}
                 useNewContentButton={true}
+                handleNewContentButtonClick={handleNewContentButtonClick}
             />
         </section>
     </ div>

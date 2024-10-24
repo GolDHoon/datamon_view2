@@ -24,11 +24,12 @@ const ItemType = 'COLUMN'; // 드래그 앤 드롭에서 사용할 Item Type 정
 interface DataGridProps {
     columns?: { columnType: string; name: string; filterType: string; key: string }[],
     rows?: any[],
-    downLoadFileName?: string
-    handleRowDoubleClick: (idx : any) => void
-    useExcelDownload?: boolean
-    useTabFilterButton? : boolean;
-    useNewContentButton? : boolean;
+    downLoadFileName?: string,
+    handleRowDoubleClick: (idx: any) => void,
+    useExcelDownload?: boolean,
+    useTabFilterButton?: boolean,
+    useNewContentButton?: boolean,
+    handleNewContentButtonClick?: () => void
 }
 
 // ColumnProps 인터페이스 정의. Column 컴포넌트에서 사용할 여러 프로퍼티들을 포함
@@ -100,7 +101,16 @@ const Column: React.FC<ColumnProps> = ({column, index, moveColumn, columnWidths,
 };
 
 // CommonDataGrid 컴포넌트 정의
-const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downLoadFileName, handleRowDoubleClick, useExcelDownload, useTabFilterButton, useNewContentButton}) => {
+const CommonDataGrid: NextPage<DataGridProps> = ({
+                                                     columns = [],
+                                                     rows = [],
+                                                     downLoadFileName,
+                                                     handleRowDoubleClick,
+                                                     useExcelDownload,
+                                                     useTabFilterButton,
+                                                     useNewContentButton,
+                                                     handleNewContentButtonClick
+                                                 }) => {
     const [columnWidths, setColumnWidths] = useState<number[]>(columns.map(() => 100)); // 컬럼 너비 초기화
     const [resizing, setResizing] = useState<{ index: number; initialX: number; initialWidth: number } | null>(null); // 리사이즈 상태 관리
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }[]>([]); // 정렬 설정 상태 관리
@@ -121,14 +131,16 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
     const [allCheckSelected, setAllCheckSelected] = useState(false);
     const [selectedColumns, setSelectedColumns] = useState<any[]>([]);
 
-    const [tabFilterList, setTabFilterList] = useState<any[]>(columns.map((column:any) => {return {
-        key: column.key,
-        name: column.name,
-        type: column.filterType
-    }}));
+    const [tabFilterList, setTabFilterList] = useState<any[]>(columns.map((column: any) => {
+        return {
+            key: column.key,
+            name: column.name,
+            type: column.filterType
+        }
+    }));
     const [fileInfo, setFileInfo] = useState<any>({
-        downLoadFile : {
-            name :downLoadFileName
+        downLoadFile: {
+            name: downLoadFileName
         }
     })
 
@@ -189,7 +201,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
         // @ts-ignore
         setSortConfig(newSortConfig); // 정렬 상태 갱신
     };
- 
+
     const sortedRows = useCallback(
         (currentRows: any[]) => {
             // currentRows가 undefined일 경우 빈 배열로 초기화
@@ -218,14 +230,14 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
     const handleTabAndFilterClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, data: any) => {
         const clickedElement = e.currentTarget;
 
-    // 모든 요소에서 'on' 클래스 제거
-    const allElements = document.querySelectorAll('.list li'); // .list는 부모 선택자로 바꿔주세요
-    allElements.forEach(element => {
-        element.classList.remove('on');
-    });
+        // 모든 요소에서 'on' 클래스 제거
+        const allElements = document.querySelectorAll('.list li'); // .list는 부모 선택자로 바꿔주세요
+        allElements.forEach(element => {
+            element.classList.remove('on');
+        });
 
-    // 클릭한 요소에 'on' 클래스 추가
-    clickedElement.classList.add('on');
+        // 클릭한 요소에 'on' 클래스 추가
+        clickedElement.classList.add('on');
 
         setCurrentFilterKey(data.key);
 
@@ -270,65 +282,65 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
         return null;
     }
 
-        // 탭 체크박스 기능 start
-        const handleCheckboxAll = () => {
-            const newAllCheckSelected = !allCheckSelected;
-            setAllCheckSelected(newAllCheckSelected);
+    // 탭 체크박스 기능 start
+    const handleCheckboxAll = () => {
+        const newAllCheckSelected = !allCheckSelected;
+        setAllCheckSelected(newAllCheckSelected);
 
-            if (newAllCheckSelected) {
-                const allColumnNames = columns.map(data => data.name);
-                setSelectedColumns(allColumnNames);
+        if (newAllCheckSelected) {
+            const allColumnNames = columns.map(data => data.name);
+            setSelectedColumns(allColumnNames);
 
-                const newFilters = columns.map(data => ({
-                    key: data.key,
-                    name: data.name,
-                    type: data.filterType,
-                }));
+            const newFilters = columns.map(data => ({
+                key: data.key,
+                name: data.name,
+                type: data.filterType,
+            }));
 
-                setTabFilterList(prev => {
-                    const updatedFilterList = [...prev];
-                    newFilters.forEach(newFilter => {
-                        if (!updatedFilterList.some(filter => filter.key === newFilter.key)) {
-                            updatedFilterList.push(newFilter);
-                        }
-                    });
-                    return updatedFilterList;
-                });
-            } else {
-                setSelectedColumns([]);
-                setTabFilterList(prev => {
-                    const updatedFilterList = prev.filter(filter =>
-                        !columns.some(data => data.name === filter.name)
-                    );
-                    return updatedFilterList;
-                });
-            }
-        };
-
-        const handleCheckboxChange = (data:any) => {
-            if (selectedColumns.includes(data.name)) {
-                setSelectedColumns(prev => prev.filter(name => name !== data.name));
-                setTabFilterList(prev => 
-                    prev.filter(filter => filter.name !== data.name)
-                );
-            } else {
-                setSelectedColumns(prev => [...prev, data.name]);
-                const newFilter = {
-                    key: data.key,
-                    name: data.name,
-                    type: data.filterType,
-                };
-
-                setTabFilterList(prev => {
-                    const updatedFilterList = [...prev];
+            setTabFilterList(prev => {
+                const updatedFilterList = [...prev];
+                newFilters.forEach(newFilter => {
                     if (!updatedFilterList.some(filter => filter.key === newFilter.key)) {
                         updatedFilterList.push(newFilter);
                     }
-                    return updatedFilterList;
                 });
-            }
-        };
-        // 탭 체크박스 기능 end
+                return updatedFilterList;
+            });
+        } else {
+            setSelectedColumns([]);
+            setTabFilterList(prev => {
+                const updatedFilterList = prev.filter(filter =>
+                    !columns.some(data => data.name === filter.name)
+                );
+                return updatedFilterList;
+            });
+        }
+    };
+
+    const handleCheckboxChange = (data: any) => {
+        if (selectedColumns.includes(data.name)) {
+            setSelectedColumns(prev => prev.filter(name => name !== data.name));
+            setTabFilterList(prev =>
+                prev.filter(filter => filter.name !== data.name)
+            );
+        } else {
+            setSelectedColumns(prev => [...prev, data.name]);
+            const newFilter = {
+                key: data.key,
+                name: data.name,
+                type: data.filterType,
+            };
+
+            setTabFilterList(prev => {
+                const updatedFilterList = [...prev];
+                if (!updatedFilterList.some(filter => filter.key === newFilter.key)) {
+                    updatedFilterList.push(newFilter);
+                }
+                return updatedFilterList;
+            });
+        }
+    };
+    // 탭 체크박스 기능 end
 
     const handleClickFilter = (clickedFilter: any) => {
         // 클릭한 필터를 제외한 새로운 리스트로 상태 업데이트
@@ -403,7 +415,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
     const paginatedRows = sortedRows(currentRows).slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage); // 페이지네이션된 행
 
     // 총 페이지 수 계산    
-    const totalPages = currentRows ? Math.ceil(currentRows.length / rowsPerPage) : 0; 
+    const totalPages = currentRows ? Math.ceil(currentRows.length / rowsPerPage) : 0;
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page); // 페이지 변경
@@ -479,7 +491,9 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
     }, [filterList]);
 
     useEffect(() => {
-        setCurrentColumns(columns.filter((column:any) => tabFilterList.map((tabFilter:any) => {return tabFilter.key;}).includes(column.key)))
+        setCurrentColumns(columns.filter((column: any) => tabFilterList.map((tabFilter: any) => {
+            return tabFilter.key;
+        }).includes(column.key)))
     }, [tabFilterList]);
 
     useEffect(() => {
@@ -497,7 +511,10 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                             {/* 검색필터 start */}
                             <div className='search'>
                                 <button type="button" className="type2"
-                                        onMouseOver={() => {setIsFilterOpen(!isFilterOpen); setIsTabOpen(false)}}>필터<IoIosArrowDown color="#fff"/>
+                                        onMouseOver={() => {
+                                            setIsFilterOpen(!isFilterOpen);
+                                            setIsTabOpen(false)
+                                        }}>필터<IoIosArrowDown color="#fff"/>
                                 </button>
                                 <div className="output">
                                     <ul className="list">
@@ -579,9 +596,10 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                                                 {/* 검색했을 때 뜨는 자동 결과값 */}
                                                 {autoCompleteKeyword !== '' && (
                                                     autoCompleteFilterList.map((auto, index) => (
-                                                            <li key={index} onClick={(event) => handleAutoCompleteFilterRegister(auto[auto.key])}>
-                                                                {auto[auto.key]}
-                                                            </li>
+                                                        <li key={index}
+                                                            onClick={(event) => handleAutoCompleteFilterRegister(auto[auto.key])}>
+                                                            {auto[auto.key]}
+                                                        </li>
                                                     ))
                                                 )}
                                             </ul>
@@ -595,32 +613,35 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                             {!!useTabFilterButton ? (
                                 useTabFilterButton ? (
                                     <div className='tab'>
-                                    <button type="button" className="type1" onMouseOver={() => {setIsTabOpen(!isTabOpen); setIsFilterOpen(false)} }>탭
-                                        표시<IoIosArrowDown color="#fff"/></button>
-                                    <div className="output_t">
-                                        <ul className="list">
-                                        <li onClick={handleCheckboxAll}>
-                                            {allCheckSelected ? '전체 해제' : '전체 선택'}
-                                        </li>
-                                        {columns.map((data, index) => (
-                                                <li key={index}>
-                                                <input
-                                                    type="checkbox"
-                                                    id={data.name}
-                                                    checked={selectedColumns.includes(data.name)} // 체크 상태 설정
-                                                    onChange={() => handleCheckboxChange(data)}
-                                                /> 
-                                                <label htmlFor={data.name}>{data.name}</label>
-                                            </li>
-                                        ))}
-    
-                                        </ul>
-                                    </div>
-                                </div>
-                                ) : null
-                            ): null }
+                                        <button type="button" className="type1" onMouseOver={() => {
+                                            setIsTabOpen(!isTabOpen);
+                                            setIsFilterOpen(false)
+                                        }}>탭
+                                            표시<IoIosArrowDown color="#fff"/></button>
+                                        <div className="output_t">
+                                            <ul className="list">
+                                                <li onClick={handleCheckboxAll}>
+                                                    {allCheckSelected ? '전체 해제' : '전체 선택'}
+                                                </li>
+                                                {columns.map((data, index) => (
+                                                    <li key={index}>
+                                                        <input
+                                                            type="checkbox"
+                                                            id={data.name}
+                                                            checked={selectedColumns.includes(data.name)} // 체크 상태 설정
+                                                            onChange={() => handleCheckboxChange(data)}
+                                                        />
+                                                        <label htmlFor={data.name}>{data.name}</label>
+                                                    </li>
+                                                ))}
 
-                
+                                            </ul>
+                                        </div>
+                                    </div>
+                                ) : null
+                            ) : null}
+
+
                             {/* 탭 표시 end */}
                         </div>
                         <div className='filter_value'>
@@ -638,7 +659,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
                                     <button type="button" className="excel"><PiMicrosoftExcelLogoFill
                                         onClick={(event) => handleDownloadCSV(event)} color="#fff"/></button>
                                 ) : null
-                            ): null }
+                            ) : null}
                         </div>
                     </div>
                     <div className="tag_box">
@@ -710,12 +731,12 @@ const CommonDataGrid: NextPage<DataGridProps> = ({columns = [], rows = [], downL
 
 
             {!!useNewContentButton ? (
-                                useNewContentButton ? (
-                                    <div className='button_box'>
-                                    <button type="button" className='type1'>신규</button>
-                                    </div>
-                                ) : null
-                            ): null }
+                useNewContentButton ? (
+                    <div className='button_box'>
+                        <button type="button" className='type1' onClick={handleNewContentButtonClick}>신규</button>
+                    </div>
+                ) : null
+            ) : null}
 
 
         </DndProvider>
