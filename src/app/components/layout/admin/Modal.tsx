@@ -29,23 +29,59 @@ export default function Modal({isOpen, onClose, typeList, dataJson, openMode}: M
     });
 
     const handleCreate = () => {
-        console.log(data)
+        restApi('post', '/admin/create', {
+            userId: data.userId,
+            userPw: data.password,
+            userType: data.userType,
+            name: data.name,
+            ceo: data.ceo,
+            corporateNumber: data.corporateNumber,
+            corporateAddress: data.corporateAddress,
+            corporateMail: data.corporateMail,
+            businessStatus: data.businessStatus,
+            businessItem: data.businessItem,
+        }).then(response => {
+            // @ts-ignore
+            if(response.status === 200) {
+            } else {
+                alert(response.data)
+            }
+            onClose();
+        });
     }
 
     const handleModify = () => {
-        console.log(data)
-        // restApi('post', '/custInfo/modify', currentData).then(response => {
-        //     // @ts-ignore
-        //     if(response.status === 200) {
-        //     } else {
-        //         alert(response.data)
-        //     }
-        //     onClose();
-        // });
+        restApi('post', '/admin/modify', {
+            idx: data.idx,
+            userType: data.userType,
+            name: data.name,
+            ceo: data.ceo,
+            corporateNumber: data.corporateNumber,
+            corporateAddress: data.corporateAddress,
+            corporateMail: data.corporateMail,
+            businessStatus: data.businessStatus,
+            businessItem: data.businessItem,
+        }).then(response => {
+            // @ts-ignore
+            if(response.status === 200) {
+            } else {
+                alert(response.data)
+            }
+            onClose();
+        });
     }
 
     const handleDelete = () => {
-        console.log(data)
+        restApi('post', '/admin/delete', {
+            idx: data.idx,
+        }).then(response => {
+            // @ts-ignore
+            if(response.status === 200) {
+            } else {
+                alert(response.data)
+            }
+            onClose();
+        });
     }
 
     useEffect(() => {

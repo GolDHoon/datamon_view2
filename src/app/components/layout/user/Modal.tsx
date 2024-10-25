@@ -25,23 +25,53 @@ export default function Modal({isOpen, onClose, typeList, dataJson, openMode}: M
     });
 
     const handleCreate = () => {
-        console.log(data)
+        restApi('post', '/member/create', {
+            userId: data.userId,
+            pw: data.password,
+            name : data.name,
+            role : data.role,
+            contactPhone : data.contactPhone,
+            mail : data.contactMail
+        }).then(response => {
+            // @ts-ignore
+            if(response.status === 200) {
+            } else {
+                alert(response.data)
+            }
+            onClose();
+        });
     }
 
     const handleModify = () => {
-        console.log(data)
-        // restApi('post', '/custInfo/modify', currentData).then(response => {
-        //     // @ts-ignore
-        //     if(response.status === 200) {
-        //     } else {
-        //         alert(response.data)
-        //     }
-        //     onClose();
-        // });
+        restApi('post', '/member/modify', {
+            idx: data.idx,
+            userId: data.userId,
+            pw: data.password,
+            name : data.name,
+            role : data.role,
+            contactPhone : data.contactPhone,
+            mail : data.contactMail
+        }).then(response => {
+            // @ts-ignore
+            if(response.status === 200) {
+            } else {
+                alert(response.data)
+            }
+            onClose();
+        });
     }
 
     const handleDelete = () => {
-        console.log(data)
+        restApi('post', '/member/delete', {
+            idx: data.idx,
+        }).then(response => {
+            // @ts-ignore
+            if(response.status === 200) {
+            } else {
+                alert(response.data)
+            }
+            onClose();
+        });
     }
 
     useEffect(() => {
