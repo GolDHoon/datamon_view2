@@ -91,7 +91,7 @@ body{
     flex-direction: column;
     align-items: center;
     width: 400px;
-    height: 600px;
+    min-height: 600px;
     background-color: #fff;
     border-radius: 20px;
     margin: 10vh auto 0;
@@ -178,12 +178,17 @@ margin: 0 auto 20px;
                 resize: none;
 
             }
+            select{
+            padding: 6px 10px;
+            border: 1px solid #d8d8d8;
+            border-radius: 4px;
+            }
             &>div{
                 display: flex;
                 gap:10px;
                 margin-bottom: 8px;
                 input{
-width: 100%;
+                    width: 100%;
                 }
                 button{
                     width: auto;
@@ -330,6 +335,11 @@ width: 100%;
     margin: 70px auto 0;
     font-size: 14px;
     @include txtellipsis;
+
+    button{
+        @include commonBtn;
+        margin: 24px auto 0;
+    }
 
 }
 
