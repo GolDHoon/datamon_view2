@@ -89,6 +89,30 @@ margin: 8vh auto 0;
 }
 }
 
+@mixin checkMarkBgS{
+&::before{
+  content:"";
+  display: block;
+  width: 56px;
+  height: 56px;
+  background-image: url("../img/sigup_complete_check.png");
+  background-size: cover;
+margin: 0 auto 20px;
+}
+}
+
+@mixin checkMarkBgL{
+  &::before{
+    content:"";
+    display: block;
+    width: 99px;
+    height: 99px;
+    background-image: url("../img/sigup_complete_check.png");
+    background-size: cover;
+  margin: 0 auto 20px;
+  }
+  }
+
 
 @mixin commonBtn(){
   background-color: #fff;
@@ -139,6 +163,22 @@ button{
   background-color: $main100;
   color:#fff;
 }
+}
+}
+
+@mixin btnBox_reverse{
+  width: 100%;
+  display: flex;
+  gap:20px;
+button{
+  &:nth-child(1){
+    background-color: $main100;
+    color:#fff;
+  }
+&:nth-child(2){
+  background-color: #F0F0F0;
+}
+
 }
 }
 

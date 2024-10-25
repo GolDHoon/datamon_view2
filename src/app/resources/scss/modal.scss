@@ -20,8 +20,6 @@ z-index: 10;
     border: 2px solid $main100;
     border-radius: 8px;
 
-
-
     .modal_header{
         position: relative;
         display: flex;
@@ -138,5 +136,81 @@ border-radius: 4px;
     border: 1px solid #333;
 }
         }
+    }
+
+
+
+    &.type2{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        width: 400px;
+        height: 290px;
+        padding: 20px;
+
+        svg{
+            position: absolute;
+            top: 14px;
+            right: 14px;
+        }
+
+        .step1{
+            p{
+                font-size: 20px;
+                @include checkMarkBgS;
+            }
+            .btn_box{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                @include btnBox_reverse;
+                width: 100%;
+                margin-top: 60px;
+
+                button{
+                    width: 100%;
+                    padding: 6px 28px;
+                    border-radius: 4px;
+                }
+            }
+        }
+
+        .step2{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            gap:10px;
+            
+            p{
+                font-size: 17px;
+            }
+
+            textarea{
+                @include InputBasicStyle;
+                width: 90%;
+                height: 81px;
+                resize: none;
+            }
+            .btn_box{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                @include btnBox;
+                width: 100%;
+                margin-top: 60px;
+
+                button{
+                    width: 100%;
+                    padding: 6px 28px;
+                    border-radius: 4px;
+                }
+            }
+        }
+
+
+
     }
 }

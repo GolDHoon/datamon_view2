@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import "./resources/scss/main/join.scss";
 import Loading from "@/app/components/Loading";
+import Modal from "./components/layout/user/approval/Modal";
 
 
 
@@ -365,6 +366,7 @@ const Page: React.FC = () => {
 
     return (
       <>
+      <Modal ></Modal>
       {!showSignUp ? (
           <div className="admin_search_wrap">
               <div className="title_box">

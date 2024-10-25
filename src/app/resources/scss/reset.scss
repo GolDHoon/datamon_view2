@@ -190,6 +190,13 @@ input {
   }
 }
 
+textarea{
+  &::placeholder{
+    color: #ddd;
+    font-weight: 300;
+}
+}
+
 body {
   min-width: 280px;
   line-height: 1;
