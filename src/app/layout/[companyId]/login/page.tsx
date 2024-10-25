@@ -1,6 +1,6 @@
 'use client'
 import {NextPage} from 'next';
-import "../../../resources/scss/main/login.scss";
+import "../../../resources/scss/main/join.scss";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import { useRouter } from 'next/navigation';
@@ -100,8 +100,10 @@ const Login: NextPage<LoginProps> = ({ params }) => {
                     <p><Link href="">아이디/비밀번호 찾기</Link></p>
                 </div> */}
                 {/* 추후 기능 개발 시 style 삭제 요망 */}
-                <button type="submit" style={{marginTop: "24px"}} className="login" onClick={loginEffect}>로그인</button>
-                 <button type="button" onClick={(e) => {router.push('/join/signup');}}>회원가입</button>
+<div className='btn_box'>
+<button type="submit" className="login" onClick={loginEffect}>로그인</button>
+<button type="button" onClick={(e) => {router.push('/join/signup');}}>회원가입</button>
+</div>
             </div>
         </div>
     );

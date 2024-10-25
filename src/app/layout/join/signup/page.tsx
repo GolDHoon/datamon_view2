@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import restApi from "@/app/resources/js/Axios";
 import {getSession} from "@/app/resources/js/Session";
 import { useRouter } from 'next/navigation';
+import "../../../resources/scss/main/join.scss";
 
 // 1단계 컴포넌트
 const Step1: React.FC<{

@@ -7,6 +7,10 @@ const nextConfig = {
                 destination: '/layout/:companyId/login',
             },
             {
+                source: '/join/search',
+                destination: '/layout/join/search',
+            },
+            {
                 source: '/home',
                 destination: '/layout/home',
             },

@@ -1,3 +1,25 @@
+.loading_wrap{
+position: relative;
+
+ &> span{
+        position: fixed !important;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10000;
+    }
+
+    .loading_bg{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(255, 255, 255, 0.6);
+        z-index: 9999;
+    }
+}
+
 .wrap{
     display: grid;
     grid-template-columns: auto 1fr;
@@ -321,10 +343,7 @@ margin-left: 8px;
             border-radius: 8px;
             input{
                 margin-left: 4px;
-                &::placeholder{
-                    color: #ddd;
-                    font-weight: 300;
-                }
+
             }
           }
           button{
@@ -357,13 +376,6 @@ margin-left: 8px;
 
        
 }
-
-
-
-
-
-
-
 
 // ---- table
 
@@ -510,352 +522,4 @@ color: #333;
     }
 }
 
-.modal_bg{
-    position: absolute;
-    top: 0;
-    left: 0;
-width: 100vw;
-height: 100vh;
-background-color: rgba(0, 0, 0, 0.2);
-z-index: 10;
-}
 
-.modal_wrap{
-    width: 450px;
-    height: 550px;
-    background-color: #fff;
-    position: fixed;
-    top:50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10000;
-    border: 2px solid $main100;
-    border-radius: 8px;
-
-
-
-    .modal_header{
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 50px;
-        svg{
-            position: absolute;
-            top: 12.5px;
-            right: 15px;
-            cursor: pointer;
-        }
-        span{
-            width: 100%;
-            text-align: center;
-            margin-right: auto;
-            font-weight: 800;
-        }
-    }
-
-    .modal_body{
-        width: 100%;
-        padding: 20px;
-        height: calc(100% - 100px);
-        overflow-y: scroll;
-
-        ul{
-            display: flex;
-            flex-direction: column;
-            gap:10px;
-
-            li{
-                display: flex;
-                align-items: center;
-                gap:10px;
-                min-height: 32px;
-                width: 100%;
-                height: auto;
-label{
-    width:85px;
-    @include txtellipsis;
-    text-align: right;
-    font-weight: 700;
-    font-size: 14px;
-
-}
-
-input, textarea, select, div{
-    width: 100%;
-}
-input{
-    padding: 6px 8px;
-    background-color: #ecf2ff;
-
-    &.read_only{
-        background-color: #ddd;
-        color: #aaa;
-    }
-}
-textarea{
-    padding: 6px 8px;
-    background-color: #ecf2ff;
-    border: none;
-    resize: vertical;
-    &:focus{
-outline: none;
-border: none;
-    }
-    &::placeholder{
-color: #666;
-    }
-}
-
-select{
-min-height: 32px;
-border: 0px;
-background-color: #ecf2ff;
-}
-
-div{
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    font-weight: 800;
-    color: $main100;
-
-}
-            }
-        }
-
-
-@include scrollBar;
-    }
-
-    .modal_foot{
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap:10px;
-        padding: 0px 20px;
-        height: 50px;
-        background-color: #fff;
-        filter: drop-shadow(0 -2px 2px rgba(255, 255, 255, 0.7))
-        drop-shadow(0 -5px 5px rgba(255, 255, 255, 0.7))
-        drop-shadow(0 -15px 15px rgba(255, 255, 255, 0.7));
-
-        button{
-            background-color: $main100;
-color:#fff;
-padding: 6px 28px;
-border-radius: 4px;
-
-
-&.disable{
-    color: #666;
-    background-color: #ddd;
-    border: 1px solid #333;
-}
-        }
-    }
-}
-
-
-.signup_wrap{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 400px;
-    height: 600px;
-    background-color: #fff;
-    border-radius: 20px;
-    margin: 10vh auto 0;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-padding: 16px 50px;
-    h3{
-        &.step{
-font-size: 24px;
-text-align: center;
-font-weight: 700;
-
-&::before{
-    content:"";
-    display: block;
-    width: 56px;
-    height: 58px;
-    background-image: url("../img/logo.png");
-    background-size: cover;
-margin: 0 auto 20px;
-}
-&::after{
-    display: block;
-    width: 120px;
-    height: 20px;
-    margin: 28px auto 30px;
-}
-
-        }
-        &.step1{
-
-            &::after{
-                content:"";
-                background-image: url("../img/step_01.png");
-                background-size: cover;
-            }
-        }
-        &.step2{
-
-            &::after{
-                content:"";
-                background-image: url("../img/step_02.png");
-                background-size: cover;
-            }
-        }
-        &.step3{
-
-            &::after{
-                content:"";
-                background-image: url("../img/step_03.png");
-                background-size: cover;
-            }
-        }
-    }
-    .fade {
-        animation: fadeIn 0.5s ease-in-out;
-        width: 100%;
-      }
-
-    .content{
-        display: flex;
-        flex-direction: column;
-        gap:16px;
-        margin-bottom: 36px;
-        width: 100%;
-
-        .input_box{
-            position: relative;
-            display: flex;
-            flex-direction: column;
-
-            label{
-                font-size: 14px;
-                font-weight: 700;
-                margin-bottom: 10px;
-            }
-            input{
-                @include InputBasicStyle;
-                font-size: 15px;
-
-            }
-            textarea{
-                @include InputBasicStyle;
-                height: 81px;
-                resize: none;
-
-            }
-            &>div{
-                display: flex;
-                gap:10px;
-                margin-bottom: 8px;
-                input{
-width: 100%;
-                }
-                button{
-                    width: auto;
-                    padding: 8px 16px;
-                    white-space: nowrap;
-                    color: #fff;
-                    background-color: #727272;
-                }
-                &:nth-child(3){
-                    button{
-                        background-color: $main100;
-                    }
-                }
-            }
-            p{
-                position: absolute;
-                bottom: -18px;
-                right: 0;
-                color: $main100;
-                font-size: 12.5px;
-            }
-        }
-    }
-
-    button{
-        @include commonBtn;
-        @include flex-center;
-        width: 100%;
-    }
-
-    .btn_box{
-    @include btnBox;
-    }
-}
-
-
-
-
-
-.signup_complete_wrap{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 15svh;
-
-    div{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        h3{
-            font-size: 30px;
-            font-weight: 700;
-            margin-bottom: 24px;
-
-            &::before{
-                content:"";
-                display: flex;
-                width: 170px;
-                height: 170px;
-                margin: 0 auto 60px;
-                background-image: url("../img/sigup_complete_check.png");
-                background-size: cover;
-            }
-
-
-        }
-        p{
-            line-height: 24px;
-        }
-    }
-
-    ul{
-        width: 310px;
-        border: 1px solid #D8D8D8;
-        border-radius: 4px;
-        overflow: hidden;
-        margin-top: 32px;
-
-        li{
-            display: flex;
-            align-items: center;
-            height: 40px;
-
-            span{
-                &:nth-child(1){
-                    @include flex-center;
-                    min-width: 100px;
-                    height: 100%;
-                    background-color: #eee;
-                    color: $main100;
-                }
-                &:nth-child(2){
-                    padding-left: 12px;
-                    @include txtellipsis;
-                }
-            }
-
-            &:nth-child(2){
-                border-top: 1px solid #d8d8d8;
-            }
-        }
-    }
-}
