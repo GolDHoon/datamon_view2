@@ -35,10 +35,10 @@ export default function Modal({isOpen, onClose, typeList, dataJson, openMode}: M
         }).then(response => {
             // @ts-ignore
             if(response.status === 200) {
+                onClose();
             } else {
                 alert(response.data)
             }
-            onClose();
         });
     }
 
@@ -52,12 +52,12 @@ export default function Modal({isOpen, onClose, typeList, dataJson, openMode}: M
             contactPhone : data.contactPhone,
             mail : data.contactMail
         }).then(response => {
+            onClose();
             // @ts-ignore
             if(response.status === 200) {
             } else {
                 alert(response.data)
             }
-            onClose();
         });
     }
 
@@ -65,12 +65,12 @@ export default function Modal({isOpen, onClose, typeList, dataJson, openMode}: M
         restApi('post', '/member/delete', {
             idx: data.idx,
         }).then(response => {
+            onClose();
             // @ts-ignore
             if(response.status === 200) {
             } else {
                 alert(response.data)
             }
-            onClose();
         });
     }
 

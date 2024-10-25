@@ -43,10 +43,10 @@ export default function Modal({isOpen, onClose, typeList, dataJson, openMode}: M
         }).then(response => {
             // @ts-ignore
             if(response.status === 200) {
+                onClose();
             } else {
                 alert(response.data)
             }
-            onClose();
         });
     }
 
@@ -64,10 +64,10 @@ export default function Modal({isOpen, onClose, typeList, dataJson, openMode}: M
         }).then(response => {
             // @ts-ignore
             if(response.status === 200) {
+                onClose();
             } else {
                 alert(response.data)
             }
-            onClose();
         });
     }
 
@@ -77,10 +77,10 @@ export default function Modal({isOpen, onClose, typeList, dataJson, openMode}: M
         }).then(response => {
             // @ts-ignore
             if(response.status === 200) {
+                onClose();
             } else {
                 alert(response.data)
             }
-            onClose();
         });
     }
 
