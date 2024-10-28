@@ -14,6 +14,8 @@ import {
 import {IoIosArrowDown, IoIosClose, IoIosSearch} from "react-icons/io";
 import CommonDatepicker from "@/app/components/CommonDatepicker";
 import CommonToggle from "@/app/components/CommonToggle";
+import { MdOutlineContentPasteSearch } from "react-icons/md";
+import { GoArrowUpLeft } from "react-icons/go";
 import {PiMicrosoftExcelLogoFill} from "react-icons/pi";
 import {Simulate} from "react-dom/test-utils";
 import input = Simulate.input;
@@ -576,7 +578,8 @@ const CommonDataGrid: NextPage<DataGridProps> = ({
                                         </div>
 
                                         {/* text_type */}
-                                        <div className="text_type">
+                                        <div className={`text_type ${autoCompleteFilterList.length === 0 ? '' : ''}`}>
+                                        <MdOutlineContentPasteSearch color="ddd" size="100" />
                                             <div className="input_box">
                                                 <IoIosSearch/><input type="text" placeholder="검색어를 입력하세요"
                                                                      value={autoCompleteKeyword}
@@ -584,7 +587,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({
                                                                          setAutoCompleteKeyword(event.target.value);
                                                                          handleTextFilter(event);
                                                                      }}
-                                                                     onKeyDown={event => {
+                                                                                                          onKeyDown={event => {
                                                                          const target: any = event.target;
                                                                          if (event.key === 'Enter') {
                                                                              handleAutoCompleteFilterRegister(target.value)
@@ -598,7 +601,7 @@ const CommonDataGrid: NextPage<DataGridProps> = ({
                                                     autoCompleteFilterList.map((auto, index) => (
                                                         <li key={index}
                                                             onClick={(event) => handleAutoCompleteFilterRegister(auto[auto.key])}>
-                                                            {auto[auto.key]}
+                                                        <IoIosSearch  color="ccc" size='14' />   <span> {auto[auto.key]}</span> <GoArrowUpLeft color="ccc" size='14' />
                                                         </li>
                                                     ))
                                                 )}

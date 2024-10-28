@@ -54,19 +54,7 @@ position: relative;
             border-radius: 12px;
 
 .title_box{
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 20px;
-    h2{
-        font-size: 20px;
-        font-weight: 700;
-    }
-    select{
-        color: #bbb;
-        border: none;
-        font-size: 14px;
-    }
+    @include titleBox;
 }
 
 .top_section{
@@ -218,6 +206,25 @@ position: relative;
             }   
             .text_type{
             padding: 12px 0;
+            position: relative;
+
+            &>svg{
+                display: block;
+                position: absolute;
+                top:50%;
+                left: 50%;
+                transform: translate(-52%, -50%);
+                opacity: 0.5;
+            }
+
+            &.add{
+                &>svg{
+                    display: none;
+                }
+            }
+
+
+        
             .input_box{
             @include commonInput;
               }
@@ -231,8 +238,21 @@ position: relative;
                 overflow-y: scroll;
             
                 li{
+                    display: flex;
+                    align-items: center;
                     font-size: 14px;
                     text-indent: 8px;
+
+                    svg{
+                        &:nth-child(1){
+                            background-color: #eee;
+                            border-radius: 100%;
+                            padding: 4px;
+                        }
+                        &:nth-child(3){
+margin-left: auto;
+                        }
+                    }
                 }
               }
             }
@@ -523,3 +543,115 @@ color: #333;
 }
 
 
+.performance_wrap{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    @include pageWrapWhiteFrame;
+
+    .title_box{
+@include titleBox;
+    }
+
+section{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap:20px;
+&>div{
+    position: relative;
+    h4{
+        font-size: 17px;
+        font-weight: 700;
+        padding: 10px 0px 8px 30px;
+    }
+    p{
+        font-size: 14px;
+        color: #aaa;
+        padding: 0px 0px 10px 30px;
+    }
+
+    .chart_title{
+        display: flex;
+        align-items: center;
+        gap:10px;
+        select{
+            color: #bbb;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            padding: 3px 4px;
+            font-size: 14px;
+        }
+
+        .react-datepicker-wrapper{
+        width:100%;
+     input{
+        font-size: 13px;
+        letter-spacing: -0.4px;
+        background-color: $main200;
+        border-radius: 4px;
+        padding: 2px 8px;
+        cursor: pointer;
+        text-align: center;
+        &::placeholder{
+            color: #aaa;
+
+        }
+     }
+        }
+    }
+
+.recharts-wrapper{
+    //padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    &:nth-child(2){
+        margin-bottom: 20px;
+        tspan{
+        font-size: 12px;
+        }
+    }
+}
+.chart_value_list{
+    &.areatype{
+        position: absolute;
+        right: 0;
+        top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    li{
+        font-size: 14px;
+        &::before{
+            content:"";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            margin-right: 4px;
+        }
+    }
+    .area1{
+        &::before{
+        background-color: red;
+        }
+    }
+    .area2{
+        &::before{
+        background-color: blue;
+        }
+    }
+    .area3{
+        &::before{
+        background-color: green;
+        }
+    }
+    }
+}
+}
+}
+}

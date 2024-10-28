@@ -366,7 +366,7 @@ const Page: React.FC = () => {
 
     return (
       <>
-      <Modal ></Modal>
+      {/* <Modal /> */}
       {!showSignUp ? (
           <div className="admin_search_wrap">
               <div className="title_box">
