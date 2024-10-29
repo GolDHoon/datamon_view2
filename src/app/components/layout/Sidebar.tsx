@@ -67,14 +67,14 @@ export default function Sidebar(){
 <i className="right_toggle" onClick={() => setIsActive1(!isActive1)}><BsArrowLeftShort color="fff" size="26" />arrow</i>
 <div className="nav_wrap">
     <ul className="gnb">
-        {/*<li className="mli" > <FaRegNoteSticky size="20" /> 공지사항</li>*/}
-        {/*<li className={`mli ${isActive2 ? 'on' : ''}`}   onClick={() => setIsActive2(!isActive2)} ><FaMarker  size="20" /> 마스터 계정 관리 <IoIosArrowDown />*/}
-        {/*    <ul>*/}
-        {/*        <li> <Link href="/">공지사항 관리</Link></li>*/}
-        {/*        <li> <Link href="/">문의 관리</Link></li>*/}
-        {/*        <li>홍보페이지 관리</li>*/}
-        {/*    </ul>*/}
-        {/*</li>*/}
+        <li className="mli" ><Link  href="/mypage"> <FaRegNoteSticky size="20" /> 마이페이지</Link></li>
+        {/* <li className={`mli ${isActive2 ? 'on' : ''}`}   onClick={() => setIsActive2(!isActive2)} ><FaMarker  size="20" /> 마스터 계정 관리 <IoIosArrowDown />
+           <ul>
+               <li> <Link href="/">공지사항 관리</Link></li>
+               <li> <Link href="/">문의 관리</Link></li>
+               <li>홍보페이지 관리</li>
+           </ul>
+        </li> */}
         {["USTY_INME","USTY_CLME","USTY_CRAC","USTY_CAME"].includes(userType) ? null : (
             <li className={`mli ${isActive3 ? 'on' : ''}`} onClick={() => setIsActive3(!isActive3)}><PiUserListBold
                 size="20"/>사용자 관리 <IoIosArrowDown/>

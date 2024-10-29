@@ -655,3 +655,66 @@ section{
 }
 }
 }
+
+
+.mypage_wrap{
+    @include pageWrapWhiteFrame;
+    .title_box{
+        @include titleBox;
+    }
+
+    .name{
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        margin-bottom: 40px;
+        margin: 40px 0px 20px 40px;
+
+        span{
+            margin-left: 8px;
+        }
+    }
+
+    .user_content{
+        width: 420px;
+        display: flex;
+        flex-direction: column;
+        margin: 0 0 0 40px;
+       
+        &>div{  
+        margin-bottom: 36px;
+
+            p{
+                font-size: 17px;
+                font-weight: 700;
+                margin: 10px 0 16px;
+            }
+            ul{
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                margin: 0px 0px 20px 30px;
+
+                li{
+                    display: flex;
+                    align-items: center;
+                    gap:20px;
+                    
+                    label{
+                        color: #666;
+                        font-size: 14px;
+                    }
+                    input{
+                    @include commonInput_large;
+                    width: 300px;
+                    }
+                }
+            }
+            button{
+                @include commonBtn;
+                margin-left: auto;
+            }
+        }
+    }
+}
