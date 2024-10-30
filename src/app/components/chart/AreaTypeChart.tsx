@@ -85,7 +85,7 @@ const renderActiveShape = (props: any) => {
 export default function Chart() {
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
-    (_, index) => {
+    (_:any, index:any) => {
       setActiveIndex(index);
     },
     [setActiveIndex]

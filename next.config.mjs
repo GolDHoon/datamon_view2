@@ -51,12 +51,12 @@ const nextConfig = {
                 destination: '/layout/performance',
             },
             {
-                source: '/customer/custom',
-                destination: '/layout/customer/custom',
+                source: '/customer/custom/:dynamic',
+                destination: '/layout/customer/custom/:dynamic',
             },
             {
-                source: '/customer/landing',
-                destination: '/layout/customer/landing',
+                source: '/customer/landing/:dynamic',
+                destination: '/layout/customer/landing/:dynamic',
             },
             {
                 source: '/customer/custom/detail',

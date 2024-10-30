@@ -9,6 +9,7 @@ import BarBrushTypeChart from "../../components/chart/BarBrushTypeChart";
 import CommonLayout from "../../components/layout/CommonLayout";
 import restApi from "@/app/resources/js/Axios";
 import CommonDatepicker from "@/app/components/CommonDatepicker";
+import GetConst from "@/app/resources/js/Const";
 
 export default function Page() {
     const [dbList, setDbList] = useState([]);
