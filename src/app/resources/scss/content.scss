@@ -725,4 +725,36 @@ section{
     .title_box{
         @include titleBox;
     }
+
+    .tab_wrap{
+        width: 800px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid $main100;
+        .tab_menu{
+            display:flex;
+            border-bottom: 1px solid $main100;
+            li{
+                padding: 16px 24px;
+                &.on{
+                    background-color: $main100;
+                    color: #fff;
+                }
+            }
+        }
+        .tab_value{
+            width: 100%;
+            height: calc(100vh - 200px);
+
+            h4{
+                font-size: 20px;
+            }
+
+            ul{
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+
 }
