@@ -746,13 +746,162 @@ section{
             width: 100%;
             height: calc(100vh - 200px);
 
-            h4{
-                font-size: 20px;
+
+
+            .ip, .keyword{
+                width: 400px;
+                height: 100%;
+                margin: 0 auto;
+                padding: 20px 0;
+
+                h4{
+                    font-size: 20px;
+                    margin-bottom: 10px;
+                }
+
+                .input_box{
+                    display: flex;
+                    gap:8px;
+                    input{
+                    @include commonInput_large;
+                    }
+                    button{
+                        white-space: nowrap;
+                        @include commonBtn;
+                    }
+                }
+    
+                ul{
+                    display: flex;
+                    margin-top: 40px;
+ 
+    
+                    &.ip_list, &.keyword_list{
+                        display: flex;
+                        flex-wrap: wrap;
+                        align-items: flex-start;
+                        justify-content: space-around;
+                        gap:10px;
+                        margin-top: 20px;
+                        width: 100%;
+                        height: calc(100vh - 316px);
+                        overflow-y: scroll;
+
+                        @include scrollBar;
+
+                        li{
+                            display: flex;
+                            align-items: center; 
+                            font-size: 18px;  
+
+    
+                            svg{
+                                margin-left: 8px;
+                            }
+                        }
+                    }
+                }
             }
 
-            ul{
-                display: flex;
-                flex-direction: column;
+            .duplication{
+                width: 400px;
+                height: 100%;
+                margin: 0 auto;
+                padding: 20px 0; 
+                h4{
+                    font-size: 20px;
+                    margin-bottom: 10px;
+                }
+                ul{
+                    display: flex;
+                    margin-top: 40px;
+ 
+    
+                    &.duplication_list{
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: flex-start;
+                        gap:10px;
+                        margin-top: 20px;
+                        width: 100%;
+                        height: calc(100vh - 316px);
+                        overflow-y: scroll;
+
+                        @include scrollBar;
+
+                        li{
+                            display: flex;
+                            align-items: center; 
+                            font-size: 18px;  
+
+    
+                            svg{
+                                margin-left: 8px;
+                            }
+                        }
+                    }
+                }
+            }
+         
+            .pagesetting{
+                width: 500px;
+                height: 100%;
+                margin: 0 auto;
+                padding: 20px 0; 
+                h4{
+                    font-size: 20px;
+                    margin-bottom: 10px;
+                }
+                ul{
+                    display: flex;
+                    flex-direction: column;
+                    margin-top: 40px;
+ 
+    
+                    &.pagesetting_list{
+                height: calc(100vh - 350px);
+                  overflow-y: scroll;
+                  @include scrollBar;
+
+                li{
+                    display: flex;
+                    flex-direction: column;
+                    gap:4px;
+                    margin-bottom: 20px;
+                    &:last-child{
+                        margin-bottom: 0;
+                    }
+
+                    & > p{
+                        font-weight: 700;
+                    }
+                    input{
+                        width: 100%;
+                        @include commonInput_large;
+                        box-sizing: border-box;
+                    }
+                    textarea{
+                        width: 100%;
+                        padding: 8px 14px;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        resize: vertical;
+                        box-sizing: border-box;
+                    }
+                }
+                    }
+                }
+
+                .btn_box{
+                    display: flex;
+                    justify-content: flex-end;
+                    gap:8px;
+                    margin-top: 8px;
+                   button{
+                    @include commonBtn;
+                   }
+                }
             }
         }
     }

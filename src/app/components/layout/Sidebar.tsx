@@ -12,6 +12,8 @@ import Link from 'next/link'
 import "../../resources/scss/main/sidebar.scss";
 import { getSession } from '@/app/resources/js/Session';
 import { FaDatabase } from "react-icons/fa6";
+import { IoStatsChart } from "react-icons/io5";
+import { MdLogout } from "react-icons/md";
 
 export default function Sidebar(){
     const [isActive1, setIsActive1] = useState(false);
@@ -76,13 +78,7 @@ export default function Sidebar(){
 <div className="nav_wrap">
     <ul className="gnb">
         <li className="mli" ><Link  href="/mypage"> <FaRegNoteSticky size="20" /> 마이페이지</Link></li>
-        {/* <li className={`mli ${isActive2 ? 'on' : ''}`}   onClick={() => setIsActive2(!isActive2)} ><FaMarker  size="20" /> 마스터 계정 관리 <IoIosArrowDown />
-           <ul>
-               <li> <Link href="/">공지사항 관리</Link></li>
-               <li> <Link href="/">문의 관리</Link></li>
-               <li>홍보페이지 관리</li>
-           </ul>
-        </li> */}
+
         {["USTY_INME","USTY_CLME","USTY_CRAC","USTY_CAME"].includes(userType) ? null : (
             <li className={`mli ${isActive3 ? 'on' : ''}`} onClick={() => setIsActive3(!isActive3)}><PiUserListBold
                 size="20"/>사용자 관리 <IoIosArrowDown/>
@@ -96,7 +92,12 @@ export default function Sidebar(){
                 </ul>
             </li>
         )}
-
+       <li className={`mli ${isActive4 ? 'on' : ''}`}     onClick={() => setIsActive4(!isActive4)} > <FaDatabase size="20" /> 고객DB 관리 <IoIosArrowDown  />
+            <ul>
+                <li><Link href="/customer/landing/list">랜딩페이지 DB관리</Link></li>
+                <li><Link href="/customer/custom/list">커스텀 DB관리</Link></li>
+            </ul>
+        </li>
         {["USTY_MAST", "USTY_INME", "USTY_CAME"].includes(userType) ? null : (
             <li className={`mli ${isActive6 ? 'on' : ''}`} onClick={() => setIsActive6(!isActive6)}>
                 <MdManageSearch size="20"/> 고객정보 목록 <IoIosArrowDown/>
@@ -110,15 +111,15 @@ export default function Sidebar(){
 
 
 
-       <li className={`mli ${isActive4 ? 'on' : ''}`}     onClick={() => setIsActive4(!isActive4)} > <FaDatabase size="20" /> 고객DB 관리 <IoIosArrowDown  />
-            <ul>
-                <li><Link href="/">랜딩페이지 DB관리</Link></li>
-                <li><Link href="/">커스텀 DB관리</Link></li>
-            </ul>
+
+        <li className={`mli ${isActive2 ? 'on' : ''}`}   onClick={() => setIsActive2(!isActive2)} ><IoStatsChart size="20" /> 실적 통계 <IoIosArrowDown />
+           <ul>
+               <li> <Link href="/performance">고객정보 수집실적</Link></li>
+           </ul>
         </li>
        {/*   <li className="mli"> <RiCustomerService2Fill  size="20" />고객센터</li> */}
     </ul>
-    <div className='logout' onClick={handleLogout}>로그아웃</div>
+    <div className='logout' onClick={handleLogout}> <MdLogout/>로그아웃</div>
 </div>
 </nav>
     )

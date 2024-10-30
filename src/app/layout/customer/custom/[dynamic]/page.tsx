@@ -3,7 +3,7 @@ import CommonLayout from "../../../../components/layout/CommonLayout";
 import CommonDataGrid from "@/app/components/CommonDataGrid";
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
-
+import { GrClose } from 'react-icons/gr';
 
 // PageProps 타입 정의
 interface PageProps {
@@ -30,6 +30,23 @@ const Page: React.FC<PageProps> = ({ params }) => {
     }, []);
     return (
 <CommonLayout>
+
+{/* <div className="modal">
+<div className="modal_wrap copy_ver">
+<div className="modal_header">
+                    <span>IP차단 목록 복사</span>
+                    <GrClose size="22" />
+                </div>
+<div>
+<select name="" id="">
+    <option value="">ddd</option>
+    <option value="">dddd</option>
+</select>
+<button type="button" className="type1">확인</button>
+</div>
+</div>
+<div className="modal_bg"></div>
+</div> */}
 
     <div className="custInfo_wrap">
         <div className="title_box">

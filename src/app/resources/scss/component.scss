@@ -82,6 +82,12 @@ img {
   }
 }
 
+@mixin commonBasicSelect{
+  padding: 6px 10px;
+  border: 1px solid #d8d8d8;
+  border-radius: 4px;
+}
+
 @mixin commonWhiteFrame{
   width: 460px;
   height: 640px;
@@ -164,6 +170,10 @@ color:#fff;
   svg{
       fill:$main100;
   }
+  }
+  &.type3{
+    color: #fff;
+    background-color: red;
   }
 
   &.excel{
@@ -272,7 +282,7 @@ button{
 
 /* 스크롤바 트랙 꾸미기 */
 &::-webkit-scrollbar-track {
-    background-color: #ccc;
+    background-color: #fff;
     border-radius: 10px;
 }
 }

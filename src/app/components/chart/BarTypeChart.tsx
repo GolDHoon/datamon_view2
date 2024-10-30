@@ -85,13 +85,13 @@ export default function Chart() {
       <Bar
         dataKey="uv"
         fill="#B3CDAD"
-        stroke="blue"
+        //stroke="white"
         // activeBar={<Rectangle fill="pink" stroke="blue" />}
       />
       <Bar
         dataKey="pv"
         fill="#FF5F5E"
-        stroke="purple"
+        //stroke="purple"
         // activeBar={<Rectangle fill="gold" stroke="purple" />}
       />
     </BarChart>
