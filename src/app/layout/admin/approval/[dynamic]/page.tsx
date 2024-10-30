@@ -78,9 +78,6 @@ const Page: React.FC<PageProps> = ({ params }) => {
     return (
 <CommonLayout>
     <Modal isOpen={isModalOpen} onClose={closeModal} idx={selectRow?.idx}/>
-
-{/* ---- */}
-
     <div className="custInfo_wrap">
         <div className="title_box">
             <h2>admin 계정 신청 목록</h2>
