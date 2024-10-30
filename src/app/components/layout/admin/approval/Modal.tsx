@@ -18,7 +18,7 @@ export default function ApprovalCompleteModal({onClose, isOpen, idx}: ModalProps
 
     const handleComplete = () => {
         try {
-            restApi('post', '/member/account/approve', {
+            restApi('post', '/admin/account/approve', {
                 idx:idx
             }).then(response => {
                 // @ts-ignore
@@ -46,7 +46,7 @@ export default function ApprovalCompleteModal({onClose, isOpen, idx}: ModalProps
         }
 
         try {
-            restApi('post', '/member/account/reject', {
+            restApi('post', '/admin/account/reject', {
                 idx:idx,
                 rejectionReason:rejectReason
             }).then(response => {

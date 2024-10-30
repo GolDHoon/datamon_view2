@@ -2,12 +2,8 @@
 import CommonLayout from "../../../components/layout/CommonLayout";
 import Modal from "../../../components/layout/user/Modal";
 import CommonDataGrid from "@/app/components/CommonDataGrid";
-
 import {useEffect, useState} from "react";
-// import GetConst from "@/app/resources/js/Const";
 import {useRouter} from "next/navigation";
-// import {getSession} from "@/app/resources/js/Session";
-// import {columnInfoList, dataList} from "../../../resources/testdb/db.json";
 import {getSession} from "@/app/resources/js/Session";
 import restApi from "@/app/resources/js/Axios";
 
@@ -27,7 +23,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
     const [columns, setColumns] = useState([]);
     const [rows, setRows] = useState([]);
     const [selectRow, setSelectRow] = useState();
-    const [openMode, setOpenMode] = useState("C")
+    const [openMode, setOpenMode] = useState("C");
 
   // 모달 열기 함수
     const openModal = (mode:String) => {

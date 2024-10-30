@@ -1,15 +1,11 @@
 "use client";
 import CommonLayout from "../../../../components/layout/CommonLayout";
-// import Modal from "../../../../components/layout/ad/custInfo/Modal";
 import CommonDataGrid from "@/app/components/CommonDataGrid";
-
 import {useEffect, useState} from "react";
-// import GetConst from "@/app/resources/js/Const";
 import {useRouter} from "next/navigation";
-// import {getSession} from "@/app/resources/js/Session";
-// import {columnInfoList, dataList} from "../../../resources/testdb/db.json";
 import {getSession} from "@/app/resources/js/Session";
 import restApi from "@/app/resources/js/Axios";
+import Modal from "@/app/components/layout/admin/approval/Modal";
 
 
 // PageProps 타입 정의
@@ -26,49 +22,22 @@ const Page: React.FC<PageProps> = ({ params }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [columns, setColumns] = useState([]);
     const [rows, setRows] = useState([]);
-    const [selectRow, setSelectRow] = useState();
+    const [selectRow, setSelectRow] = useState<any>();
 
-  // 모달 열기 함수
-//   const openModal = () => {
-//     setIsModalOpen(true);
-//   };
+    // 모달 열기 함수
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
 
-  // 모달 닫기 함수
-//   const closeModal = () => {
-//     setIsModalOpen(false);
-//     getDataList()
-//   };
-//   setIsModalOpen(true);
+    // 모달 닫기 함수
+    const closeModal = () => {
+        setIsModalOpen(false);
+        getDataList();
+    };
 
-  const handleOnRowDoubleClick = (idx:any) => {
-    //   setSelectRow(rows.find((row:any)=>row.idx === idx));
-    //   openModal()
-  }
-
-
-    // useEffect(() => {
-    //     if(dynamic !== 'list'){
-    //         router.push('/home');
-    //     }
-
-    //     if(!["USTY_DEVL", "USTY_ADAC", "USTY_AAME"].includes(getSession("userType") as string)){
-    //         router.push('/home');
-    //     }
-
-    //     try {
-    //         restApi('get', '/custInfo/custDBCode/list', {}).then(response => {
-    //             // @ts-ignore
-    //             if(response.status === 200){
-    //                 setDbList(response.data);
-    //             }else{
-    //                 alert(response.data)
-    //             }
-    //         })
-    //     }catch (error) {
-    //         // @ts-ignore
-    //         router('/' + getSession("companyName") + '/login');
-    //     }
-    // }, []);
+    const handleOnRowDoubleClick = (idx:any) => {
+        setSelectRow(rows.find((row:any)=>row.idx === idx));
+    }
 
     const getDataList = () => {
         try {
@@ -88,6 +57,14 @@ const Page: React.FC<PageProps> = ({ params }) => {
     }
 
     useEffect(() => {
+        if(selectRow?.completionYn === "완료"){
+            alert("이미 처리된 건입니다.")
+        }else{
+            openModal()
+        }
+    }, [selectRow]);
+
+    useEffect(() => {
         if(dynamic !== 'list'){
             router.push('/home');
         }
@@ -100,7 +77,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
     }, []);
     return (
 <CommonLayout>
-{/* <Modal isOpen={isModalOpen} onClose={closeModal} typeList={columns} dataJson={selectRow}/> */}
+    <Modal isOpen={isModalOpen} onClose={closeModal} idx={selectRow?.idx}/>
 
 {/* ---- */}
 
