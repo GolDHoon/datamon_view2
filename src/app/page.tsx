@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation';
 import "./resources/scss/main/join.scss";
 import Loading from "@/app/components/Loading";
 import Modal from "./components/layout/user/approval/Modal";
+import restApi from "@/app/resources/js/Axios";
+import {getSession} from "@/app/resources/js/Session";
+import GetConst from "@/app/resources/js/Const";
 
 
 
@@ -23,7 +26,6 @@ const Step1: React.FC<{
       signUpData.location || "",
     ];
 
-  console.log(requiredFields)
 
     // 모든 필드가 비어 있지 않은지 확인
     // if (requiredFields.some(field => field.trim() === '')) {
@@ -54,11 +56,14 @@ const Step1: React.FC<{
             value={signUpData.companyType}
             onChange={(e) => setSignUpData((signUpData: any) => ({ ...signUpData, companyType: e.target.value }))}
           >
-            <option value="">선택하세요</option>
-            <option value="master">마스터</option>
-            <option value="advertiser">광고주</option>
-            <option value="advertisingAgency">광고대행사</option>
-            <option value="crm">CRM</option>
+            <option value="">업체유형을 선택해주세요</option>
+              {GetConst("ustyCode").map((code:any) => {
+                  let result = null;
+                  if(code.key !== 'USTY_MAST') {
+                      result = <option value={code.key}>{code.value}</option>;
+                  }
+                  return result;
+              })}
           </select>
         </div>
         <div className="input_box">
@@ -108,34 +113,27 @@ const Step2: React.FC<{
     const handleRequestVerification = () => {
       setShowVerification(true); // 인증 요청 버튼 클릭 시 인증번호 입력 필드를 표시
     };
-    const duplicateCheck = (e: React.MouseEvent<HTMLButtonElement>) => {
-        // restApi('post', '/member/checkIdDuplicate', {
-        //     userId: signUpData.username,
-        //     companyId: getSession("companyIdx"),
-        // }).then(response => {
-        //     // @ts-ignore
-        //     const btn = e.target as HTMLButtonElement;
-        //     if (response.status !== 200) {
-        //         alert(response.data);
-        //         btn.innerText = '중복체크';
-        //         btn.style.backgroundColor = '#727272';
-        //         setIsDuplicate(true);
-        //     } else {
-        //         alert(response.data.message);
-        //         btn.innerText = '체크완료';
-        //         btn.style.backgroundColor = '#2281FF';
-        //         setIsDuplicate(false);
-        //     }
-        // })
 
+    const duplicateCheck = (e: React.MouseEvent<HTMLButtonElement>) => {
+        restApi('post', '/admin/checkIdDuplicate', {
+            userId: signUpData.username,
+        }).then(response => {
+            // @ts-ignore
             const btn = e.target as HTMLButtonElement;
+            if (response.status !== 200) {
+                alert(response.data);
+                btn.innerText = '중복체크';
+                btn.style.backgroundColor = '#727272';
+                setIsDuplicate(true);
+            } else {
+                alert(response.data.message);
                 btn.innerText = '체크완료';
                 btn.style.backgroundColor = '#2281FF';
                 setIsDuplicate(false);
-
-        alert("체크")
-
+            }
+        })
     };
+
     const handleNextStep = () => {
       const requiredFields = [
         signUpData.username || "", 
@@ -144,8 +142,6 @@ const Step2: React.FC<{
         signUpData.businessType || "",
         signUpData.industry || "",
       ];
-  
-    console.log(requiredFields)
   
   //    모든 필드가 비어 있지 않은지 확인
       if (requiredFields.some(field => field.trim() === '')) {
@@ -238,38 +234,48 @@ const Step3: React.FC<{
 
   return (
     <div className="fade">
-      <div className="content">
-        <div className="input_box">
-          <label>사업자등록번호*</label>
-          <input
-            type="text"
-            placeholder="사업자등록번호를 입력하세요"
-            value={signUpData.BusinessRegistrationNum}
-            onChange={(e) => setSignUpData((signUpData:any) => ({ ...signUpData, BusinessRegistrationNum: e.target.value }))}
-          />
-        </div>
-        {/* <div className="input_box">
+        <div className="content">
+            <div className="input_box">
+                <label>사업자등록번호*</label>
+                <input
+                    type="text"
+                    placeholder="사업자등록번호를 입력하세요"
+                    value={signUpData.BusinessRegistrationNum}
+                    onChange={(e) => setSignUpData((signUpData: any) => ({
+                        ...signUpData,
+                        BusinessRegistrationNum: e.target.value
+                    }))}
+                />
+            </div>
+            <div className="input_box">
+                <label>신청 사유</label>
+                <textarea
+                    placeholder="신청 사유"
+                    value={signUpData.reason}
+                    onChange={(e) => setSignUpData((signUpData: any) => ({...signUpData, reason: e.target.value}))}
+                />
+            </div>
+            {/* <div className="input_box">
           <label>사업자등록증*</label>
           <input
             type="file"
             value={}
           />
         </div> */}
-      </div>
+        </div>
 
-      <div className="btn_box">
-        <button onClick={prevStep}>이전</button>
-        <button onClick={submit}>가입하기</button>
-      </div>
+        <div className="btn_box">
+            <button onClick={prevStep}>이전</button>
+            <button onClick={submit}>가입하기</button>
+        </div>
     </div>
   );
 };
 
 const Page: React.FC = () => {
-    const [inputValue, setInputValue] = useState<string>("");  // 입력된 사업자등록번호를 관리
+    const [brn, setBrn] = useState<string>("");  // 입력된 사업자등록번호를 관리
     const [outputMessage, setOutputMessage] = useState<string | null>(null);  // 검색 결과 메시지를 관리, 초기값은 null
     const [showSignUp, setShowSignUp] = useState(false);
-
 
     // ------ admin 계정 신청 state
     const [currentStep, setCurrentStep] = useState(1); // 현재 스텝 관리
@@ -284,20 +290,28 @@ const Page: React.FC = () => {
       email:"",
       businessType:"",
       industry:"",
-      BusinessRegistrationNum:""
+      BusinessRegistrationNum:"",
+      reason:""
  })
 
  
     const router = useRouter();
 
     const handleSearch = () => {
-      if (inputValue === "1") {  // 예시로 특정 값 지정
-          setOutputMessage("http://localhost:3000/driven_ad/login");
-
-      } else {
-          setOutputMessage("검색 내용이 없습니다");
-       
-      }
+        try {
+            restApi('get', '/admin/search/brm', {
+                corporateNumber:brn
+            }).then(response => {
+                if(response.status === 200){
+                    let tampOutputMessage = process.env.NEXT_PUBLIC_VIEW_BASE_URL+"/"+response.data.companyId+"/login";
+                    setOutputMessage(tampOutputMessage);
+                }else{
+                    setOutputMessage("검색 내용이 없습니다");
+                }
+            })
+        }catch (error) {
+            setOutputMessage("검색 내용이 없습니다");
+        }
   };
 
     // ------ admin 계정 신청 start
@@ -331,36 +345,36 @@ const Page: React.FC = () => {
 
   // 회원가입 제출
   const submit = () => {
+      console.log(signUpData)
     if (signUpData.BusinessRegistrationNum.trim() === ''){
       alert('필수값을 입력해 주세요.');
       return;
     }
 
-    // try {
-    //     restApi('post', '/member/reqAccount', {
-    //         userId: signUpData.username,
-    //         userPw: signUpData.password,
-    //         companyId: getSession("companyIdx"),
-    //         name: signUpData.name,
-    //         role: signUpData.job,
-    //         contactPhone: signUpData.phone,
-    //         contactMail: signUpData.email,
-    //         requestReason: signUpData.reason
-    //     }).then(response => {
-    //       //  debugger
-    //         // @ts-ignore
-    //         if(response.status === 200){
-    //           router.push(`/join/signup/complete?username=${encodeURIComponent(signUpData.username)}&name=${encodeURIComponent(signUpData.name)}`)
-
-    //         }else{
-    //             alert(response.data.detailReason)
-    //         }
-    //     })
-    // } catch (error){
-    //     console.log(error)
-    // }
-
-   alert("회원가입 완료!");
+    try {
+        restApi('post', '/admin/reqAccount', {
+            userId: signUpData.username,
+            userPw: signUpData.password,
+            name: signUpData.job,
+            userType: signUpData.companyType,
+            ceo: signUpData.representative,
+            corporateNumber: signUpData.BusinessRegistrationNum,
+            corporateAddress: signUpData.location,
+            corporateMail: signUpData.email,
+            businessStatus: signUpData.businessType,
+            businessItem: signUpData.industry,
+            requestReason: signUpData.reason,
+        }).then(response => {
+            // @ts-ignore
+            if(response.status === 200){
+              router.push(`/complete?username=${encodeURIComponent(signUpData.username)}&name=${encodeURIComponent(signUpData.job)}`)
+            }else{
+                alert(response.data.detailReason)
+            }
+        })
+    } catch (error){
+        console.log(error)
+    }
   };
 
 
@@ -378,8 +392,8 @@ const Page: React.FC = () => {
                   <input
                       type="text"
                       placeholder="사업자등록번호를 입력해주세요"
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
+                      value={brn}
+                      onChange={(e) => setBrn(e.target.value)}
                       onKeyDown={(event) => {
                         if (event.key === "Enter") {
                             handleSearch();
