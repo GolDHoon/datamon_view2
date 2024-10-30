@@ -119,7 +119,7 @@ export default function Sidebar(){
         </li>
        {/*   <li className="mli"> <RiCustomerService2Fill  size="20" />고객센터</li> */}
     </ul>
-    <div className='logout' onClick={handleLogout}> <MdLogout/>로그아웃</div>
+    <div className='logout' onClick={handleLogout}> <MdLogout/> <span>로그아웃</span> </div>
 </div>
 </nav>
     )

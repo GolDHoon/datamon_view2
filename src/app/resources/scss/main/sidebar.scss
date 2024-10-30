@@ -205,7 +205,16 @@ nav{
                 }
             }
             .logout{
-                display: none;
+                display: flex;
+                justify-content: center;
+                span{
+                    display: none;
+                }
+                svg{
+                    margin: 0;
+                    position: relative;
+                    right: 3px;
+                }
             }
         }
       
