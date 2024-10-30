@@ -51,6 +51,22 @@ const nextConfig = {
                 destination: '/layout/performance',
             },
             {
+                source: '/customer/custom',
+                destination: '/layout/customer/custom',
+            },
+            {
+                source: '/customer/landing',
+                destination: '/layout/customer/landing',
+            },
+            {
+                source: '/customer/custom/detail',
+                destination: '/layout/customer/custom/detail',
+            },
+            {
+                source: '/customer/landing/detail',
+                destination: '/layout/customer/landing/detail',
+            },
+            {
                 source: '/mypage',
                 destination: '/layout/mypage',
             },

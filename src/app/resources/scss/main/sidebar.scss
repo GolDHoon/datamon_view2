@@ -70,9 +70,15 @@ nav{
 
     .nav_wrap{
         width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0px 14px 14px 0px;
 .gnb{
     display: flex;
     flex-direction: column;
+
 
     .mli{
         position: relative;
@@ -96,7 +102,7 @@ nav{
 
  &::before{
     content:"";
-    display: block;
+    display: inline-block;
     position: absolute;
     width: 0px;
     height: 2px;
@@ -148,6 +154,12 @@ nav{
     }
     }
 }
+.logout{
+    margin-left: auto;
+    font-size: 14px;
+    color: #999;
+    cursor: pointer;
+    }
     }
 
     &.min{
@@ -175,22 +187,28 @@ nav{
                 .mli{
                     font-size: 0;
                     transition: none;
-
+        
                     &>ul{
                         display: none;
                     }
-
+        
                     &::before{
                         display: none;
                     }
-
+        
                     svg{
                         &:nth-child(2){
-display: none;
+                    display: none;
                         }
                     }
                 }
             }
+            .logout{
+                display: none;
+            }
         }
+      
     }
+
 }
+

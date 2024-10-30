@@ -11,6 +11,7 @@ import { MdManageSearch } from "react-icons/md";
 import Link from 'next/link'
 import "../../resources/scss/main/sidebar.scss";
 import { getSession } from '@/app/resources/js/Session';
+import { FaDatabase } from "react-icons/fa6";
 
 export default function Sidebar(){
     const [isActive1, setIsActive1] = useState(false);
@@ -61,6 +62,13 @@ export default function Sidebar(){
         }
     },[])
 
+    const handleLogout = () => {
+        if (window.confirm("로그아웃 하시겠습니까?")) {
+          alert("로그아웃되었습니다.");
+          // 여기에서 실제 로그아웃 로직 추가해주세요
+        }
+      };
+
     return (
 <nav className={ isActive1 ? 'min' : ''}>
 <h1><Link href="/home">DATAMON</Link></h1>
@@ -102,14 +110,15 @@ export default function Sidebar(){
 
 
 
-        {/* <li className={`mli ${isActive4 ? 'on' : ''}`}     onClick={() => setIsActive4(!isActive4)} > <TbBeta  size="20" /> Beta기능 <IoIosArrowDown />
-
+       <li className={`mli ${isActive4 ? 'on' : ''}`}     onClick={() => setIsActive4(!isActive4)} > <FaDatabase size="20" /> 고객DB 관리 <IoIosArrowDown  />
             <ul>
-                <li>광고플랫폼 DB관리</li>
+                <li><Link href="/">랜딩페이지 DB관리</Link></li>
+                <li><Link href="/">커스텀 DB관리</Link></li>
             </ul>
         </li>
-        <li className="mli"> <RiCustomerService2Fill  size="20" />고객센터</li> */}
+       {/*   <li className="mli"> <RiCustomerService2Fill  size="20" />고객센터</li> */}
     </ul>
+    <div className='logout' onClick={handleLogout}>로그아웃</div>
 </div>
 </nav>
     )

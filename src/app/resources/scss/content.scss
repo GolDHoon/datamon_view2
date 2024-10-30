@@ -718,3 +718,11 @@ section{
         }
     }
 }
+
+
+.landing_detail_wrap{
+    @include pageWrapWhiteFrame;
+    .title_box{
+        @include titleBox;
+    }
+}
