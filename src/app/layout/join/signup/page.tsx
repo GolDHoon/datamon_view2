@@ -100,8 +100,6 @@ const Step2: React.FC<{
                 setIsDuplicate(false);
             }
         })
-
-
     };
 
     const handleNextStep = () => {
@@ -260,6 +258,7 @@ const SignUp: React.FC = () => {
 
     try {
         restApi('post', '/member/reqAccount', {
+            requestType:"C",
             userId: signUpData.username,
             userPw: signUpData.password,
             companyId: getSession("companyIdx"),

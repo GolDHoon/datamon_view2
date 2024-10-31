@@ -20,6 +20,10 @@ const Login: NextPage<LoginProps> = ({ params }) => {
     const [idxValue, setIdx] = useState('');
 
     useEffect(() => {
+        if(!!companyId){
+            setSession("companyId",companyId);
+        }
+
         try {
             restApi('get', '/sign/getCompanyInfo', {companyId:companyId}).then(response => {
                 // @ts-ignore

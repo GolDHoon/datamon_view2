@@ -187,6 +187,14 @@ color:#fff;
      }
   }
 
+  &.check{
+    width: auto;
+    padding: 8px 16px;
+    white-space: nowrap;
+    color: #fff;
+    background-color: #727272;
+  }
+
   &.disable{
     background-color: #ccc;
     color: #666;

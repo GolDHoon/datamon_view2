@@ -698,12 +698,28 @@ section{
 
                 li{
                     display: flex;
+                    justify-content: space-between;
                     align-items: center;
                     gap:20px;
                     
                     label{
                         color: #666;
                         font-size: 14px;
+                        white-space: nowrap;
+                        text-align: center;
+                    }
+                    div{
+                      display: flex;
+                      justify-content: space-around;
+                      width: 330px;
+                      input{
+                        @include commonInput_large;
+                      }
+                      button{
+                        @include commonBtn;
+                        margin-left: 5px;
+                        white-space: nowrap;
+                      }
                     }
                     input{
                     @include commonInput_large;
@@ -711,9 +727,14 @@ section{
                     }
                 }
             }
-            button{
-                @include commonBtn;
-                margin-left: auto;
+            .btn_box{
+              display: flex;
+              justify-content: flex-end;
+              gap: 15px;
+              button{
+                  @include commonBtn;
+                  //margin-left: auto;
+              }
             }
         }
     }

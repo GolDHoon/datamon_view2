@@ -353,6 +353,7 @@ const Page: React.FC = () => {
 
     try {
         restApi('post', '/admin/reqAccount', {
+            requestType:"C",
             userId: signUpData.username,
             userPw: signUpData.password,
             name: signUpData.job,
