@@ -31,7 +31,7 @@ export default function ApprovalCompleteModal({onClose, isOpen, idx}: ModalProps
             })
         }catch (error) {
             // @ts-ignore
-            router('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyName") + '/login');
         }
     };
 
@@ -60,7 +60,7 @@ export default function ApprovalCompleteModal({onClose, isOpen, idx}: ModalProps
             })
         }catch (error) {
             // @ts-ignore
-            router('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyName") + '/login');
         }
     }
 

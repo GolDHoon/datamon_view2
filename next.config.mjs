@@ -51,20 +51,20 @@ const nextConfig = {
                 destination: '/layout/performance',
             },
             {
-                source: '/customer/custom/:dynamic',
-                destination: '/layout/customer/custom/:dynamic',
+                source: '/custDb/custom/:dynamic',
+                destination: '/layout/custDb/custom/:dynamic',
             },
             {
-                source: '/customer/landing/:dynamic',
-                destination: '/layout/customer/landing/:dynamic',
+                source: '/custDb/landing/:dynamic',
+                destination: '/layout/custDb/landing/:dynamic',
             },
             {
-                source: '/customer/custom/detail',
-                destination: '/layout/customer/custom/detail',
+                source: '/custDb/custom/detail',
+                destination: '/layout/custDb/custom/detail',
             },
             {
-                source: '/customer/landing/detail',
-                destination: '/layout/customer/landing/detail',
+                source: '/custDb/landing/detail',
+                destination: '/layout/custDb/landing/detail',
             },
             {
                 source: '/mypage',

@@ -77,19 +77,19 @@ const Page: React.FC<PageProps> = ({ params }) => {
 
 
         try {
-            restApi('get', '/custInfo/custDBCode/list', {}).then(response => {
+            restApi('get', '/custDb/list', {}).then(response => {
                 // @ts-ignore
                 if(response.status === 200){
                     setDbList(response.data);
                 }else{
                     alert(response.data)
                     // @ts-ignore
-                    router('/' + getSession("companyName") + '/login');
+                    router.push('/' + getSession("companyName") + '/login');
                 }
             })
         }catch (errro) {
             // @ts-ignore
-            router('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyName") + '/login');
         }
     }, []);
 

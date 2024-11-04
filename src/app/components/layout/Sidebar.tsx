@@ -94,8 +94,8 @@ export default function Sidebar(){
         )}
        <li className={`mli ${isActive4 ? 'on' : ''}`}     onClick={() => setIsActive4(!isActive4)} > <FaDatabase size="20" /> 고객DB 관리 <IoIosArrowDown  />
             <ul>
-                <li><Link href="/customer/landing/list">랜딩페이지 DB관리</Link></li>
-                <li><Link href="/customer/custom/list">커스텀 DB관리</Link></li>
+                <li><Link href="/custDb/landing/list">랜딩페이지 DB관리</Link></li>
+                <li><Link href="/custDb/custom/list">커스텀 DB관리</Link></li>
             </ul>
         </li>
         {["USTY_MAST", "USTY_INME", "USTY_CAME"].includes(userType) ? null : (

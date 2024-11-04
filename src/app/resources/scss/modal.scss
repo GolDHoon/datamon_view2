@@ -232,12 +232,13 @@ border-radius: 4px;
 div{
     display: flex;
     align-items: center;
+    gap: 10px;
     select{
         @include commonBasicSelect;
-                }
-                button{
-                    @include commonBtn;
-                }
+    }
+    button{
+        @include commonBtn;
+    }
 }
     }
 

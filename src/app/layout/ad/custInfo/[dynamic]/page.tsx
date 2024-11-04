@@ -40,7 +40,6 @@ const Page: React.FC<PageProps> = ({ params }) => {
     getDataList()
   };
 
-
   const handleOnRowDoubleClick = (idx:any) => {
       setSelectRow(rows.find((row:any)=>row.idx === idx));
       openModal()
@@ -76,7 +75,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
         }
 
         try {
-            restApi('get', '/custInfo/custDBCode/list', {}).then(response => {
+            restApi('get', '/custDb/list', {}).then(response => {
                 // @ts-ignore
                 if(response.status === 200){
                     setDbList(response.data);
@@ -86,7 +85,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
             })
         }catch (error) {
             // @ts-ignore
-            router('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyName") + '/login');
         }
     }, []);
 
@@ -125,7 +124,6 @@ const Page: React.FC<PageProps> = ({ params }) => {
                 </select>
             </div>
         </div>
-
         <section className="table">
             <CommonDataGrid
                 columns={columns}
