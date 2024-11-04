@@ -441,37 +441,52 @@ export default function DetailPage() {
             case "페이지설정":
             return(
                 <div className="pagesetting">
-                        <h4>페이지 설정</h4>
-                      <ul className="pagesetting_list">
-                        <li>
-                            <p>title</p>
-                            <input type="text" placeholder="title" value={landingInfo.title===null?"":landingInfo.title}
-                            // @ts-ignore
-                            onChange={(event) => setLandingInfo({...landingInfo, title:event.target.value})}/>
-                        </li>
-                        <li>
-                            <p>description</p>
-                            <textarea name="" id="" value={landingInfo.description===null?"":landingInfo.description}
-                            // @ts-ignore
-                            onChange={(event) => setLandingInfo({...landingInfo, description:event.target.value})}></textarea>
-                        </li>
-                        <li>
-                            <p>head</p>
-                            <textarea name="" id="" value={landingInfo.head===null?"":landingInfo.head}
-                            // @ts-ignore
-                            onChange={(event) => setLandingInfo({...landingInfo, head:event.target.value})}></textarea>
-                        </li>
-                        <li>
-                            <p>body</p>
-                            <textarea name="" id="" value={landingInfo.body===null?"":landingInfo.body}
-                            // @ts-ignore
-                            onChange={(event) => setLandingInfo({...landingInfo, body:event.target.value})}></textarea>
-                        </li>
-
-                      </ul>
-                      <div className="btn_box">
-                        <button type="button" className="type1" onClick={(event) => handlePageInfoSave()}>저장</button>
-                      </div>
+                  <h4>페이지 설정</h4>
+                  <ul className="pagesetting_list">
+                      <li>
+                          <p>title</p>
+                          <input type="text" placeholder="title" value={landingInfo.title===null?"":landingInfo.title}
+                          onChange={(event) => {
+                              event.target.style.height = 'auto';
+                              event.target.style.height = `${event.target.scrollHeight}px`;
+                              // @ts-ignore
+                              setLandingInfo({...landingInfo, title:event.target.value})
+                          }}/>
+                      </li>
+                      <li>
+                          <p>description</p>
+                          <textarea name="" id="" value={landingInfo.description===null?"":landingInfo.description}
+                          onChange={(event) => {
+                              event.target.style.height = 'auto';
+                              event.target.style.height = `${event.target.scrollHeight}px`;
+                              // @ts-ignore
+                              setLandingInfo({...landingInfo, description:event.target.value})
+                          }}/>
+                      </li>
+                      <li>
+                          <p>head</p>
+                          <textarea name="" id="" value={landingInfo.head===null?"":landingInfo.head}
+                          onChange={(event) => {
+                              event.target.style.height = 'auto';
+                              event.target.style.height = `${event.target.scrollHeight}px`;
+                              // @ts-ignore
+                              setLandingInfo({...landingInfo, head:event.target.value})
+                          }}/>
+                      </li>
+                      <li>
+                          <p>body</p>
+                          <textarea name="" id="" value={landingInfo.body===null?"":landingInfo.body}
+                          onChange={(event) => {
+                              event.target.style.height = 'auto';
+                              event.target.style.height = `${event.target.scrollHeight}px`;
+                              // @ts-ignore
+                              setLandingInfo({...landingInfo, head:event.target.value})
+                          }}/>
+                      </li>
+                  </ul>
+                  <div className="btn_box">
+                    <button type="button" className="type1" onClick={(event) => handlePageInfoSave()}>저장</button>
+                  </div>
                 </div>
             )
            

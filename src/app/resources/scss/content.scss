@@ -915,12 +915,14 @@ section{
                         box-sizing: border-box;
                     }
                     textarea{
-                        width: 100%;
-                        padding: 8px 14px;
-                        border: 1px solid #ddd;
-                        border-radius: 5px;
-                        resize: vertical;
-                        box-sizing: border-box;
+                      width: 100%;
+                      height: auto;
+                      padding: 8px 14px;
+                      border: 1px solid #ddd;
+                      border-radius: 5px;
+                      resize: vertical;
+                      box-sizing: border-box;
+                      overflow: hidden;
                     }
                 }
                     }
