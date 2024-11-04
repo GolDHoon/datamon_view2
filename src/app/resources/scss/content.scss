@@ -848,7 +848,7 @@ section{
                         gap:10px;
                         margin-top: 20px;
                         width: 100%;
-                        height: calc(100vh - 316px);
+                        max-height: calc(100vh - 316px);
                         overflow-y: scroll;
 
                         @include scrollBar;
@@ -865,6 +865,15 @@ section{
                             }
                         }
                     }
+                }
+                .btn_box{
+                  display: flex;
+                  justify-content: flex-end;
+                  gap:8px;
+                  margin-top: 8px;
+                  button{
+                    @include commonBtn;
+                  }
                 }
             }
          
