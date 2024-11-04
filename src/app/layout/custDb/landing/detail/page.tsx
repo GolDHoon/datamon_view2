@@ -8,17 +8,78 @@ import {getSession} from "@/app/resources/js/Session";
 
 export default function DetailPage() {
     const router = useRouter();
+    const [url, setUrl] = useState("")
     const [activeTab, setActiveTab] = useState("중복제거 칼럼 설정");
     const [blockIpList, setBlockIpList] = useState([]);
-    const [blockKeywordList, setBlockKeywordList] = useState();
+    const [blockKeywordList, setBlockKeywordList] = useState([]);
     const [duplColumnInfo, setDuplColumnInfo] = useState();
     const [landingInfo, setLandingInfo] = useState();
     const [landingMappingInfoList, setLandingMappingInfoList] = useState()
     const [urlList, setUrlList] = useState([])
     const [ipModalOpen, setIpModalOpen] = useState(false)
     const [ip, setIp] = useState("")
+    const [keyword, setKeyword] = useState("")
     const [copyTargetDbCode, setCopyTargetDbCode] = useState("")
     const code = useRef("");
+
+    const handleCreateKeyword = () => {
+        if(keyword===""){
+            alert("키워드를 입력해주세요.")
+            return null;
+        }else{
+            // @ts-ignore
+            if(blockKeywordList.includes(keyword)){
+                alert("이미 차단된 키워드입니다.")
+                return null;
+            }
+        }
+
+        try {
+            restApi('post', '/custDb/blockedKeyword/create', {
+                dbCode:code.current,
+                keyword: keyword
+            }).then(response => {
+                // @ts-ignore
+                if(response.status === 200){
+                    alert("생성이 완료되었습니다.");
+                    const queryParams = new URLSearchParams(window.location.search);
+                    const id = queryParams.get('id');
+                    if(!!id){
+                        getData(id);
+                    }
+                }else{
+                    alert(response.data);
+                }
+            })
+        }catch (error) {
+            // @ts-ignore
+            router.push('/' + getSession("companyName") + '/login');
+        }
+    }
+
+    const handleDeleteKeyword = (keywordStr:any) => {
+        try {
+            restApi('post', '/custDb/blockedKeyword/delete', {
+                dbCode:code.current,
+                keyword: keywordStr
+            }).then(response => {
+                // @ts-ignore
+                if(response.status === 200){
+                    alert("삭제가 완료되었습니다.");
+                    const queryParams = new URLSearchParams(window.location.search);
+                    const id = queryParams.get('id');
+                    if(!!id){
+                        getData(id);
+                    }
+                }else{
+                    alert(response.data);
+                }
+            })
+        }catch (error) {
+            // @ts-ignore
+            router.push('/' + getSession("companyName") + '/login');
+        }
+    }
 
     const handleCopyBlockedIp = () => {
         try {
@@ -113,6 +174,7 @@ export default function DetailPage() {
                 // @ts-ignore
                 if(response.status === 200){
                     code.current = response.data.code;
+                    setUrl(response.data.url);
                     setBlockIpList(response.data.blockIpList);
                     setBlockKeywordList(response.data.blockKeywordList);
                     setDuplColumnInfo(response.data.duplColumnInfo);
@@ -198,11 +260,24 @@ export default function DetailPage() {
                     <div className="keyword">
                         <h4>키워드 차단 목록</h4>
                     <div className="input_box">
-                    <input type="text" placeholder="키워드를 입력하세요" /><button type="button" className="type1">생성</button>
+                        <input type="text" placeholder="키워드를 입력하세요" value={keyword} onChange={(event) => setKeyword(event.target.value)}/>
+                        <button type="button" className="type1" onClick={(event) => handleCreateKeyword()}>생성</button>
                     </div>
                         <ul className="keyword_list">
-                            <li> <span>안녕</span> <GrClose size="10" /> </li>
-                            <li> <span>test</span> <GrClose size="10" /> </li>
+                            {blockKeywordList.map((keywordStr, index) => {
+                                if(keyword !== ""){
+                                    // @ts-ignore
+                                    if(!keywordStr.includes(keyword)){
+                                        return null;
+                                    }
+                                }
+                                return (
+                                    <li key={index}>
+                                        <span>{keywordStr}</span>
+                                        <GrClose size="10" onClick={event => handleDeleteKeyword(keywordStr)}/>
+                                    </li>
+                                )
+                            })}
                         </ul>
                     </div>
                 );
@@ -251,9 +326,16 @@ export default function DetailPage() {
                         </div>
                         <div>
                             <select name="" id="dbList" onChange={(event) => setCopyTargetDbCode(event.target.value)}>
-                                {urlList.map((url, index) => (
-                                    <option key={index} value={url?.dbCode}>{url?.url}</option>
-                                ))}
+                                {urlList.map((url, index) => {
+                                    // @ts-ignore
+                                    if(code.current === url?.dbCode){
+                                        return null;
+                                    }
+                                    return (
+                                        // @ts-ignore
+                                        <option key={index} value={url?.dbCode}>{url?.url}</option>
+                                    );
+                                })}
                             </select>
                             <button type="button" className="type1" onClick={(event) => handleCopyBlockedIp()}>확인</button>
                         </div>
@@ -311,7 +393,7 @@ export default function DetailPage() {
             {/* modal end */}
             <div className="landing_detail_wrap">
                 <div className="title_box">
-                    <h2>랜딩 페이지 - detail</h2>
+                    <h2>랜딩 페이지 상세정보- {url}</h2>
                 </div>
         <section className="tab_wrap">
         <ul className="tab_menu">
