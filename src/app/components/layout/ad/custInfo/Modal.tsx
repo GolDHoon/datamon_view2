@@ -17,33 +17,36 @@ export default function Modal({ isOpen, onClose, typeList, dataJson }: ModalProp
         dataList: []
     });
 
-    useEffect(() => {
-        if(typeList.length > 0 && dataJson) {
-            const newDataList = typeList.map((item: any) => {
-                const value = dataJson ? dataJson[item?.key] : null;
-                if(item?.key === "cdbsCode"){
+    useEffect (() => {
+            if (typeList.length > 0 && dataJson) {
+                const newDataList = typeList.map ((item : any) => {
+                    const value = dataJson ? dataJson[item?.key] : null;
+                    if (item?.key === "cdbsCode") {
+                        return {
+                            key: item?.key,
+                            value: GetConst ("cdbsCode").find ((data : any) => {
+                                return data.value === value
+                            }).key,
+                            columnType: item.columnType,
+                            filterType: item.filterType,
+                            name: item.name
+                        };
+                    }
                     return {
                         key: item?.key,
-                        value: GetConst("cdbsCode").find((data:any) => {return data.value === value}).key,
+                        value: value,
                         columnType: item.columnType,
                         filterType: item.filterType,
                         name: item.name
                     };
-                }
-                return {
-                    key: item?.key,
-                    value: value,
-                    columnType: item.columnType,
-                    filterType: item.filterType,
-                    name: item.name
-                };
-            });
-            setCurrentData({
-                custInfoIdx: dataJson?.idx,
-                dataList: newDataList
-            });
-        }
-    }, [typeList, dataJson]);
+                });
+                setCurrentData ({
+                    custInfoIdx: dataJson?.idx,
+                    dataList: newDataList
+                });
+            }
+        },
+        [typeList, dataJson]);
 
     const handleChange = (key: string, value: any) => {
         setCurrentData((prevState: any) => {

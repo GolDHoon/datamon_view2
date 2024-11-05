@@ -16,7 +16,8 @@ interface ChartProps {
 }
 
 export default function Chart({ data }: ChartProps) {
-  const [isClient, setIsClient] = useState(false);
+  let isClient : boolean, setIsClient : (value : (((prevState : boolean) => boolean) | boolean)) => void;
+  [isClient, setIsClient] = useState (false);
   const keys = Array.from(new Set(data.flatMap(Object.keys).filter((key:any) => key !== 'name')));
 
   const getRandomColor = () => {
@@ -42,10 +43,10 @@ export default function Chart({ data }: ChartProps) {
       height={250}
       data={data}
       margin={{
-        top: 36,
-        right: 36,
-        left: 36,
-        bottom: 36,
+        "top": 36,
+        "right": 36,
+        "left": 36,
+        "bottom": 36,
       }}
     >
       <CartesianGrid strokeDasharray="1 3" />

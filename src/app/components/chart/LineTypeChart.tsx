@@ -18,8 +18,8 @@ const data = [
     amt: 2400,
   },
   {
-    name: "Page B",
     uv: 3000,
+    name: "Page B",
     pv: 1398,
     amt: 2210,
   },
@@ -55,21 +55,19 @@ const data = [
   },
 ];
 
-export default function Chart() {
-  return (
-    <LineChart width={500} height={300} data={data}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" padding={{ left: 30, right: 30 }} />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Line
+export default function Chart () {
+  return (<LineChart width={500} height={300} data={data}>
+    <CartesianGrid strokeDasharray="3 3"/>
+    <XAxis dataKey="name" padding={{left: 30, right: 30}}/>
+    <YAxis/>
+    <Tooltip/>
+    <Legend/>
+    <Line
         type="monotone"
         dataKey="pv"
         stroke="#8884d8"
-        activeDot={{ r: 8 }}
-      />
-      <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-    </LineChart>
-  );
+        activeDot={{r: 8}}
+    />
+    <Line type="monotone" dataKey="uv" stroke="#82ca9d"/>
+  </LineChart>);
 }

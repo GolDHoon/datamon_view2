@@ -8,6 +8,18 @@
 		"rules": {
 			"recommended": true,
 			"jsx-a11y/click-events-have-key-events": "off",
+			"jsx-a11y/no-static-element-interactions": "off",
+			"react/jsx-uses-react": "off",
+			"react/react-in-jsx-scope": "off"
 		}
+	},
+	"formatter": {
+		"enabled": true,
+		"singleQuote": true,
+		"trailingComma": "es5",
+		"tabWidth": 2,
+		"semi": true,
+		"useTabs": false,
+		"indentStyle": "space"
 	}
 }

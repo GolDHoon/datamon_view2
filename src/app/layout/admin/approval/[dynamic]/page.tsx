@@ -1,7 +1,7 @@
 "use client";
 import CommonLayout from "../../../../components/layout/CommonLayout";
 import CommonDataGrid from "@/app/components/CommonDataGrid";
-import {useEffect, useState} from "react";
+import {useEffect,useState} from "react";
 import {useRouter} from "next/navigation";
 import {getSession} from "@/app/resources/js/Session";
 import restApi from "@/app/resources/js/Axios";
@@ -10,19 +10,19 @@ import Modal from "@/app/components/layout/admin/approval/Modal";
 
 // PageProps 타입 정의
 interface PageProps {
-    params: {
-        dynamic: string;
+    params : {
+        dynamic : string;
     };
 }
 
 // 페이지 컴포넌트
-const Page: React.FC<PageProps> = ({ params }) => {
-    const { dynamic } = params;
+const Page : React.FC<PageProps> = ({params}) => {
+    const {dynamic} = params;
     const router = useRouter();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [columns, setColumns] = useState([]);
-    const [rows, setRows] = useState([]);
-    const [selectRow, setSelectRow] = useState<any>();
+    const [isModalOpen,setIsModalOpen] = useState(false);
+    const [columns,setColumns] = useState([]);
+    const [rows,setRows] = useState([]);
+    const [selectRow,setSelectRow] = useState<any>();
 
     // 모달 열기 함수
     const openModal = () => {
@@ -35,69 +35,67 @@ const Page: React.FC<PageProps> = ({ params }) => {
         getDataList();
     };
 
-    const handleOnRowDoubleClick = (idx:any) => {
-        setSelectRow(rows.find((row:any)=>row.idx === idx));
+    const handleOnRowDoubleClick = (idx : any) => {
+        setSelectRow(rows.find((row : any) => row.idx === idx));
     }
 
     const getDataList = () => {
         try {
-            restApi('get', '/admin/approval/list', {}).then(response => {
+            restApi('get','/admin/approval/list',{}).then(response => {
                 // @ts-ignore
-                if(response.status === 200){
+                if (response.status === 200) {
                     setColumns(response.data.columnInfoList)
                     setRows(response.data.dataList)
-                }else{
+                } else {
                     alert(response.data)
                 }
             })
-        }catch (error) {
+        } catch (error) {
             // @ts-ignore
             router.push('/' + getSession("companyName") + '/login');
         }
     }
 
     useEffect(() => {
-        if(selectRow?.completionYn === "완료"){
+        if (selectRow?.completionYn === "완료") {
             alert("이미 처리된 건입니다.")
-        }else{
+        } else {
             openModal()
         }
-    }, [selectRow]);
+    },[selectRow]);
 
     useEffect(() => {
-        if(dynamic !== 'list'){
+        if (dynamic !== 'list') {
             router.push('/home');
         }
 
-        if(!["USTY_DEVL", "USTY_MAST"].includes(getSession("userType") as string)){
+        if (!["USTY_DEVL","USTY_MAST"].includes(getSession("userType") as string)) {
             router.push('/home');
         }
 
         getDataList()
-    }, []);
-    return (
-<CommonLayout>
-    <Modal isOpen={isModalOpen} onClose={closeModal} idx={selectRow?.idx}/>
-    <div className="custInfo_wrap">
-        <div className="title_box">
-            <h2>admin 계정 신청 목록</h2>
-           
-        </div>
+    },[]);
+    return (<CommonLayout>
+        <Modal isOpen={isModalOpen} onClose={closeModal} idx={selectRow?.idx}/>
+        <div className="custInfo_wrap">
+            <div className="title_box">
+                <h2>admin 계정 신청 목록</h2>
 
-        <section className="table">
-            <CommonDataGrid
-                columns={columns}
-                rows={rows}
-                // downLoadFileName={`고객정보목록_${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`}
-                handleRowDoubleClick={handleOnRowDoubleClick}
-                useExcelDownload={false}
-                useTabFilterButton={false}
-                useNewContentButton={false}
-            />
-        </section>
-    </ div>
-</CommonLayout>
-    )
+            </div>
+
+            <section className="table">
+                <CommonDataGrid
+                    columns={columns}
+                    rows={rows}
+                    // downLoadFileName={`고객정보목록_${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`}
+                    handleRowDoubleClick={handleOnRowDoubleClick}
+                    useExcelDownload={false}
+                    useTabFilterButton={false}
+                    useNewContentButton={false}
+                />
+            </section>
+        </ div>
+    </CommonLayout>)
 }
 
 export default Page;

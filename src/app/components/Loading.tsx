@@ -1,7 +1,7 @@
-import { RingLoader } from "react-spinners";
+import {RingLoader} from "react-spinners";
 
-export default function Loading(){
-    return(
+export default function Loading () {
+    return (
         <div className="loading_wrap">
             <RingLoader
                 color="#2281FF"
@@ -9,7 +9,7 @@ export default function Loading(){
                 size={70}
                 speedMultiplier={1}
             />
-            <div className="loading_bg" />
+            <div className="loading_bg"/>
         </div>
     )
 }

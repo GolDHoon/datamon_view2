@@ -1,9 +1,9 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import {useRouter} from 'next/navigation';
+import {useEffect, useState} from 'react';
 import "../resources/scss/main/join.scss";
 
-export default function Page() {
+export default function Page () {
     const router = useRouter();
     const [username, setUsername] = useState('');
     const [name, setName] = useState('');
