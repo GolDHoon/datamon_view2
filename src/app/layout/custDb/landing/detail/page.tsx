@@ -22,7 +22,7 @@ export default function DetailPage () {
     const [keyword,setKeyword] = useState("")
     const [copyTargetDbCode,setCopyTargetDbCode] = useState("")
     const [duplModalOpen,setDuplModalOpen] = useState("off")
-    const [duplData,setDuplData] = useState({keyGroup: 0,duplColumn: [],preprocessing: false,postprocessing: false});
+    const [duplData,setDuplData] = useState<any>({keyGroup: 0,duplColumn: [],preprocessing: false,postprocessing: false});
     const code = useRef("");
 
     const handlePageInfoSave = () => {
@@ -358,7 +358,7 @@ export default function DetailPage () {
                 return (<div className="duplication">
                     <h4>중복제거 칼럼 설정</h4>
                     <ul className="duplication_list">
-                        {duplColumnInfo?.map((dupl,index) => {
+                        {duplColumnInfo?.map((dupl:any,index:any) => {
                             // @ts-ignore
                             const combinedInfo = dupl.infoList.join(', ');
                             return (<li key={index}>
