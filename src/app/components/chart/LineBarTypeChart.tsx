@@ -40,7 +40,7 @@ export default function Chart({ data }: ChartProps) {
 
   return (
     <ComposedChart
-      width={800}
+      width={750}
       height={400}
       data={data}
       margin={{

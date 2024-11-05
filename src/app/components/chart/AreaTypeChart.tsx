@@ -76,7 +76,7 @@ const Chart: React.FC<ChartProps> = ({ data }) => {
                     textAnchor={textAnchor}
                     fill="#999"
                 >
-                    {`(Rate ${(percent * 100).toFixed(2)}%)`}
+                    {`(${(percent * 100).toFixed(2)}%)`}
                 </text>
             </g>
         );
@@ -95,7 +95,7 @@ const Chart: React.FC<ChartProps> = ({ data }) => {
                     </li>
                 ))}
             </ul>
-            <PieChart width={400} height={400}>
+            <PieChart width={450} height={400}>
                 <Pie
                     activeIndex={activeIndex}
                     activeShape={renderActiveShape}
