@@ -277,7 +277,7 @@ const Step3 : React.FC<{
                     }}>인증코드 확인
                     </button>
                 </div>)}
-                {isEmailVerified && <p>이메일 인증번호가 확인되었습니다</p>}
+                {isEmailVerified && <p>이메일 인증코드가 확인되었습니다</p>}
             </div>
         </div>
 
