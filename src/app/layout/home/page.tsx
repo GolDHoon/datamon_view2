@@ -24,21 +24,23 @@ export default function Page() {
     const handleAreaData = () => {
         if (!startDate || !endDate) return;
 
-        // 'name' 키 제외한 나머지 키들 추출
-        const keys = data.length > 0 ? Array.from(new Set(data.flatMap(Object.keys).filter((key:any) => key !== 'name'))) : [];
-
+        // endDate를 조정
         const adjustedEndDate = new Date(endDate);
         adjustedEndDate.setDate(adjustedEndDate.getDate() + 1);
 
+        // 날짜 범위 내의 데이터 필터링
+        const filteredData = data.filter((item:any) => {
+            const date = new Date(item.name);
+            return date >= startDate && date <= adjustedEndDate;
+        });
+
+        // 'name' 키 제외한 나머지 키들 추출
+        const keys = filteredData.length > 0 ?
+            Array.from(new Set(filteredData.flatMap(Object.keys).filter((key:any) => key !== 'name'))) : [];
+
         // 각 키에 대한 합계 계산
         const tempAreaData = keys.map((key:any) => {
-            const value = data.reduce((sum:any, item:any) => {
-                const date = new Date(item.name);
-                if (date >= startDate && date <= adjustedEndDate) {
-                    return sum + (item[key] || 0);
-                }
-                return sum;
-            }, 0);
+            const value = filteredData.reduce((sum:any, item:any) => sum + (item[key] || 0), 0);
             return { name: key, value };
         });
 
