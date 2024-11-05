@@ -47,8 +47,8 @@ const nextConfig = {
                 destination: '/layout/admin/:dynamic',
             },
             {
-                source: '/performance',
-                destination: '/layout/performance',
+                source: '/performance/:dynamic',
+                destination: '/layout/performance/:dynamic',
             },
             {
                 source: '/custDb/custom/:dynamic',

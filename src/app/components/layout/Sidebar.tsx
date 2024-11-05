@@ -95,7 +95,7 @@ export default function Sidebar(){
        <li className={`mli ${isActive4 ? 'on' : ''}`}     onClick={() => setIsActive4(!isActive4)} > <FaDatabase size="20" /> 고객DB 관리 <IoIosArrowDown  />
             <ul>
                 <li><Link href="/custDb/landing/list">랜딩페이지 DB관리</Link></li>
-                <li><Link href="/custDb/custom/list">커스텀 DB관리</Link></li>
+                {/*<li><Link href="/custDb/custom/list">커스텀 DB관리</Link></li>*/}
             </ul>
         </li>
         {["USTY_MAST", "USTY_INME", "USTY_CAME"].includes(userType) ? null : (
@@ -114,7 +114,7 @@ export default function Sidebar(){
 
         <li className={`mli ${isActive2 ? 'on' : ''}`}   onClick={() => setIsActive2(!isActive2)} ><IoStatsChart size="20" /> 실적 통계 <IoIosArrowDown />
            <ul>
-               <li> <Link href="/performance">고객정보 수집실적</Link></li>
+               <li> <Link href="/performance/collection">고객정보 수집실적</Link></li>
            </ul>
         </li>
        {/*   <li className="mli"> <RiCustomerService2Fill  size="20" />고객센터</li> */}

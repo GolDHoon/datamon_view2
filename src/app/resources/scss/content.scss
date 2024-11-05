@@ -635,21 +635,21 @@ section{
             margin-right: 4px;
         }
     }
-    .area1{
-        &::before{
-        background-color: red;
-        }
-    }
-    .area2{
-        &::before{
-        background-color: blue;
-        }
-    }
-    .area3{
-        &::before{
-        background-color: green;
-        }
-    }
+    //.area1{
+    //    &::before{
+    //    background-color: red;
+    //    }
+    //}
+    //.area2{
+    //    &::before{
+    //    background-color: blue;
+    //    }
+    //}
+    //.area3{
+    //    &::before{
+    //    background-color: green;
+    //    }
+    //}
     }
 }
 }
