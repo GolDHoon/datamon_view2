@@ -57,7 +57,7 @@ const Login : NextPage<LoginProps> = ({params}) => {
             restApi('post','/sign/login',{
                 userId: idValue,password: pwValue,companyIdx: idxValue
             }).then(response => {
-                console.log(reponse)
+                console.log(response)
                 // @ts-ignore
                 if (response.status === 200) {
                     setSession('userType',response.data.userType)
