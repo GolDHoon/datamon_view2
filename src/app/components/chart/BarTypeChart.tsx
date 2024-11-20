@@ -12,7 +12,7 @@ import {
 } from "recharts";
 
 interface ChartProps {
-  data:any
+  data:any[]
 }
 
 export default function Chart({ data }: ChartProps) {
@@ -30,7 +30,9 @@ export default function Chart({ data }: ChartProps) {
   };
 
   useEffect(() => {
-    setIsClient(true); // Set to true after the component mounts
+    if(data.length !== 0){
+      setIsClient(true); // Set to true after the component mounts
+    }
   }, []);
 
   if (!isClient) {

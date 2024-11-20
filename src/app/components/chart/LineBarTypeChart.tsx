@@ -3,9 +3,10 @@ import React, {useEffect, useState} from "react";
 import {
     ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Scatter
 } from "recharts";
+import {bottom} from "@popperjs/core";
 
 interface ChartProps {
-    data : any
+    data : any[]
 }
 
 export default function Chart ({data} : ChartProps) {
@@ -22,7 +23,10 @@ export default function Chart ({data} : ChartProps) {
     };
 
     useEffect(() => {
-        setIsClient(true); // Set to true after the component mounts
+        setIsClient(false);
+        if(data.length !== 0){
+            setIsClient(true); // Set to true after the component mounts
+        }
     }, []);
 
     if ( ! isClient) {
@@ -34,14 +38,17 @@ export default function Chart ({data} : ChartProps) {
         height={400}
         data={data}
         margin={{
-            "top": 20, "right": 20, "bottom": 20, "left": 20
+            "top": 20, "right": 20, "bottom": 60, "left": 20
         }}
     >
         <CartesianGrid stroke="#f5f5f5"/>
-        <XAxis dataKey="name"/>
+        <XAxis dataKey="name"
+               interval={0}
+               angle={-45}
+               textAnchor="end"/>
         <YAxis/>
         <Tooltip/>
-        <Legend/>
+        {/*<Legend verticalAlign={"bottom"} />*/}
         <Line type="monotone" dataKey="총합" stroke={getRandomColor()}/>
         {keys.map((key : any, index : any) => {
             if (key !== "총합" && key !== "name") {

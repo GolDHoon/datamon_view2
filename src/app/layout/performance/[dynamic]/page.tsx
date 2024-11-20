@@ -55,11 +55,15 @@ const Page : React.FC<PageProps> = ({params}) => {
             return {name: key,value};
         });
 
-        setAreaChartData(tempAreaData);
+        if(tempAreaData.length !== 0) setAreaChartData(tempAreaData);
     }
 
     const handleLineBarData = () => {
         if (!startDate || !endDate) return;
+
+        if(!data) {
+            return;
+        }
 
         const adjustedEndDate = new Date(endDate);
         adjustedEndDate.setDate(adjustedEndDate.getDate() + 1);
@@ -69,31 +73,55 @@ const Page : React.FC<PageProps> = ({params}) => {
             return date >= startDate && date <= adjustedEndDate;
         });
 
-        const filteredDataWithTotals = filteredData.map((item : any) => {
-            const itemTotal = Object.keys(item).reduce((sum,key) => {
-                if (key !== 'name') {
-                    sum += item[key];
-                }
-                return sum;
-            },0);
-            return {...item,"총합": itemTotal};
+        const dateRange = [];
+        for(let d = new Date(startDate); d <= adjustedEndDate; d.setDate(d.getDate() + 1)) {
+            dateRange.push({ name: new Date(d).toISOString().split('T')[0] });
+        }
+
+        const filledData = dateRange.map(dateItem => {
+            const dataItem:any = filteredData.find((item:any) => item.name === dateItem.name);
+            if (dataItem) {
+                const itemTotal = Object.keys(dataItem).reduce((sum, key) => {
+                    if (key !== 'name') {
+                        sum += dataItem[key];
+                    }
+                    return sum;
+                }, 0);
+                return { ...dataItem, '총합': itemTotal };
+            }
+            return { ...dateItem, unknown: 0, '총합': 0 };
         });
 
-        setLineBarData(filteredDataWithTotals);
+        setLineBarData(filledData);
     };
 
     const handleBarChartData = () => {
-        const filteredData = data.filter((item : any) => {
+        const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
+        const dateRange = Array.from({ length: daysInMonth }, (_, i) => {
+            const day = i + 1;
+            return `${selectedYear}-${String(selectedMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        });
+
+        const filteredData = data.filter((item: any) => {
             const date = new Date(item.name);
             return date.getFullYear() === selectedYear && date.getMonth() + 1 === selectedMonth;
         });
 
-        if (filteredData.length === 0) {
-            // @ts-ignore
-            filteredData.push({name: "",unknown: 0},{name: "-",unknown: 0});
-        }
+        const chartKeys = data.length > 0 ? Object.keys(data[0]).filter((key: any) => key !== 'name') : [];
 
-        setBarChartData(filteredData);
+        const filledData = dateRange.map(date => {
+            const foundData = filteredData.find((item:any) => item.name === date);
+            if (foundData) {
+                return foundData;
+            }
+            const emptyData = chartKeys.reduce((acc: any, key: any) => {
+                acc[key] = 0;
+                return acc;
+            }, { name: date });
+            return emptyData;
+        });
+
+        setBarChartData(filledData);
     }
 
     const getData = () => {
@@ -239,7 +267,7 @@ const Page : React.FC<PageProps> = ({params}) => {
                             </option>))}
                         </select>
                     </div>
-                    <BarTypeChart data={barChartData}/>
+                    {barChartData.length !== 0 && <BarTypeChart data={barChartData}/>}
                 </div>
             </section>
             <section>
@@ -249,10 +277,10 @@ const Page : React.FC<PageProps> = ({params}) => {
                         <CommonDatepicker setDate={setDate}/>
                     </div>
                     <p>초기엔 최근 7일로 지정됩니다.</p>
-                    <LineBarTypeChart data={lineBarData}/>
+                    {lineBarData.length !== 0 && <LineBarTypeChart data={lineBarData}/>}
                 </div>
                 <div>
-                    <AreaTypeChart data={areaChartData}/>
+                    {areaChartData.length !== 0 && <AreaTypeChart data={areaChartData}/>}
                 </div>
             </section>
         </div>
