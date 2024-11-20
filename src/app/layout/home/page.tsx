@@ -127,7 +127,7 @@ export default function Page () {
         } catch (error) {
             console.error("Failed to fetch data:", error);
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 

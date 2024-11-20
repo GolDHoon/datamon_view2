@@ -31,7 +31,7 @@ export default function ApprovalCompleteModal ({onClose, isOpen, idx} : ModalPro
             })
         } catch (error) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     };
 
@@ -59,7 +59,7 @@ export default function ApprovalCompleteModal ({onClose, isOpen, idx} : ModalPro
             })
         } catch (error) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 
