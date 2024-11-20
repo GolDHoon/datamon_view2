@@ -52,7 +52,7 @@ const Page : React.FC<PageProps> = ({params}) => {
             })
         } catch (error) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 

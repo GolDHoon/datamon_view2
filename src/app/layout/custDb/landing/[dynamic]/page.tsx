@@ -56,12 +56,12 @@ const Page : React.FC<PageProps> = ({params}) => {
                 } else {
                     alert(response.data)
                     // @ts-ignore
-                    router.push('/' + getSession("companyName") + '/login');
+                    router.push('/' + getSession("companyId") + '/login');
                 }
             })
         } catch (errro) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 

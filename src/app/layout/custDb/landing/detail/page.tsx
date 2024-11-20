@@ -49,7 +49,7 @@ export default function DetailPage () {
             })
         } catch (error) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 
@@ -73,7 +73,7 @@ export default function DetailPage () {
             })
         } catch (error) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 
@@ -101,7 +101,7 @@ export default function DetailPage () {
             })
         } catch (error) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 
@@ -153,7 +153,7 @@ export default function DetailPage () {
             })
         } catch (error) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 
@@ -187,7 +187,7 @@ export default function DetailPage () {
             })
         } catch (error) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 
@@ -210,7 +210,7 @@ export default function DetailPage () {
             })
         } catch (error) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 
@@ -234,7 +234,7 @@ export default function DetailPage () {
             })
         } catch (error) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 
@@ -268,7 +268,7 @@ export default function DetailPage () {
             })
         } catch (error) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 
@@ -291,7 +291,7 @@ export default function DetailPage () {
             })
         } catch (error) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 
@@ -316,7 +316,7 @@ export default function DetailPage () {
             })
         } catch (error) {
             // @ts-ignore
-            router.push('/' + getSession("companyName") + '/login');
+            router.push('/' + getSession("companyId") + '/login');
         }
     }
 
@@ -339,7 +339,7 @@ export default function DetailPage () {
                 })
             } catch (error) {
                 // @ts-ignore
-                router.push('/' + getSession("companyName") + '/login');
+                router.push('/' + getSession("companyId") + '/login');
             }
         }
     },[ipModalOpen]);
