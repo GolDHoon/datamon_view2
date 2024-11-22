@@ -11,8 +11,6 @@ interface ModalProps {
 }
 
 export default function ApprovalCompleteModal ({onClose, isOpen, idx} : ModalProps) {
-    //onClose는 아직 작동 안합니다 pages에서 꺼내다 closeModal로 이어써야함
-
     const [step, setStep] = useState(1);
     const [rejectReason, setRejectReason] = useState("");
 

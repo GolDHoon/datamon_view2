@@ -36,7 +36,14 @@ const Page : React.FC<PageProps> = ({params}) => {
     };
 
     const handleOnRowDoubleClick = (idx : any) => {
-        setSelectRow(rows.find((row : any) => row.idx === idx));
+        var tempSelectRow:any = rows.find((row : any) => row.idx === idx);
+        setSelectRow(tempSelectRow);
+        if (tempSelectRow.completionYn === "완료") {
+            alert("이미 처리된 건입니다.");
+            return;
+        } else {
+            openModal()
+        }
     }
 
     const getDataList = () => {
@@ -55,14 +62,6 @@ const Page : React.FC<PageProps> = ({params}) => {
             router.push('/' + getSession("companyId") + '/login');
         }
     }
-
-    useEffect(() => {
-        if (selectRow?.completionYn === "완료") {
-            alert("이미 처리된 건입니다.")
-        } else {
-            openModal()
-        }
-    },[selectRow]);
 
     useEffect(() => {
         if (dynamic !== 'list') {
